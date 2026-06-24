@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PC Builder AI — 最適なPC構成をAIが提案</title>
+  <meta name="description" content="予算と用途を入力するだけでAIが最適なPC構成を提案。Amazonで即購入できるリンク付き。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --gray-50: #fafafa;
+      --gray-100: #f4f4f5;
+      --gray-200: #e4e4e7;
+      --gray-300: #d1d1d6;
+      --gray-400: #6b6b72;
+      --gray-500: #4a4a52;
+      --gray-700: #3f3f46;
+      --gray-900: #18181b;
+      --accent: #0a0a0a;
+      --accent-hover: #27272a;
+      --r-sm: 6px;
+      --r-md: 10px;
+      --r-lg: 14px;
+      --r-xl: 20px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+      background: var(--gray-50);
+      color: var(--black);
+      min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Header ── */
+    header {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-200);
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--black);
+    }
+
+    .logo-mark {
+      width: 30px;
+      height: 30px;
+      background: var(--black);
+      border-radius: var(--r-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-mark svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 1.8; }
+
+    .logo-text {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-text span { color: var(--gray-400); font-weight: 400; }
+
+    .header-right { display: flex; align-items: center; gap: 10px; }
+
+    .badge-free {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 9px;
+      border-radius: 20px;
+      background: var(--gray-100);
+      color: var(--gray-500);
+      border: 1px solid var(--gray-200);
+      letter-spacing: 0.02em;
+    }
+
+    .btn-upgrade {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: var(--r-sm);
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: background 0.15s;
+    }
+    .btn-upgrade:hover { background: var(--gray-700); }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 4rem 2rem 2.5rem;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--gray-300);
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: var(--black);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--gray-400);
+    }
+
+    .hero p {
+      font-size: 15px;
+      color: var(--gray-500);
+      font-weight: 400;
+      line-height: 1.7;
+    }
+
+    /* ── Usage bar ── */
+    .usage-strip {
+      max-width: 680px;
+      margin: 0 auto 2rem;
+      padding: 0 2rem;
+    }
+
+    .usage-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--r-md);
+    }
+
+    .usage-label { font-size: 12px; color: var(--gray-400); }
+
+    .usage-right { display: flex; align-items: center; gap: 10px; }
+
+    .usage-dots { display: flex; gap: 5px; }
+
+    .usage-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gray-200);
+      transition: background 0.2s;
+    }
+    .usage-dot.used { background: var(--black); }
+
+    .usage-count { font-size: 12px; font-weight: 600; color: var(--black); }
+
+    /* ── Form ── */
+    .form-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    /* セクションブロック */
+    .section {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      padding: 1.5rem 1.75rem;
+    }
+    .section:first-child { border-radius: var(--r-xl) var(--r-xl) 0 0; }
+    .section:last-of-type { border-radius: 0 0 var(--r-xl) var(--r-xl); }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 1rem;
+    }
+
+    /* 予算スライダー */
+    .budget-num {
+      font-size: 38px;
+      font-weight: 300;
+      letter-spacing: -0.04em;
+      color: var(--black);
+      margin-bottom: 1.25rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .budget-num span { font-size: 20px; font-weight: 400; margin-right: 2px; color: var(--gray-400); }
+
+    .slider-wrap { position: relative; }
+
+    input[type="range"] {
+      width: 100%;
+      height: 2px;
+      appearance: none;
+      background: var(--gray-200);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--black);
+      border: 3px solid var(--white);
+      box-shadow: 0 0 0 1px var(--gray-300);
+      cursor: pointer;
+      transition: box-shadow 0.15s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      box-shadow: 0 0 0 1px var(--black);
+    }
+
+    .budget-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--gray-400);
+      margin-top: 8px;
+    }
+
+    /* 用途チップ */
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+
+    .chip {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--gray-200);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      background: var(--white);
+      color: var(--gray-500);
+      transition: all 0.15s;
+      user-select: none;
+      letter-spacing: 0.01em;
+    }
+
+    .chip:hover { border-color: var(--gray-400); color: var(--black); }
+
+    .chip.active {
+      background: var(--black);
+      border-color: var(--black);
+      color: var(--white);
+    }
+
+    /* アプリ入力 */
+    .app-input-wrap {
+      position: relative;
+    }
+
+    .app-input-wrap input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--r-md);
+      font-size: 13px;
+      color: var(--black);
+      background: var(--gray-50);
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .app-input-wrap input:focus {
+      border-color: var(--black);
+      background: var(--white);
+    }
+
+    .app-input-wrap input::placeholder { color: var(--gray-400); }
+
+    .app-hint { font-size: 11px; color: var(--gray-400); margin-top: 7px; }
+
+    .app-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+    .app-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px 4px 12px;
+      background: var(--black);
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--white);
+      letter-spacing: 0.01em;
+    }
+
+    .app-tag button {
+      background: rgba(255,255,255,0.25);
+      border: none;
+      cursor: pointer;
+      color: var(--white);
+      font-size: 12px;
+      line-height: 1;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: background 0.15s;
+    }
+    .app-tag button:hover { background: rgba(255,255,255,0.4); }
+
+    /* セレクト・インプット共通 */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .field label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 7px; }
+
+    select, .text-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--r-md);
+      font-size: 13px;
+      color: var(--black);
+      background: var(--gray-50);
+      appearance: none;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.15s, background 0.15s;
+      cursor: pointer;
+    }
+
+    select:focus, .text-input:focus {
+      border-color: var(--black);
+      background: var(--white);
+    }
+
+    select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+
+    /* 送信ボタン */
+    .divider { height: 1px; background: var(--gray-200); margin: 0 -1.75rem; }
+
+    .submit-wrap { padding-top: 1.5rem; }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      border-radius: var(--r-lg);
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .submit-btn:hover { background: var(--gray-700); }
+    .submit-btn:active { transform: scale(0.99); }
+    .submit-btn:disabled { background: var(--gray-300); cursor: not-allowed; transform: none; }
+
+    /* ── 結果エリア ── */
+    .result-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--r-xl);
+      padding: 1.75rem;
+      margin-top: 12px;
+    }
+
+    .result-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 1.25rem;
+    }
+
+    .thinking {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--gray-400);
+      font-size: 13px;
+      padding: 0.5rem 0;
+    }
+
+    .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gray-300);
+      animation: pulse 1.2s infinite;
+    }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes pulse { 0%,100%{opacity:0.2;transform:scale(0.8);} 50%{opacity:1;transform:scale(1);} }
+
+    .parts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 1.25rem;
+    }
+
+    @media (max-width: 520px) {
+      .parts-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 26px; }
+      header { padding: 0 1.25rem; }
+      .hero, .usage-strip, .form-wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
+    }
+
+    .part-card {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--r-lg);
+      padding: 14px 16px;
+      transition: border-color 0.15s;
+    }
+    .part-card:hover { border-color: var(--gray-300); }
+
+    .part-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 5px;
+    }
+
+    .part-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--black);
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+
+    .part-price {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .affil-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: var(--r-sm);
+      border: 1px solid var(--gray-200);
+      color: var(--gray-700);
+      background: var(--white);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s;
+      letter-spacing: 0.02em;
+    }
+    .affil-btn:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+
+    .summary-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0 0;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .total-label { font-size: 11px; color: var(--gray-400); margin-bottom: 2px; }
+    .total-amount { font-size: 22px; font-weight: 600; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+
+    .comment-box {
+      margin-top: 1rem;
+      padding: 14px 16px;
+      background: var(--gray-50);
+      border-radius: var(--r-md);
+      border-left: 2px solid var(--black);
+      font-size: 12px;
+      color: var(--gray-700);
+      line-height: 1.75;
+    }
+
+    .price-note {
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: #fffbeb;
+      border-radius: var(--r-md);
+      font-size: 11px;
+      color: #92400e;
+      line-height: 1.6;
+      border: 1px solid #fde68a;
+    }
+
+    .limit-note {
+      text-align: center;
+      font-size: 11px;
+      color: var(--gray-400);
+      margin-top: 1rem;
+      letter-spacing: 0.03em;
+    }
+
+    .upgrade-box {
+      margin-top: 1rem;
+      padding: 1.5rem;
+      background: var(--gray-50);
+      border-radius: var(--r-lg);
+      text-align: center;
+      border: 1px solid var(--gray-200);
+    }
+    .upgrade-box p { font-size: 13px; color: var(--gray-500); margin-bottom: 14px; line-height: 1.7; }
+    .upgrade-box-btn {
+      padding: 10px 28px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: var(--r-md);
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.01em;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .upgrade-box-btn:hover { background: var(--gray-700); }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 11px;
+      color: var(--gray-400);
+      border-top: 1px solid var(--gray-200);
+      margin-top: 2rem;
+      line-height: 1.8;
+    }
+    footer a { color: var(--gray-400); text-decoration: none; border-bottom: 1px solid var(--gray-200); }
+
+    /* ── チャットボット ── */
+    .chat-fab {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      transition: transform 0.15s, background 0.15s;
+    }
+    .chat-fab:hover { transform: scale(1.08); background: var(--gray-700); }
+
+    .chat-window {
+      position: fixed;
+      bottom: 88px;
+      right: 28px;
+      width: 340px;
+      max-height: 460px;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--r-xl);
+      display: flex;
+      flex-direction: column;
+      z-index: 300;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 14px 18px;
+      background: var(--black);
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      letter-spacing: 0.01em;
+    }
+
+    .chat-close {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: var(--white);
+      font-size: 14px;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .chat-close:hover { background: rgba(255,255,255,0.3); }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .msg {
+      max-width: 86%;
+      padding: 9px 13px;
+      border-radius: 14px;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+    .msg.bot { background: var(--gray-100); color: var(--black); align-self: flex-start; border-bottom-left-radius: 4px; }
+    .msg.user { background: var(--black); color: var(--white); align-self: flex-end; border-bottom-right-radius: 4px; }
+    .msg.thinking-msg { background: var(--gray-100); color: var(--gray-400); align-self: flex-start; font-style: italic; }
+
+    .chat-input-row {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-top: 1px solid var(--gray-200);
+      background: var(--white);
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 8px 13px;
+      border: 1px solid var(--gray-200);
+      border-radius: 20px;
+      font-size: 12px;
+      outline: none;
+      font-family: inherit;
+      background: var(--gray-50);
+      color: var(--black);
+      transition: border-color 0.15s;
+    }
+    .chat-input:focus { border-color: var(--black); background: var(--white); }
+
+    .chat-send {
+      padding: 8px 14px;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .chat-send:hover { background: var(--gray-700); }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <a class="logo" href="/">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg>
+    </div>
+    <span class="logo-text">PC Builder <span>AI</span></span>
+  </a>
+  <div class="header-right">
+    <span class="badge-free">FREE PLAN</span>
+    <a class="btn-upgrade" href="#upgrade">月額500円で無制限</a>
+  </div>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-eyebrow">AI-Powered PC Builder</div>
+  <h1>予算と用途を入力するだけ。<br><em>最適な構成をAIが提案。</em></h1>
+  <p>Amazonへの購入リンク付きで、提案された構成をそのまま購入できます。</p>
+</div>
+
+<!-- Usage -->
+<div class="usage-strip">
+  <div class="usage-inner">
+    <span class="usage-label">今月の無料回数</span>
+    <div class="usage-right">
+      <div class="usage-dots" id="usage-dots"></div>
+      <span class="usage-count" id="usage-text"></span>
+    </div>
+  </div>
+</div>
+
+<!-- Form -->
+<div class="form-wrap">
+
+  <!-- 予算 -->
+  <div class="section">
+    <div class="section-label">Budget — 予算</div>
+    <div class="budget-num" id="budget-display"><span>¥</span><span id="budget-val">100,000</span></div>
+    <div class="slider-wrap">
+      <input type="range" id="budget" min="50000" max="1000000" step="10000" value="100000">
+    </div>
+    <div class="budget-labels"><span>¥50,000</span><span>¥1,000,000</span></div>
+  </div>
+
+  <!-- 用途 -->
+  <div class="section">
+    <div class="section-label">Use Case — 用途（複数選択可）</div>
+    <div class="chips" id="use-chips">
+      <div class="chip active" data-val="ゲーミング">Gaming — ゲーミング</div>
+      <div class="chip" data-val="動画編集">Video Editing — 動画編集</div>
+      <div class="chip" data-val="配信・実況">Streaming — 配信・実況</div>
+      <div class="chip" data-val="3Dレンダリング">3D Rendering — 3Dレンダリング</div>
+      <div class="chip" data-val="普段使い">General Use — 普段使い</div>
+      <div class="chip" data-val="AI・機械学習">AI / ML — 機械学習</div>
+    </div>
+  </div>
+
+  <!-- アプリ -->
+  <div class="section">
+    <div class="section-label">Apps & Games — アプリ・ゲーム（任意）</div>
+    <div class="app-input-wrap">
+      <input type="text" id="app-input" placeholder="例: Cyberpunk 2077、Premiere Pro、Stable Diffusion">
+    </div>
+    <p class="app-hint">Enterキーで追加 — AIが推奨スペックを参照して最適化します</p>
+    <div class="app-tags" id="app-tags"></div>
+  </div>
+
+  <!-- FPS・流用 -->
+  <div class="section">
+    <div class="section-label">Settings — 詳細設定</div>
+    <div class="form-row" style="margin-bottom:1rem;">
+      <div class="field">
+        <label>FPS目標</label>
+        <select id="fps">
+          <optgroup label="フルHD (1920×1080)">
+            <option value="60fps（フルHD）">60 fps</option>
+            <option value="144fps（フルHD）">144 fps</option>
+            <option value="240fps（フルHD）">240 fps</option>
+            <option value="360fps（フルHD）">360 fps</option>
+          </optgroup>
+          <optgroup label="WQHD (2560×1440)">
+            <option value="60fps（WQHD）">60 fps</option>
+            <option value="144fps（WQHD）">144 fps</option>
+            <option value="240fps（WQHD）">240 fps</option>
+            <option value="360fps（WQHD）">360 fps</option>
+          </optgroup>
+          <optgroup label="4K (3840×2160)">
+            <option value="60fps（4K）">60 fps</option>
+            <option value="144fps（4K）">144 fps</option>
+          </optgroup>
+          <optgroup label="ゲームなし">
+            <option value="ゲームはしない">ゲームはしない</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="field">
+        <label>流用パーツ</label>
+        <select id="reuse">
+          <option>すべて新品</option>
+          <option>ケース・電源を流用</option>
+          <option>ストレージを流用</option>
+          <option>ケース・電源・SSD流用</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>その他の要望（任意）</label>
+      <input type="text" class="text-input" id="other" placeholder="例: 静音重視、白いパーツで揃えたい、Mini-ITX">
+    </div>
+
+    <div class="divider" style="margin-top:1.5rem;"></div>
+    <div class="submit-wrap">
+      <button class="submit-btn" id="submit-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        最適な構成を提案してもらう
+      </button>
+    </div>
+  </div>
+
+  <!-- 結果 -->
+  <div class="result-card" id="result-section" style="display:none;">
+    <div class="result-title">AI Recommendation — 提案構成</div>
+    <div id="result-content"></div>
+  </div>
+
+</div>
+
+<footer>
+  <p>本サービスはAmazonアソシエイトプログラムに参加しています。<br>
+  リンクからご購入いただくと、運営者に紹介料が発生することがあります。<br>
+  <a href="#">利用規約</a> &nbsp;·&nbsp; <a href="#">プライバシーポリシー</a></p>
+</footer>
+
+<!-- チャットボット -->
+<button class="chat-fab" id="chat-fab" title="PCについて質問する">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+</button>
+
+<div class="chat-window" id="chat-window" style="display:none;">
+  <div class="chat-header">
+    <span>PC相談 — AI Assistant</span>
+    <button class="chat-close" id="chat-close">✕</button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg bot">こんにちは！PCパーツや自作PC、構成についてなんでも聞いてください。</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chat-input" placeholder="質問を入力...">
+    <button class="chat-send" id="chat-send">送信</button>
+  </div>
+</div>
+
+<script>
+const AMAZON_TAG = 'pcbuilderai-22';
+const MAX_FREE = 3;
+let usedCount = parseInt(localStorage.getItem('pc_tool_used') || '0');
+let selectedUses = ['ゲーミング'];
+let appList = [];
+let chatHistory = [];
+
+const PRICE_REF = `
+【2026年6月現在・日本市場の実勢価格（税込）】
+■ GPU（RTX 50シリーズ優先）
+RTX 5070: 約115,000〜135,000円
+RTX 5070 Ti: 約155,000〜175,000円
+RTX 5080: 約210,000〜250,000円（品薄）
+RTX 5090: 約580,000〜700,000円（品薄・高騰中）
+RTX 4070 Super: 約170,000〜190,000円
+RTX 4070 Ti Super: 約200,000〜230,000円
+RTX 4090: 約290,000〜330,000円
+■ CPU（ゲーミングはAMD Ryzen優先）
+Ryzen 7 9800X3D: 約61,000〜75,000円（ゲーミング最強）
+Ryzen 7 9700X: 約39,000〜45,000円
+Ryzen 5 9600X: 約28,000〜35,000円
+Ryzen 9 9950X3D: 約110,000〜120,000円
+Core Ultra 9 285K: 約85,000〜95,000円
+Core Ultra 7 265K: 約55,000〜65,000円
+■ マザーボード
+AMD X870E: 約40,000〜80,000円
+AMD X870: 約25,000〜45,000円
+AMD B850: 約18,000〜30,000円
+Intel Z890: 約30,000〜70,000円
+Intel B860: 約18,000〜28,000円
+■ メモリ（DDR5高騰中）
+DDR5-6000 32GB(16GB×2): 約55,000〜65,000円
+DDR5-6000 64GB(32GB×2): 約90,000〜105,000円
+■ SSD
+1TB Gen4: 約12,000〜18,000円
+2TB Gen4: 約22,000〜32,000円
+■ 電源（ATX3.1対応推奨）
+750W Gold ATX3.1: 約16,000〜24,000円
+850W Gold ATX3.1: 約20,000〜28,000円
+1000W Gold ATX3.1: 約28,000〜40,000円
+■ ケース
+ミドルタワー エントリー: 約7,000〜12,000円
+ミドルタワー ミドル: 約14,000〜22,000円
+■ CPUクーラー
+空冷ハイエンド: 約10,000〜16,000円
+簡易水冷240mm: 約9,000〜18,000円
+簡易水冷360mm: 約15,000〜28,000円
+【ルール】RTX 50シリーズ優先。ゲーミングはRyzen優先。RTX5070以上はATX3.1電源必須。`;
+
+function updateUsageUI() {
+  const remaining = Math.max(0, MAX_FREE - usedCount);
+  const dots = document.getElementById('usage-dots');
+  dots.innerHTML = '';
+  for (let i = 0; i < MAX_FREE; i++) {
+    const d = document.createElement('div');
+    d.className = 'usage-dot' + (i < usedCount ? ' used' : '');
+    dots.appendChild(d);
+  }
+  document.getElementById('usage-text').textContent = '残り ' + remaining + ' 回';
+}
+
+document.getElementById('budget').addEventListener('input', function() {
+  document.getElementById('budget-val').textContent = parseInt(this.value).toLocaleString();
+});
+
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', function() {
+    const val = this.dataset.val;
+    if (this.classList.contains('active')) {
+      if (selectedUses.length === 1) return;
+      this.classList.remove('active');
+      selectedUses = selectedUses.filter(u => u !== val);
+    } else {
+      this.classList.add('active');
+      selectedUses.push(val);
+    }
+  });
+});
+
+function addApp(name) {
+  name = name.trim();
+  if (!name || appList.includes(name)) return;
+  appList.push(name);
+  renderAppTags();
+}
+
+function removeApp(name) {
+  appList = appList.filter(a => a !== name);
+  renderAppTags();
+}
+
+function renderAppTags() {
+  document.getElementById('app-tags').innerHTML = appList.map(a =>
+    `<span class="app-tag">${a}<button onclick="removeApp('${a}')">✕</button></span>`
+  ).join('');
+}
+
+document.getElementById('app-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { e.preventDefault(); addApp(this.value); this.value = ''; }
+});
+document.getElementById('app-input').addEventListener('blur', function() {
+  if (this.value.trim()) { addApp(this.value); this.value = ''; }
+});
+
+function buildAmazonUrl(query) {
+  return 'https://www.amazon.co.jp/s?k=' + encodeURIComponent(query) + '&tag=' + AMAZON_TAG;
+}
+
+function renderParts(partsData, comment) {
+  const icons = { 'CPU':'CPU','GPU':'GPU','マザーボード':'MB','メモリ':'RAM','SSD':'SSD','電源':'PSU','ケース':'CASE','CPUクーラー':'COOL' };
+  let total = 0;
+  let html = '<div class="parts-grid">';
+  partsData.forEach(p => {
+    total += p.price;
+    html += `<div class="part-card">
+      <div class="part-label">${icons[p.category]||p.category}</div>
+      <div class="part-name">${p.name}</div>
+      <div class="part-price">¥${p.price.toLocaleString()}</div>
+      <a class="affil-btn" href="${buildAmazonUrl(p.name)}" target="_blank" rel="noopener sponsored">Amazon で見る →</a>
+    </div>`;
+  });
+  html += '</div>';
+  html += `<div class="summary-bar">
+    <div><div class="total-label">合計概算</div><div class="total-amount">¥${total.toLocaleString()}</div></div>
+  </div>`;
+  if (comment) html += `<div class="comment-box">${comment}</div>`;
+  html += `<div class="price-note">⚠ 2026年現在、DDR5メモリ高騰・RTX 50シリーズ品薄・円安の影響で価格が変動しています。購入前に必ずAmazonで最新価格をご確認ください。</div>`;
+  return html;
+}
+
+document.getElementById('submit-btn').addEventListener('click', async () => {
+  if (usedCount >= MAX_FREE) {
+    document.getElementById('result-section').style.display = 'block';
+    document.getElementById('result-content').innerHTML = `<div class="upgrade-box" id="upgrade">
+      <p>無料枠（月3回）を使い切りました。<br>月額500円で毎月無制限にご利用いただけます。</p>
+      <button class="upgrade-box-btn">有料プランにアップグレード →</button>
+    </div>`;
+    return;
+  }
+
+  const budget = parseInt(document.getElementById('budget').value);
+  const fps = document.getElementById('fps').value;
+  const reuse = document.getElementById('reuse').value;
+  const other = document.getElementById('other').value;
+  const uses = selectedUses.join('、');
+  const apps = appList.length > 0 ? appList.join('、') : 'なし';
+  const isGaming = selectedUses.includes('ゲーミング');
+
+  document.getElementById('submit-btn').disabled = true;
+  document.getElementById('result-section').style.display = 'block';
+  document.getElementById('result-content').innerHTML = `<div class="thinking"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span>最適な構成を考えています...</span></div>`;
+
+  const prompt = `あなたは2026年6月現在の日本市場に精通したPCパーツのプロです。以下の条件で最適なPC構成を提案してください。
+
+【条件】
+予算：¥${budget.toLocaleString()}
+主な用途：${uses}
+使用するアプリ・ゲーム：${apps}
+FPS目標：${fps}
+流用パーツ：${reuse}
+その他の要望：${other || 'なし'}
+
+【パーツ選定の絶対ルール】
+1. GPUは必ずRTX 50シリーズ（5070/5070Ti/5080/5090）を優先。予算不足の場合のみRTX 40シリーズ。
+2. ${isGaming ? 'ゲーミング用途のため、CPUは必ずAMD Ryzen（特にRyzen 7 9800X3D）を最優先で選ぶこと。' : 'ゲーミング以外の用途のため、Intel Core UltraまたはRyzenを用途に合わせて選ぶこと。'}
+3. RTX 5070以上のGPUには必ずATX 3.1対応電源を選ぶこと。
+4. DDR5メモリは現在高騰中。予算に合わせて容量を調整すること。
+5. 240fps・360fps目標の場合はGPU・CPUに予算を集中させること。
+
+【2026年6月の実勢価格（必ず参照）】
+${PRICE_REF}
+
+必ず以下のJSONのみで返答してください：
+{
+  "parts": [
+    {"category": "CPU", "name": "製品名（型番まで）", "price": 数値},
+    {"category": "CPUクーラー", "name": "製品名", "price": 数値},
+    {"category": "マザーボード", "name": "製品名", "price": 数値},
+    {"category": "メモリ", "name": "製品名・容量・クロック", "price": 数値},
+    {"category": "SSD", "name": "製品名・容量", "price": 数値},
+    {"category": "GPU", "name": "製品名（型番まで）", "price": 数値},
+    {"category": "電源", "name": "製品名・ワット数", "price": 数値},
+    {"category": "ケース", "name": "製品名", "price": 数値}
+  ],
+  "comment": "構成のポイントを2〜3文で。"
+}
+priceは実勢価格に基づく円の整数値。合計¥${budget.toLocaleString()}以内。流用パーツ（${reuse}）は除外。`;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 1200, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const raw = data.content?.map(b => b.text || '').join('') || '';
+    const parsed = JSON.parse(raw.replace(/```json|```/g, '').trim());
+
+    usedCount++;
+    localStorage.setItem('pc_tool_used', usedCount);
+    updateUsageUI();
+
+    let html = renderParts(parsed.parts, parsed.comment);
+    const remaining = MAX_FREE - usedCount;
+    if (remaining === 0) {
+      html += `<div class="upgrade-box" style="margin-top:1rem;" id="upgrade">
+        <p>無料枠を使い切りました。月額500円で毎月無制限にご利用いただけます。</p>
+        <button class="upgrade-box-btn">有料プランにアップグレード →</button>
+      </div>`;
+    } else {
+      html += `<div class="limit-note">残り ${remaining} 回 / 月 ${MAX_FREE} 回</div>`;
+    }
+    document.getElementById('result-content').innerHTML = html;
+  } catch(e) {
+    document.getElementById('result-content').innerHTML = '<p style="color:#a1a1aa;font-size:13px;padding:1rem 0;">エラーが発生しました。もう一度お試しください。</p>';
+  }
+  document.getElementById('submit-btn').disabled = false;
+});
+
+// チャット
+const chatFab = document.getElementById('chat-fab');
+const chatWindow = document.getElementById('chat-window');
+const chatMessages = document.getElementById('chat-messages');
+const chatInput = document.getElementById('chat-input');
+
+chatFab.addEventListener('click', () => {
+  const isOpen = chatWindow.style.display !== 'none';
+  chatWindow.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen) { chatWindow.style.flexDirection = 'column'; chatInput.focus(); }
+});
+document.getElementById('chat-close').addEventListener('click', () => { chatWindow.style.display = 'none'; });
+
+function addChatMsg(text, role) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + role;
+  div.textContent = text;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  return div;
+}
+
+async function sendChat() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  chatInput.value = '';
+  addChatMsg(text, 'user');
+  chatHistory.push({ role: 'user', content: text });
+  const thinkDiv = addChatMsg('考え中...', 'thinking-msg');
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6', max_tokens: 600,
+        system: `あなたは2026年6月現在の日本市場に精通したPCパーツ・自作PCの専門家です。質問に日本語で簡潔に答えてください。\n${PRICE_REF}\n回答は3〜5文程度で。`,
+        messages: chatHistory
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.map(b => b.text || '').join('') || 'エラーが発生しました。';
+    chatHistory.push({ role: 'assistant', content: reply });
+    thinkDiv.remove();
+    addChatMsg(reply, 'bot');
+  } catch(e) {
+    thinkDiv.remove();
+    addChatMsg('エラーが発生しました。', 'bot');
+  }
+}
+
+document.getElementById('chat-send').addEventListener('click', sendChat);
+chatInput.addEventListener('keydown', e => { if (e.key === 'Enter') sendChat(); });
+
+updateUsageUI();
+</script>
+</body>
+</html>
