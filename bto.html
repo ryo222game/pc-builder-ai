@@ -104,6 +104,24 @@
 
     
     
+
+    /* チャットボット共通 */
+    .chat-fab { position: fixed; bottom: 28px; right: 28px; width: 48px; height: 48px; border-radius: 50%; background: var(--black); color: var(--white); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 300; transition: transform 0.15s, background 0.15s; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .chat-fab:hover { transform: scale(1.08); background: var(--gray-700); }
+    .chat-window { position: fixed; bottom: 88px; right: 28px; width: 340px; max-height: 460px; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); display: flex; flex-direction: column; z-index: 300; overflow: hidden; }
+    .chat-header { padding: 14px 18px; background: var(--black); color: var(--white); font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+    .chat-close { background: rgba(255,255,255,0.15); border: none; color: var(--white); font-size: 14px; cursor: pointer; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+    .chat-close:hover { background: rgba(255,255,255,0.3); }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+    .msg { max-width: 86%; padding: 9px 13px; border-radius: 14px; font-size: 12px; line-height: 1.65; }
+    .msg.bot { background: var(--gray-100); color: var(--black); align-self: flex-start; border-bottom-left-radius: 4px; }
+    .msg.user { background: var(--black); color: var(--white); align-self: flex-end; border-bottom-right-radius: 4px; }
+    .msg.thinking-msg { background: var(--gray-100); color: var(--gray-400); align-self: flex-start; font-style: italic; }
+    .chat-input-row { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--gray-200); background: var(--white); }
+    .chat-input { flex: 1; padding: 8px 13px; border: 1px solid var(--gray-200); border-radius: 20px; font-size: 12px; outline: none; font-family: inherit; background: var(--gray-50); color: var(--black); transition: border-color 0.15s; }
+    .chat-input:focus { border-color: var(--black); background: var(--white); }
+    .chat-send { padding: 8px 14px; background: var(--black); color: var(--white); border: none; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 600; font-family: inherit; transition: background 0.15s; }
+    .chat-send:hover { background: var(--gray-700); }
   </style>
 </head>
 <body>
@@ -187,6 +205,24 @@
   </div>
 </div>
 
+<!-- チャットボット -->
+<button class="chat-fab" id="chat-fab" title="PCについて質問する">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+</button>
+<div class="chat-window" id="chat-window" style="display:none;">
+  <div class="chat-header">
+    <span>🖥️ PC相談 — AI Assistant</span>
+    <button class="chat-close" id="chat-close">✕</button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg bot">こんにちは！PCパーツや自作PC、構成についてなんでも聞いてください。</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chat-input" placeholder="質問を入力...">
+    <button class="chat-send" id="chat-send">送信</button>
+  </div>
+</div>
+
 <footer>
   <p>本サービスはAmazonアソシエイトプログラムに参加しています。<br>
   リンクからご購入いただくと、運営者に紹介料が発生することがあります。<br>
@@ -204,7 +240,7 @@ const BTO_DATA = [
     price: 89800,
     specs: { CPU: 'Core i5-14400F', GPU: 'RTX 4060', RAM: '16GB DDR4', SSD: '500GB NVMe' },
     point: 'エントリーゲーミングの定番。フルHD 144fps対応。',
-    makerUrl: 'https://www.frontier-direct.jp/direct/g/g127790/',
+    makerUrl: 'https://www.frontier-direct.jp/direct/',
     amazonUrl: 'https://www.amazon.co.jp/s?k=FRONTIER+ゲーミングPC+RTX4060&tag=' + AMAZON_TAG,
     kakakuUrl: 'https://kakaku.com/search_results/FRONTIER+ゲーミングPC+RTX4060/'
   },
@@ -214,7 +250,7 @@ const BTO_DATA = [
     price: 94800,
     specs: { CPU: 'Ryzen 5 7600', GPU: 'RTX 4060', RAM: '16GB DDR5', SSD: '1TB NVMe' },
     point: 'DDR5搭載でコスパ優秀。ストレージ1TB。',
-    makerUrl: 'https://www.pc-koubou.jp/products/detail.php?product_id=1000146',
+    makerUrl: 'https://www.pc-koubou.jp/pc/gaming.php',
     amazonUrl: 'https://www.amazon.co.jp/s?k=iiyama+LEVEL+ゲーミングPC+RTX4060&tag=' + AMAZON_TAG,
     kakakuUrl: 'https://kakaku.com/search_results/iiyama+LEVEL+ゲーミングPC+RTX4060/'
   },
@@ -225,7 +261,7 @@ const BTO_DATA = [
     price: 149800,
     specs: { CPU: 'Ryzen 7 9800X3D', GPU: 'RTX 5070', RAM: '32GB DDR5', SSD: '1TB NVMe Gen4' },
     point: 'ゲーミング最強CPU×最新GPUの組み合わせ。WQHD 144fps以上が狙える。',
-    makerUrl: 'https://www.mouse-jp.co.jp/store/g/ggtune/',
+    makerUrl: 'https://www.mouse-jp.co.jp/store/brand/g-tune/',
     amazonUrl: 'https://www.amazon.co.jp/s?k=マウスコンピューター+G-Tune+ゲーミングPC&tag=' + AMAZON_TAG,
     kakakuUrl: 'https://kakaku.com/search_results/G-Tune+ゲーミングPC+RTX5070/'
   },
@@ -235,7 +271,7 @@ const BTO_DATA = [
     price: 164800,
     specs: { CPU: 'Ryzen 7 9700X', GPU: 'RTX 5070', RAM: '32GB DDR5', SSD: '1TB NVMe Gen4' },
     point: 'ドスパラの定番ゲーミング機。サポートが手厚く初心者にも安心。',
-    makerUrl: 'https://www.dospara.co.jp/pc/galleria/',
+    makerUrl: 'https://www.dospara.co.jp/TC30',
     amazonUrl: 'https://www.amazon.co.jp/s?k=GALLERIA+ゲーミングPC+RTX5070&tag=' + AMAZON_TAG,
     kakakuUrl: 'https://kakaku.com/search_results/GALLERIA+ゲーミングPC+RTX5070/'
   },
@@ -246,7 +282,7 @@ const BTO_DATA = [
     price: 239800,
     specs: { CPU: 'Ryzen 7 9800X3D', GPU: 'RTX 5070 Ti', RAM: '32GB DDR5', SSD: '2TB NVMe Gen4' },
     point: 'WQHD・4K高フレームレートを狙う本格ゲーマー向け。',
-    makerUrl: 'https://www.mouse-jp.co.jp/store/g/ggtune/',
+    makerUrl: 'https://www.mouse-jp.co.jp/store/brand/g-tune/',
     amazonUrl: 'https://www.amazon.co.jp/s?k=マウスコンピューター+G-Tune+RTX5070Ti&tag=' + AMAZON_TAG,
     kakakuUrl: 'https://kakaku.com/search_results/G-Tune+RTX5070Ti/'
   },
@@ -256,7 +292,7 @@ const BTO_DATA = [
     price: 258000,
     specs: { CPU: 'Ryzen 9 9950X', GPU: 'RTX 5080', RAM: '32GB DDR5', SSD: '2TB NVMe Gen4' },
     point: '4K最高設定でも余裕。配信・録画もしながら遊べる最上位モデル。',
-    makerUrl: 'https://www.dospara.co.jp/pc/galleria/',
+    makerUrl: 'https://www.dospara.co.jp/TC30',
     amazonUrl: 'https://www.amazon.co.jp/s?k=GALLERIA+ゲーミングPC+RTX5080&tag=' + AMAZON_TAG,
     kakakuUrl: 'https://kakaku.com/search_results/GALLERIA+ゲーミングPC+RTX5080/'
   },
@@ -267,7 +303,7 @@ const BTO_DATA = [
     price: 389800,
     specs: { CPU: 'Core Ultra 9 285K', GPU: 'RTX 5090', RAM: '64GB DDR5', SSD: '2TB NVMe Gen5' },
     point: '現行最強クラス。4K/144fps・8K対応。妥協なしのフラッグシップ。',
-    makerUrl: 'https://jp.ext.hp.com/gaming/personal/omen_45l_desktop/',
+    makerUrl: 'https://jp.ext.hp.com/gaming/personal/',
     amazonUrl: 'https://www.amazon.co.jp/s?k=OMEN+HP+デスクトップ+RTX5090&tag=' + AMAZON_TAG,
     kakakuUrl: 'https://kakaku.com/search_results/OMEN+デスクトップ+RTX5090/'
   },
@@ -278,7 +314,7 @@ const BTO_DATA = [
     price: 84800,
     specs: { CPU: 'Ryzen 5 7600', GPU: 'RTX 4060', RAM: '32GB DDR5', SSD: '1TB NVMe' },
     point: 'フルHD動画編集に十分なスペック。メモリ32GBでマルチタスクも快適。',
-    makerUrl: 'https://www.mouse-jp.co.jp/store/g/gdt/',
+    makerUrl: 'https://www.mouse-jp.co.jp/',
     amazonUrl: 'https://www.amazon.co.jp/s?k=マウスコンピューター+クリエイターPC+RTX4060&tag=' + AMAZON_TAG,
     kakakuUrl: 'https://kakaku.com/search_results/マウスコンピューター+クリエイターPC+RTX4060/'
   },
@@ -289,7 +325,7 @@ const BTO_DATA = [
     price: 178000,
     specs: { CPU: 'Core Ultra 7 265K', GPU: 'RTX 5070', RAM: '64GB DDR5', SSD: '2TB NVMe Gen4' },
     point: '4K動画編集・3DCGに対応。VRAMたっぷりでAI生成も快適。',
-    makerUrl: 'https://www.mouse-jp.co.jp/store/g/gdaiv/',
+    makerUrl: 'https://www.mouse-jp.co.jp/store/brand/daiv/',
     amazonUrl: 'https://www.amazon.co.jp/s?k=マウスコンピューター+DAIV+クリエイターPC&tag=' + AMAZON_TAG,
     kakakuUrl: 'https://kakaku.com/search_results/DAIV+クリエイターPC+RTX5070/'
   },
@@ -299,7 +335,7 @@ const BTO_DATA = [
     price: 168000,
     specs: { CPU: 'Core Ultra 7 265K', GPU: 'RTX 5070', RAM: '32GB DDR5', SSD: '2TB NVMe Gen4' },
     point: '映像制作・イラスト制作向け。コスパ重視のクリエイター機。',
-    makerUrl: 'https://www.frontier-direct.jp/direct/g/g127791/',
+    makerUrl: 'https://www.frontier-direct.jp/direct/',
     amazonUrl: 'https://www.amazon.co.jp/s?k=FRONTIER+クリエイターPC+RTX5070&tag=' + AMAZON_TAG,
     kakakuUrl: 'https://kakaku.com/search_results/FRONTIER+クリエイターPC+RTX5070/'
   },
@@ -310,7 +346,7 @@ const BTO_DATA = [
     price: 278000,
     specs: { CPU: 'Core Ultra 9 285K', GPU: 'RTX 5080', RAM: '64GB DDR5', SSD: '4TB NVMe Gen4' },
     point: '8K動画・高解像度3DCG・AI画像生成まで対応するプロ向けモデル。',
-    makerUrl: 'https://www.mouse-jp.co.jp/store/g/gdaiv/',
+    makerUrl: 'https://www.mouse-jp.co.jp/store/brand/daiv/',
     amazonUrl: 'https://www.amazon.co.jp/s?k=マウスコンピューター+DAIV+RTX5080&tag=' + AMAZON_TAG,
     kakakuUrl: 'https://kakaku.com/search_results/DAIV+RTX5080/'
   },
@@ -321,7 +357,7 @@ const BTO_DATA = [
     price: 420000,
     specs: { CPU: 'Core Ultra 9 285K', GPU: 'RTX 5090', RAM: '128GB DDR5', SSD: '4TB NVMe Gen5' },
     point: '映像制作会社・3DCGスタジオ向けフラッグシップ。あらゆる作業を高速処理。',
-    makerUrl: 'https://www.frontier-direct.jp/',
+    makerUrl: 'https://www.frontier-direct.jp/direct/',
     amazonUrl: 'https://www.amazon.co.jp/s?k=FRONTIER+クリエイター+RTX5090&tag=' + AMAZON_TAG,
     kakakuUrl: 'https://kakaku.com/search_results/FRONTIER+クリエイター+RTX5090/'
   },
@@ -397,6 +433,65 @@ document.querySelectorAll('.chip[data-filter]').forEach(chip => {
 });
 
 renderCards();
+
+// チャットボット
+(function() {
+  const fab = document.getElementById('chat-fab');
+  const win = document.getElementById('chat-window');
+  const msgs = document.getElementById('chat-messages');
+  const input = document.getElementById('chat-input');
+  let history = [];
+
+  fab.addEventListener('click', () => {
+    const open = win.style.display !== 'none';
+    win.style.display = open ? 'none' : 'flex';
+    win.style.flexDirection = 'column';
+    if (!open) input.focus();
+  });
+  document.getElementById('chat-close').addEventListener('click', () => { win.style.display = 'none'; });
+
+  function addMsg(text, role) {
+    const d = document.createElement('div');
+    d.className = 'msg ' + role;
+    d.textContent = text;
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+    return d;
+  }
+
+  async function send() {
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    addMsg(text, 'user');
+    history.push({ role: 'user', content: text });
+    const thinking = addMsg('考え中...', 'thinking-msg');
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: 'あなたは2026年6月現在の日本市場に精通したPCパーツ・自作PCの専門家です。質問に日本語で簡潔に3〜5文で答えてください。RTX 50シリーズ・Ryzen 9000シリーズ・DDR5高騰などの最新状況を踏まえて回答してください。',
+          messages: history,
+          max_tokens: 600
+        })
+      });
+      const data = await res.json();
+      const reply = data.choices?.[0]?.message?.content
+        || data.content?.map(b => b.text||'').join('')
+        || 'エラーが発生しました。';
+      history.push({ role: 'assistant', content: reply });
+      thinking.remove();
+      addMsg(reply, 'bot');
+    } catch(e) {
+      thinking.remove();
+      addMsg('エラーが発生しました。', 'bot');
+    }
+  }
+
+  document.getElementById('chat-send').addEventListener('click', send);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+})();
 </script>
 </body>
 </html>

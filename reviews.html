@@ -122,6 +122,24 @@
 
     
     
+
+    /* チャットボット共通 */
+    .chat-fab { position: fixed; bottom: 28px; right: 28px; width: 48px; height: 48px; border-radius: 50%; background: var(--black); color: var(--white); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 300; transition: transform 0.15s, background 0.15s; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .chat-fab:hover { transform: scale(1.08); background: var(--gray-700); }
+    .chat-window { position: fixed; bottom: 88px; right: 28px; width: 340px; max-height: 460px; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); display: flex; flex-direction: column; z-index: 300; overflow: hidden; }
+    .chat-header { padding: 14px 18px; background: var(--black); color: var(--white); font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+    .chat-close { background: rgba(255,255,255,0.15); border: none; color: var(--white); font-size: 14px; cursor: pointer; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+    .chat-close:hover { background: rgba(255,255,255,0.3); }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+    .msg { max-width: 86%; padding: 9px 13px; border-radius: 14px; font-size: 12px; line-height: 1.65; }
+    .msg.bot { background: var(--gray-100); color: var(--black); align-self: flex-start; border-bottom-left-radius: 4px; }
+    .msg.user { background: var(--black); color: var(--white); align-self: flex-end; border-bottom-right-radius: 4px; }
+    .msg.thinking-msg { background: var(--gray-100); color: var(--gray-400); align-self: flex-start; font-style: italic; }
+    .chat-input-row { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--gray-200); background: var(--white); }
+    .chat-input { flex: 1; padding: 8px 13px; border: 1px solid var(--gray-200); border-radius: 20px; font-size: 12px; outline: none; font-family: inherit; background: var(--gray-50); color: var(--black); transition: border-color 0.15s; }
+    .chat-input:focus { border-color: var(--black); background: var(--white); }
+    .chat-send { padding: 8px 14px; background: var(--black); color: var(--white); border: none; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 600; font-family: inherit; transition: background 0.15s; }
+    .chat-send:hover { background: var(--gray-700); }
   </style>
 </head>
 <body>
@@ -173,6 +191,24 @@
 </div>
 
 <div class="reviews-wrap" id="reviews-wrap"></div>
+
+<!-- チャットボット -->
+<button class="chat-fab" id="chat-fab" title="PCについて質問する">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+</button>
+<div class="chat-window" id="chat-window" style="display:none;">
+  <div class="chat-header">
+    <span>🖥️ PC相談 — AI Assistant</span>
+    <button class="chat-close" id="chat-close">✕</button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg bot">こんにちは！PCパーツや自作PC、構成についてなんでも聞いてください。</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chat-input" placeholder="質問を入力...">
+    <button class="chat-send" id="chat-send">送信</button>
+  </div>
+</div>
 
 <footer>
   <p><a href="legal.html">利用規約</a> &nbsp;·&nbsp; <a href="legal.html">プライバシーポリシー</a></p>
@@ -435,6 +471,65 @@ document.getElementById('submit-btn').addEventListener('click', () => {
 });
 
 renderReviews();
+
+// チャットボット
+(function() {
+  const fab = document.getElementById('chat-fab');
+  const win = document.getElementById('chat-window');
+  const msgs = document.getElementById('chat-messages');
+  const input = document.getElementById('chat-input');
+  let history = [];
+
+  fab.addEventListener('click', () => {
+    const open = win.style.display !== 'none';
+    win.style.display = open ? 'none' : 'flex';
+    win.style.flexDirection = 'column';
+    if (!open) input.focus();
+  });
+  document.getElementById('chat-close').addEventListener('click', () => { win.style.display = 'none'; });
+
+  function addMsg(text, role) {
+    const d = document.createElement('div');
+    d.className = 'msg ' + role;
+    d.textContent = text;
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+    return d;
+  }
+
+  async function send() {
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    addMsg(text, 'user');
+    history.push({ role: 'user', content: text });
+    const thinking = addMsg('考え中...', 'thinking-msg');
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: 'あなたは2026年6月現在の日本市場に精通したPCパーツ・自作PCの専門家です。質問に日本語で簡潔に3〜5文で答えてください。RTX 50シリーズ・Ryzen 9000シリーズ・DDR5高騰などの最新状況を踏まえて回答してください。',
+          messages: history,
+          max_tokens: 600
+        })
+      });
+      const data = await res.json();
+      const reply = data.choices?.[0]?.message?.content
+        || data.content?.map(b => b.text||'').join('')
+        || 'エラーが発生しました。';
+      history.push({ role: 'assistant', content: reply });
+      thinking.remove();
+      addMsg(reply, 'bot');
+    } catch(e) {
+      thinking.remove();
+      addMsg('エラーが発生しました。', 'bot');
+    }
+  }
+
+  document.getElementById('chat-send').addEventListener('click', send);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+})();
 </script>
 </body>
 </html>
