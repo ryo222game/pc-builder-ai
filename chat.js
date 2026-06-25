@@ -16,43 +16,53 @@ export default async function handler(req, res) {
     if (system) openaiMessages.push({ role: 'system', content: system });
     openaiMessages.push(...messages);
 
-    // Web検索が必要な場合はgpt-4o-search-previewを使用
-    const model = use_web_search ? 'gpt-4o-search-preview' : 'gpt-4o';
-
     const body = {
-      model,
+      model: 'gpt-4o',
       max_tokens: max_tokens || 1200,
       messages: openaiMessages,
     };
 
-    // Web検索ツールを追加
+    // Web検索が要求された場合はgpt-4o-search-previewを試みる
     if (use_web_search) {
-      body.web_search_options = {
-        search_context_size: 'high'
-      };
+      try {
+        const searchRes = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+          body: JSON.stringify({
+            model: 'gpt-4o-search-preview',
+            max_tokens: max_tokens || 1200,
+            messages: openaiMessages,
+            web_search_options: { search_context_size: 'medium' }
+          })
+        });
+        if (searchRes.ok) {
+          const searchData = await searchRes.json();
+          const text = searchData.choices?.[0]?.message?.content || '';
+          if (text) {
+            return res.status(200).json({ content: [{ type: 'text', text }] });
+          }
+        }
+      } catch(searchErr) {
+        console.warn('Web search model failed, falling back to gpt-4o:', searchErr);
+      }
     }
 
+    // 通常のgpt-4oで処理
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
       body: JSON.stringify(body)
     });
 
     const data = await response.json();
-
     if (!response.ok) {
       console.error('OpenAI error:', data);
       return res.status(response.status).json({ error: data.error?.message || 'OpenAI error' });
     }
 
     const text = data.choices?.[0]?.message?.content || '';
-    const converted = {
-      content: [{ type: 'text', text }]
-    };
-    return res.status(200).json(converted);
+    return res.status(200).json({ content: [{ type: 'text', text }] });
+
   } catch (error) {
     console.error('handler error:', error);
     return res.status(500).json({ error: 'サーバーエラーが発生しました' });
