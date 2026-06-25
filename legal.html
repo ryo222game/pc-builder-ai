@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>利用規約・プライバシーポリシー — PC Builder AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .legal-wrap { max-width: 760px; margin: 0 auto; padding: 2rem 2rem 6rem; }
+    .tab-wrap { display: flex; gap: 4px; background: var(--gray-100); border-radius: var(--r-lg); padding: 4px; margin-bottom: 2rem; }
+    .tab { flex: 1; padding: 10px; border-radius: var(--r-md); font-size: 13px; font-weight: 500; cursor: pointer; background: none; border: none; color: var(--gray-400); font-family: inherit; transition: all 0.15s; text-align: center; }
+    .tab.active { background: var(--white); color: var(--black); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .legal-section { display: none; }
+    .legal-section.visible { display: block; }
+    .legal-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 2rem; }
+    .legal-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--black); margin-bottom: 6px; }
+    .legal-date { font-size: 12px; color: var(--gray-400); margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--gray-200); }
+    .legal-h2 { font-size: 15px; font-weight: 600; color: var(--black); margin: 1.75rem 0 0.75rem; padding-left: 10px; border-left: 3px solid var(--black); }
+    .legal-p { font-size: 13px; color: var(--gray-500); line-height: 1.9; margin-bottom: 0.75rem; }
+    .legal-ul { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+    .legal-ul li { font-size: 13px; color: var(--gray-500); line-height: 1.9; margin-bottom: 4px; }
+    .legal-contact { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--r-md); padding: 14px 16px; font-size: 13px; color: var(--gray-500); line-height: 1.8; margin-top: 1rem; }
+    @media (max-width: 520px) { .legal-wrap { padding-left: 1.25rem; padding-right: 1.25rem; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="home.html">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg>
+    </div>
+    <span class="logo-text">PC Builder <span>AI</span></span>
+  </a>
+  <div class="header-right">
+    <span class="badge-free">FREE PLAN</span>
+    <a class="btn-upgrade" href="https://buy.stripe.com/7sY4gyaxT7gEacWfFicQU00" target="_blank" rel="noopener">月額500円で無制限</a>
+  </div>
+</header>
+
+<nav>
+  <a class="nav-item" href="index.html">構成提案</a>
+  <a class="nav-item" href="guide.html">購入ガイド</a>
+  <a class="nav-item" href="bto.html">BTO</a>
+  <a class="nav-item" href="build.html">自作PC</a>
+  <a class="nav-item" href="peripherals.html">周辺機器</a>
+  <a class="nav-item" href="price.html">価格チェック</a>
+  <a class="nav-item" href="news.html">ニュース</a>
+  <a class="nav-item" href="reviews.html">レビュー</a>
+  <a class="nav-item" href="board.html">掲示板</a>
+</nav>
+
+<div class="legal-wrap">
+  <div class="tab-wrap">
+    <button class="tab active" onclick="switchTab('terms', this)">利用規約</button>
+    <button class="tab" onclick="switchTab('privacy', this)">プライバシーポリシー</button>
+  </div>
+
+  <!-- 利用規約 -->
+  <div class="legal-section visible" id="tab-terms">
+    <div class="legal-card">
+      <div class="legal-title">利用規約</div>
+      <div class="legal-date">制定日：2026年6月25日　最終更新：2026年6月25日</div>
+
+      <div class="legal-h2">第1条（適用）</div>
+      <p class="legal-p">本利用規約（以下「本規約」）は、PC Builder AI（以下「当サービス」）が提供するウェブサービスの利用条件を定めるものです。ユーザーの皆様には、本規約に同意いただいた上でサービスをご利用いただきます。</p>
+
+      <div class="legal-h2">第2条（利用登録）</div>
+      <p class="legal-p">当サービスの無料機能はユーザー登録なしでご利用いただけます。有料プランのご利用には、Stripeによる決済が必要です。登録情報に虚偽・誤りがあった場合、当サービスはサービス提供を停止できるものとします。</p>
+
+      <div class="legal-h2">第3条（有料プラン）</div>
+      <p class="legal-p">有料プランは月額500円（税込）のサブスクリプション制です。</p>
+      <ul class="legal-ul">
+        <li>料金は毎月自動で請求されます</li>
+        <li>解約はStripeのカスタマーポータルからいつでも行えます</li>
+        <li>解約後は当月末までサービスをご利用いただけます</li>
+        <li>原則として返金には応じておりません</li>
+      </ul>
+
+      <div class="legal-h2">第4条（禁止事項）</div>
+      <p class="legal-p">ユーザーは以下の行為を行ってはなりません。</p>
+      <ul class="legal-ul">
+        <li>法令または公序良俗に違反する行為</li>
+        <li>当サービスのサーバーへの過度な負荷をかける行為</li>
+        <li>当サービスのコンテンツを無断で転載・複製する行為</li>
+        <li>他のユーザーまたは第三者を誹謗中傷する行為</li>
+        <li>スパム・広告目的での掲示板・レビュー機能の利用</li>
+        <li>その他、当サービスが不適切と判断する行為</li>
+      </ul>
+
+      <div class="legal-h2">第5条（コンテンツの免責）</div>
+      <p class="legal-p">当サービスが提供するPC構成提案・価格情報・ニュースはAIによる自動生成または推定値です。実際の価格・性能・在庫状況とは異なる場合があります。購入前に必ずAmazonや各メーカーの公式サイトで最新情報をご確認ください。</p>
+      <p class="legal-p">当サービスの情報を参考にした購入行為により生じた損害について、当サービスは一切の責任を負いません。</p>
+
+      <div class="legal-h2">第6条（Amazonアソシエイト）</div>
+      <p class="legal-p">当サービスはAmazon.co.jpアソシエイトプログラムに参加しています。当サービス経由でAmazonの商品をご購入いただいた場合、当サービスに紹介料が支払われることがあります。ユーザーの購入価格には影響しません。</p>
+
+      <div class="legal-h2">第7条（サービスの変更・停止）</div>
+      <p class="legal-p">当サービスは、ユーザーへの事前通知なくサービス内容の変更・追加・停止を行う場合があります。これによりユーザーに生じた損害について、当サービスは責任を負いません。</p>
+
+      <div class="legal-h2">第8条（利用規約の変更）</div>
+      <p class="legal-p">当サービスは必要に応じて本規約を変更することがあります。変更後の規約はサービス上に掲示した時点から効力を生じます。</p>
+
+      <div class="legal-h2">第9条（準拠法・管轄裁判所）</div>
+      <p class="legal-p">本規約の解釈にあたっては日本法を準拠法とします。当サービスとユーザーの間で生じた紛争については、当サービス運営者の所在地を管轄する裁判所を専属的合意管轄とします。</div>
+
+      <div class="legal-contact">
+        <strong>お問い合わせ</strong><br>
+        利用規約に関するお問い合わせは、掲示板またはサービス内のチャット機能よりご連絡ください。
+      </div>
+    </div>
+  </div>
+
+  <!-- プライバシーポリシー -->
+  <div class="legal-section" id="tab-privacy">
+    <div class="legal-card">
+      <div class="legal-title">プライバシーポリシー</div>
+      <div class="legal-date">制定日：2026年6月25日　最終更新：2026年6月25日</div>
+
+      <div class="legal-h2">第1条（取得する情報）</div>
+      <p class="legal-p">当サービスは以下の情報を取得します。</p>
+      <ul class="legal-ul">
+        <li><strong>決済情報：</strong>有料プランご利用時にStripeが取得するメールアドレス・カード情報（当サービスはカード番号を保持しません）</li>
+        <li><strong>利用情報：</strong>ブラウザのlocalStorageに保存される利用回数・生成したニュース記事（端末内のみ・当サービスのサーバーには送信されません）</li>
+        <li><strong>アクセスログ：</strong>Vercelのサーバーログ（IPアドレス・アクセス日時・ブラウザ情報等）</li>
+        <li><strong>入力内容：</strong>構成提案・価格チェックに入力した予算・用途・製品名（AIへの問い合わせに使用後、当サービスには保存されません）</li>
+      </ul>
+
+      <div class="legal-h2">第2条（情報の利用目的）</div>
+      <ul class="legal-ul">
+        <li>サービスの提供・改善のため</li>
+        <li>有料プランの管理・請求のため</li>
+        <li>不正利用の防止のため</li>
+        <li>サービスの利用状況の把握のため</li>
+      </ul>
+
+      <div class="legal-h2">第3条（第三者提供）</div>
+      <p class="legal-p">当サービスは、以下の場合を除きユーザーの個人情報を第三者に提供しません。</p>
+      <ul class="legal-ul">
+        <li>ユーザーの同意がある場合</li>
+        <li>法令に基づく場合</li>
+        <li>生命・身体・財産の保護に必要な場合</li>
+      </ul>
+
+      <div class="legal-h2">第4条（外部サービスの利用）</div>
+      <p class="legal-p">当サービスは以下の外部サービスを利用しています。</p>
+      <ul class="legal-ul">
+        <li><strong>OpenAI API：</strong>AI構成提案・チャット機能に使用。入力内容がOpenAIのサーバーに送信されます</li>
+        <li><strong>Stripe：</strong>決済処理に使用。Stripeのプライバシーポリシーが適用されます</li>
+        <li><strong>Vercel：</strong>ホスティングに使用。アクセスログが記録されます</li>
+        <li><strong>Amazon：</strong>アソシエイトリンク経由の購入情報がAmazonに共有されます</li>
+      </ul>
+
+      <div class="legal-h2">第5条（Cookieについて）</div>
+      <p class="legal-p">当サービスはCookieおよびlocalStorageを使用して、利用回数・ニュース履歴などをお使いの端末に保存します。これらはサービスの機能提供に必要なものです。ブラウザの設定から削除できます。</p>
+
+      <div class="legal-h2">第6条（情報の管理）</div>
+      <p class="legal-p">当サービスはユーザーの個人情報を適切に管理し、不正アクセス・紛失・改ざん・漏えいの防止に努めます。ただし、インターネット上での完全な安全性を保証するものではありません。</p>
+
+      <div class="legal-h2">第7条（ユーザーの権利）</div>
+      <p class="legal-p">ユーザーは以下の権利を有します。</p>
+      <ul class="legal-ul">
+        <li>保有する個人情報の開示・訂正・削除の請求</li>
+        <li>有料プランの解約（Stripeカスタマーポータルから）</li>
+        <li>localStorageの削除（ブラウザの設定から）</li>
+      </ul>
+
+      <div class="legal-h2">第8条（プライバシーポリシーの変更）</div>
+      <p class="legal-p">当サービスは必要に応じてプライバシーポリシーを変更することがあります。重要な変更がある場合はサービス上でお知らせします。</p>
+
+      <div class="legal-contact">
+        <strong>お問い合わせ</strong><br>
+        個人情報の取り扱いに関するお問い合わせは、掲示板またはサービス内のチャット機能よりご連絡ください。
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p><a href="legal.html">利用規約</a> &nbsp;·&nbsp; <a href="legal.html#privacy">プライバシーポリシー</a></p>
+</footer>
+
+<script>
+function switchTab(id, el) {
+  document.querySelectorAll('.legal-section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('visible');
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>
