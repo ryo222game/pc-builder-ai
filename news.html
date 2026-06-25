@@ -4,136 +4,63 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PCニュース — PC Builder AI</title>
-  <meta name="description" content="PCパーツ・BTOパソコン・周辺機器の最新ニュースを毎日更新。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL3F4HVTTF"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-GL3F4HVTTF');</script>
   <style>
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
-    
-    
-
     .hero { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 2rem; text-align: center; }
     .hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 1rem; }
     .hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 24px; height: 1px; background: var(--gray-300); }
     .hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 0.75rem; }
     .hero h1 em { font-style: normal; color: var(--gray-400); }
     .hero p { font-size: 15px; color: var(--gray-500); line-height: 1.7; }
-
-    /* フィルター */
-    .filter-wrap { max-width: 900px; margin: 0 auto; padding: 0 2rem 1.5rem; }
-    .filter-inner { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-    .filter-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); white-space: nowrap; }
-    
-    
-    
-    
-
-    /* 生成ボタン */
-    .generate-wrap { max-width: 900px; margin: 0 auto; padding: 0 2rem 1.5rem; display: flex; gap: 10px; align-items: center; }
-    .generate-btn { display: flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: var(--r-md); background: var(--black); color: var(--white); border: none; cursor: pointer; font-size: 13px; font-weight: 600; font-family: inherit; transition: background 0.15s; }
-    .generate-btn:hover { background: var(--gray-700); }
-    .generate-btn:disabled { background: var(--gray-300); cursor: not-allowed; }
-    .generate-note { font-size: 12px; color: var(--gray-400); }
-
-    /* ニュースグリッド */
-    .news-wrap { max-width: 900px; margin: 0 auto; padding: 0 2rem 4rem; }
-    .news-grid { display: flex; flex-direction: column; gap: 1px; }
-
-    /* 記事カード */
-    .news-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); overflow: hidden; transition: border-color 0.15s; margin-bottom: 10px; }
-    .news-card:hover { border-color: var(--gray-300); }
+    .controls { max-width: 900px; margin: 0 auto; padding: 0 2rem 1.5rem; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: space-between; }
+    .gen-btn { display: flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: var(--r-md); background: var(--black); color: var(--white); border: none; cursor: pointer; font-size: 13px; font-weight: 600; font-family: inherit; transition: background 0.15s; }
+    .gen-btn:hover { background: var(--gray-700); }
+    .gen-btn:disabled { background: var(--gray-300); cursor: not-allowed; }
+    .admin-btn { font-size: 12px; padding: 8px 14px; border-radius: var(--r-sm); border: 1px solid var(--gray-200); background: var(--white); cursor: pointer; color: var(--gray-500); font-family: inherit; }
+    .admin-btn.on { background: var(--black); color: var(--white); border-color: var(--black); }
+    .news-wrap { max-width: 900px; margin: 0 auto; padding: 0 2rem 5rem; display: flex; flex-direction: column; gap: 10px; }
+    .news-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); overflow: hidden; transition: border-color 0.15s; }
     .news-card.featured { border-color: var(--black); }
-    .news-card-inner { padding: 1.5rem; }
+    .news-inner { padding: 1.25rem 1.5rem; }
     .news-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
     .news-cat { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; }
     .cat-parts { background: var(--black); color: var(--white); }
     .cat-bto { background: var(--gray-100); color: var(--gray-700); }
     .cat-peripheral { background: #dbeafe; color: #1e40af; }
     .cat-sale { background: #dcfce7; color: #166534; }
+    .news-new { font-size: 10px; font-weight: 700; color: #ef4444; }
     .news-date { font-size: 11px; color: var(--gray-400); }
-    .news-new { font-size: 10px; font-weight: 700; color: #ef4444; letter-spacing: 0.05em; }
-    .news-title { font-size: 16px; font-weight: 600; color: var(--black); line-height: 1.4; margin-bottom: 8px; letter-spacing: -0.01em; }
-    .news-body { font-size: 13px; color: var(--gray-500); line-height: 1.8; margin-bottom: 14px; }
-    .news-
+    .news-title { font-size: 16px; font-weight: 600; color: var(--black); margin-bottom: 8px; line-height: 1.4; }
+    .news-preview { font-size: 13px; color: var(--gray-500); line-height: 1.8; }
+    .news-full { font-size: 13px; color: var(--gray-500); line-height: 1.8; display: none; }
+    .news-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; margin-top: 10px; border-top: 1px solid var(--gray-200); flex-wrap: wrap; gap: 8px; }
     .news-source { font-size: 11px; color: var(--gray-400); }
-    .news-read-btn { font-size: 12px; font-weight: 500; color: var(--black); background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 4px; font-family: inherit; padding: 0; }
-
-    /* ローディング */
-    .loading-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.5rem; margin-bottom: 10px; }
+    .news-actions { display: flex; gap: 8px; align-items: center; }
+    .expand-btn { font-size: 12px; font-weight: 500; color: var(--black); background: none; border: none; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: var(--r-sm); border: 1px solid var(--gray-200); }
+    .expand-btn:hover { background: var(--gray-50); }
+    .del-btn { font-size: 11px; padding: 4px 8px; border-radius: var(--r-sm); border: 1px solid #fecdd3; background: #fff1f2; cursor: pointer; color: #dc2626; font-family: inherit; display: none; }
+    .premium-box { background: var(--gray-50); border-top: 1px solid var(--gray-200); padding: 1rem 1.5rem; text-align: center; }
+    .premium-box p { font-size: 13px; color: var(--gray-500); margin-bottom: 8px; }
+    .premium-box a { display: inline-block; padding: 8px 20px; background: var(--black); color: var(--white); border-radius: var(--r-md); font-size: 13px; font-weight: 600; text-decoration: none; }
+    .loading-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.25rem 1.5rem; }
     .loading-line { height: 12px; background: var(--gray-100); border-radius: 6px; margin-bottom: 8px; animation: shimmer 1.5s infinite; }
-    .loading-line.short { width: 40%; }
-    .loading-line.mid { width: 70%; }
+    .loading-line.s { width: 35%; }
+    .loading-line.m { width: 65%; }
     @keyframes shimmer { 0%,100%{opacity:0.5;} 50%{opacity:1;} }
-
-    /* 有料コンテンツのぼかし */
-    .premium-blur { position: relative; }
-    .premium-blur .news-body { filter: blur(4px); user-select: none; }
-    .premium-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem 1.5rem; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.95) 40%); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 1.25rem; min-height: 80px; }
-    .premium-btn { font-size: 12px; font-weight: 600; padding: 7px 18px; border-radius: var(--r-sm); background: var(--black); color: var(--white); border: none; cursor: pointer; }
-
-    
-    
-
-    @media (max-width: 520px) {
-      header { padding: 0 1.25rem; }
-      .hero, .filter-wrap, .news-wrap, .generate-wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
-      .hero h1 { font-size: 24px; }
-      nav { padding: 0 1rem; }
-    }
-
-    
-    
-
-    /* チャットボット共通 */
-    .chat-fab { position: fixed; bottom: 28px; right: 28px; width: 48px; height: 48px; border-radius: 50%; background: var(--black); color: var(--white); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 300; transition: transform 0.15s, background 0.15s; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-    .chat-fab:hover { transform: scale(1.08); background: var(--gray-700); }
-    .chat-window { position: fixed; bottom: 88px; right: 28px; width: 340px; max-height: 460px; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); display: flex; flex-direction: column; z-index: 300; overflow: hidden; }
-    .chat-header { padding: 14px 18px; background: var(--black); color: var(--white); font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
-    .chat-close { background: rgba(255,255,255,0.15); border: none; color: var(--white); font-size: 14px; cursor: pointer; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
-    .chat-close:hover { background: rgba(255,255,255,0.3); }
-    .chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
-    .msg { max-width: 86%; padding: 9px 13px; border-radius: 14px; font-size: 12px; line-height: 1.65; }
-    .msg.bot { background: var(--gray-100); color: var(--black); align-self: flex-start; border-bottom-left-radius: 4px; }
-    .msg.user { background: var(--black); color: var(--white); align-self: flex-end; border-bottom-right-radius: 4px; }
-    .msg.thinking-msg { background: var(--gray-100); color: var(--gray-400); align-self: flex-start; font-style: italic; }
-    .chat-input-row { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--gray-200); background: var(--white); }
-    .chat-input { flex: 1; padding: 8px 13px; border: 1px solid var(--gray-200); border-radius: 20px; font-size: 12px; outline: none; font-family: inherit; background: var(--gray-50); color: var(--black); transition: border-color 0.15s; }
-    .chat-input:focus { border-color: var(--black); background: var(--white); }
-    .chat-send { padding: 8px 14px; background: var(--black); color: var(--white); border: none; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 600; font-family: inherit; transition: background 0.15s; }
-    .chat-send:hover { background: var(--gray-700); }
+    .empty-box { text-align: center; padding: 4rem 2rem; color: var(--gray-400); }
+    .empty-box p { font-size: 14px; margin-top: 12px; }
+    @media (max-width: 520px) { header { padding: 0 1.25rem; } nav { padding: 0 1rem; } .hero, .controls, .news-wrap { padding-left: 1.25rem; padding-right: 1.25rem; } .hero h1 { font-size: 24px; } }
   </style>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL3F4HVTTF"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-GL3F4HVTTF');
-  </script>
 </head>
 <body>
 
 <header>
   <a class="logo" href="home.html">
-    <div class="logo-mark">
-      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg>
-    </div>
+    <div class="logo-mark"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg></div>
     <span class="logo-text">PC Builder <span>AI</span></span>
   </a>
   <div class="header-right">
@@ -157,59 +84,21 @@
 <div class="hero">
   <div class="hero-eyebrow">PC News — Daily Update</div>
   <h1>PCパーツ・周辺機器の<br><em>最新ニュースを毎日更新。</em></h1>
-  <p>パーツ・BTO・モニター・マウス・キーボードなど<br>PC関連の最新情報をAIが厳選してお届けします。</p>
+  <p>ボタンを押すとAIが最新のPC関連ニュースを生成します。<br>無料で5件、月額プランで全件読み放題。</p>
 </div>
 
-<!-- フィルター -->
-<div class="filter-wrap">
-  <div class="filter-inner">
-    <div class="filter-label">カテゴリ</div>
-    <div class="chips" id="chips-cat">
-      <div class="chip active" data-val="all">すべて</div>
-      <div class="chip" data-val="parts">パーツ</div>
-      <div class="chip" data-val="bto">BTO</div>
-      <div class="chip" data-val="peripheral">周辺機器</div>
-      <div class="chip" data-val="sale">セール情報</div>
-    </div>
-  </div>
-</div>
-
-<!-- 生成ボタン -->
-<div class="generate-wrap">
-  <button class="generate-btn" id="generate-btn">
+<div class="controls">
+  <button class="gen-btn" id="gen-btn">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-    最新ニュースをWeb検索して生成
+    今日のニュースを生成
   </button>
-  <span class="generate-note">AIがリアルタイムでPC関連ニュースを検索・要約します</span>
-</div>
-<div style="max-width:900px;margin:0 auto;padding:0 2rem 0.5rem;">
-  <button id="admin-toggle" style="font-size:12px;padding:6px 14px;border-radius:6px;border:1px solid var(--gray-200);background:var(--white);cursor:pointer;color:var(--gray-500);font-family:inherit;">🔐 管理者モード</button>
+  <button class="admin-btn" id="admin-btn">🔐 管理者モード</button>
 </div>
 
-<!-- ニュース一覧 -->
-<div class="news-wrap">
-  <div id="news-list"></div>
-  <div class="empty" id="empty" style="display:none;">
-    <div class="empty-icon">📰</div>
-    <div style="font-size:14px;color:var(--gray-400);">「今日のニュースを生成」を押して最新情報を取得してください</div>
-  </div>
-</div>
-
-<!-- チャットボット -->
-<button class="chat-fab" id="chat-fab" title="PCについて質問する">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-</button>
-<div class="chat-window" id="chat-window" style="display:none;">
-  <div class="chat-header">
-    <span>🖥️ PC相談 — AI Assistant</span>
-    <button class="chat-close" id="chat-close">✕</button>
-  </div>
-  <div class="chat-messages" id="chat-messages">
-    <div class="msg bot">こんにちは！PCパーツや自作PC、構成についてなんでも聞いてください。</div>
-  </div>
-  <div class="chat-input-row">
-    <input type="text" class="chat-input" id="chat-input" placeholder="質問を入力...">
-    <button class="chat-send" id="chat-send">送信</button>
+<div class="news-wrap" id="news-wrap">
+  <div class="empty-box">
+    <div style="font-size:36px;">📰</div>
+    <p>「今日のニュースを生成」を押してください</p>
   </div>
 </div>
 
@@ -218,271 +107,208 @@
   <a href="legal.html">利用規約</a> &nbsp;·&nbsp; <a href="legal.html">プライバシーポリシー</a></p>
 </footer>
 
+<button class="chat-fab" id="chat-fab">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+</button>
+<div class="chat-window" id="chat-window" style="display:none;">
+  <div class="chat-header"><span>PC相談 — AI Assistant</span><button class="chat-close" id="chat-close">✕</button></div>
+  <div class="chat-messages" id="chat-messages"><div class="msg bot">こんにちは！PCについてなんでも聞いてください。</div></div>
+  <div class="chat-input-row"><input type="text" class="chat-input" id="chat-input" placeholder="質問を入力..."><button class="chat-send" id="chat-send">送信</button></div>
+</div>
+
 <script>
-const CAT_LABEL = { parts: 'パーツ', bto: 'BTO', peripheral: '周辺機器', sale: 'セール' };
-const CAT_CLASS = { parts: 'cat-parts', bto: 'cat-bto', peripheral: 'cat-peripheral', sale: 'cat-sale' };
-const FREE_LIMIT = 5; // 無料で5件読める
+const FREE_LIMIT = 5;
+const ADMIN_PW = 'pcbuilder2026';
+const STRIPE_URL = 'https://buy.stripe.com/7sY4gyaxT7gEacWfFicQU00';
 
-let allNews = JSON.parse(localStorage.getItem('pc_news') || '[]');
-let filterCat = 'all';
-let expandedIds = new Set();
+let newsList = JSON.parse(localStorage.getItem('pc_news2') || '[]');
 let isAdmin = false;
-const ADMIN_PASSWORD = 'pcbuilder2026';
 
-function today() {
-  return new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+function todayStr() {
+  return new Date().toLocaleDateString('ja-JP', {year:'numeric',month:'long',day:'numeric'});
 }
 
-function isToday(dateStr) {
-  return dateStr === today();
+function catClass(cat) {
+  return {parts:'cat-parts',bto:'cat-bto',peripheral:'cat-peripheral',sale:'cat-sale'}[cat] || 'cat-parts';
+}
+function catLabel(cat) {
+  return {parts:'パーツ',bto:'BTO',peripheral:'周辺機器',sale:'セール'}[cat] || cat;
 }
 
-function deleteNews(id) {
-  if (!confirm('このニュースを削除しますか？')) return;
-  allNews = allNews.filter(n => n.id !== id);
-  localStorage.setItem('pc_news', JSON.stringify(allNews));
-  renderNews();
-}
-
-function toggleExpand(id) {
-  if (expandedIds.has(id)) { expandedIds.delete(id); } else { expandedIds.add(id); }
-  renderNews();
-}
-
-function renderNews() {
-  const list = document.getElementById('news-list');
-  const empty = document.getElementById('empty');
-  const filtered = filterCat === 'all' ? allNews : allNews.filter(n => n.cat === filterCat);
-
-  if (filtered.length === 0) {
-    list.innerHTML = '';
-    empty.style.display = 'block';
+function renderAll() {
+  const wrap = document.getElementById('news-wrap');
+  if (newsList.length === 0) {
+    wrap.innerHTML = '<div class="empty-box"><div style="font-size:36px;">📰</div><p>「今日のニュースを生成」を押してください</p></div>';
     return;
   }
 
-  empty.style.display = 'none';
-  list.innerHTML = filtered.map((n, i) => {
-    const isPremium = !isAdmin && i >= FREE_LIMIT;
-    const isExpanded = expandedIds.has(n.id);
-    const preview = n.body.length > 80 ? n.body.slice(0, 80) + '...' : n.body;
-    return `
-    <div class="news-card ${i === 0 ? 'featured' : ''}" id="news-${n.id}">
-      <div class="news-card-inner ${isPremium ? 'premium-blur' : ''}">
-        <div class="news-meta">
-          <span class="news-cat ${CAT_CLASS[n.cat]}">${CAT_LABEL[n.cat]}</span>
-          ${isToday(n.date) ? '<span class="news-new">NEW</span>' : ''}
-          <span class="news-date">${n.date}</span>
-        </div>
-        <div class="news-title">${n.title}</div>
-        <div class="news-body">${isExpanded ? n.body : preview}</div>
-        ${!isPremium ? `
-        <div class="news-footer" style="display:flex;justify-content:space-between;align-items:center;">
-          <span class="news-source">📰 ${n.source || 'PC Builder AI 編集部'}</span>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <button class="news-read-btn" onclick="toggleExpand('${n.id}')">${isExpanded ? '▲ 閉じる' : '▼ 続きを読む'}</button>
-            ${isAdmin ? `<button onclick="deleteNews('${n.id}')" style="font-size:11px;padding:3px 8px;border-radius:4px;border:1px solid #fecdd3;background:#fff1f2;color:#dc2626;cursor:pointer;">🗑️ 削除</button>` : ''}
-          </div>
-        </div>` : ''}
-        ${isPremium ? `<div class="premium-overlay"><button class="premium-btn" onclick="window.open('https://buy.stripe.com/7sY4gyaxT7gEacWfFicQU00')">続きを読む — 月額500円</button></div>` : ''}
-      </div>
-    </div>`;
+  // 管理者は全件、無料は5件、以降は有料プロモ
+  wrap.innerHTML = newsList.map(function(n, i) {
+    const premium = !isAdmin && i >= FREE_LIMIT;
+    const featured = i === 0 ? 'featured' : '';
+    const isNew = n.date === todayStr() ? '<span class="news-new">NEW</span>' : '';
+
+    if (premium) {
+      return '<div class="news-card ' + featured + '">' +
+        '<div class="news-inner">' +
+          '<div class="news-meta"><span class="news-cat ' + catClass(n.cat) + '">' + catLabel(n.cat) + '</span>' + isNew + '<span class="news-date">' + n.date + '</span></div>' +
+          '<div class="news-title">' + n.title + '</div>' +
+          '<div class="news-preview" style="filter:blur(3px);user-select:none;">' + n.body + '</div>' +
+        '</div>' +
+        '<div class="premium-box"><p>続きは月額プランで読み放題</p><a href="' + STRIPE_URL + '" target="_blank" rel="noopener">月額500円で無制限</a></div>' +
+      '</div>';
+    }
+
+    return '<div class="news-card ' + featured + '" data-id="' + n.id + '">' +
+      '<div class="news-inner">' +
+        '<div class="news-meta"><span class="news-cat ' + catClass(n.cat) + '">' + catLabel(n.cat) + '</span>' + isNew + '<span class="news-date">' + n.date + '</span></div>' +
+        '<div class="news-title">' + n.title + '</div>' +
+        '<div class="news-preview">' + n.body.slice(0, 80) + (n.body.length > 80 ? '...' : '') + '</div>' +
+        '<div class="news-full">' + n.body + '</div>' +
+        '<div class="news-footer">' +
+          '<span class="news-source">📰 ' + (n.source || 'PC Builder AI') + '</span>' +
+          '<div class="news-actions">' +
+            '<button class="expand-btn" onclick="toggleNews(this)">▼ 続きを読む</button>' +
+            '<button class="del-btn" onclick="delNews(\'' + n.id + '\')">🗑️ 削除</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
   }).join('');
+
+  // 管理者モードのとき削除ボタンを表示
+  if (isAdmin) {
+    document.querySelectorAll('.del-btn').forEach(function(btn) {
+      btn.style.display = 'block';
+    });
+  }
 }
 
-document.querySelectorAll('.chip[data-val]').forEach(chip => {
-  chip.addEventListener('click', function() {
-    filterCat = this.dataset.val;
-    document.querySelectorAll('.chip[data-val]').forEach(c => c.classList.remove('active'));
-    this.classList.add('active');
-    renderNews();
-  });
-});
+function toggleNews(btn) {
+  const card = btn.closest('.news-card');
+  const preview = card.querySelector('.news-preview');
+  const full = card.querySelector('.news-full');
+  const isOpen = full.style.display === 'block';
+  if (isOpen) {
+    full.style.display = 'none';
+    preview.style.display = 'block';
+    btn.textContent = '▼ 続きを読む';
+  } else {
+    full.style.display = 'block';
+    preview.style.display = 'none';
+    btn.textContent = '▲ 閉じる';
+  }
+}
 
-document.getElementById('generate-btn').addEventListener('click', async () => {
-  const btn = document.getElementById('generate-btn');
+function delNews(id) {
+  if (!confirm('このニュースを削除しますか？')) return;
+  newsList = newsList.filter(function(n) { return n.id !== id; });
+  localStorage.setItem('pc_news2', JSON.stringify(newsList));
+  renderAll();
+}
+
+// 生成ボタン
+document.getElementById('gen-btn').addEventListener('click', async function() {
+  const btn = document.getElementById('gen-btn');
   btn.disabled = true;
-  btn.innerHTML = '<span>🌐 最新ニュースを検索中...</span>';
+  btn.innerHTML = '🔄 生成中...';
 
-  const list = document.getElementById('news-list');
-  document.getElementById('empty').style.display = 'none';
-  list.innerHTML = [1,2,3].map(() => `
-    <div class="loading-card">
-      <div class="loading-line short"></div>
-      <div class="loading-line mid"></div>
-      <div class="loading-line"></div>
-      <div class="loading-line mid"></div>
-    </div>`).join('');
+  const wrap = document.getElementById('news-wrap');
+  wrap.innerHTML = [1,2,3,4,5].map(function() {
+    return '<div class="loading-card"><div class="loading-line s"></div><div class="loading-line m"></div><div class="loading-line"></div><div class="loading-line m"></div></div>';
+  }).join('');
 
   const now = new Date();
-  const month = now.getMonth() + 1;
-  const year = now.getFullYear();
-  const dateStr2 = `${year}年${month}月`;
+  const ym = now.getFullYear() + '年' + (now.getMonth()+1) + '月';
 
-  const prompt = `あなたはPC・テクノロジー専門のニュースライターです。
-Webを検索して${dateStr2}の日本のPC市場における実際の最新ニュースを5件まとめてください。
-
-検索キーワード例：
-- "RTX 5070 価格 ${dateStr2}"
-- "PCパーツ 新製品 ${dateStr2}"
-- "BTOパソコン ${dateStr2}"
-- "ゲーミングPC セール ${dateStr2}"
-- "DDR5 メモリ 価格 ${dateStr2}"
-
-以下のカテゴリからバランスよく選んでください：
-- parts（CPU・GPU・メモリ・SSDなどのパーツ情報）
-- bto（BTOパソコンの新モデル・キャンペーン情報）
-- peripheral（モニター・マウス・キーボード・ヘッドセットなどの周辺機器）
-- sale（Amazonや各ショップのセール・値下げ情報）
-
-重要：
-- 実際にWeb検索で見つけた事実のみを使うこと
-- 古い情報・不確かな情報は含めないこと
-- 架空の情報は絶対に書かないこと
-
-必ず以下のJSON形式のみで返答してください（他のテキストは一切不要）：
-[
-  {
-    "cat": "parts",
-    "title": "ニュースタイトル（30文字以内）",
-    "body": "ニュース本文（150〜200文字。実際の製品名・価格・情報源を含めること）",
-    "source": "情報源のサイト名（例：価格.com、4Gamer、ITmedia等）"
-  }
-]`;
+  const prompt = 'あなたはPC・テクノロジー専門のニュースライターです。' + ym + 'の日本のPC市場における最新ニュースを5件生成してください。\n\n以下のカテゴリからバランスよく選んでください：\n- parts（CPU・GPU・メモリ・SSDなどのパーツ情報）\n- bto（BTOパソコンの新モデル・キャンペーン情報）\n- peripheral（モニター・マウス・キーボード・ヘッドセットなどの周辺機器）\n- sale（Amazonや各ショップのセール・値下げ情報）\n\nRTX 50シリーズ・Ryzen 9000シリーズ・DDR5高騰・円安など2026年の市場状況を反映させてください。\n\n必ず以下のJSON形式のみで返答してください（```や説明文は不要）：\n[\n  {\n    "cat": "parts",\n    "title": "タイトル（30文字以内）",\n    "body": "本文（150〜200文字）",\n    "source": "情報源"\n  }\n]';
 
   try {
-    // まずWeb検索付きモデルを試し、失敗したら通常モデルにフォールバック
-    let raw = '';
-    try {
-      const res1 = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          use_web_search: true,
-          max_tokens: 2000,
-          messages: [{ role: 'user', content: prompt }]
-        })
-      });
-      const data1 = await res1.json();
-      raw = data1.choices?.[0]?.message?.content || data1.content?.map(b => b.text||'').join('') || '';
-    } catch(e1) {
-      console.warn('web search failed, falling back to gpt-4o:', e1);
-    }
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        max_tokens: 2000,
+        messages: [{role: 'user', content: prompt}]
+      })
+    });
 
-    // フォールバック：通常のgpt-4oで生成
-    if (!raw) {
-      const res2 = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          max_tokens: 2000,
-          messages: [{ role: 'user', content: prompt }]
-        })
-      });
-      const data2 = await res2.json();
-      raw = data2.choices?.[0]?.message?.content || data2.content?.map(b => b.text||'').join('') || '';
-    }
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const raw = (data.content && data.content[0] && data.content[0].text) || '';
+    if (!raw) throw new Error('empty');
 
-    if (!raw) throw new Error('empty response');
-    const parsed = JSON.parse(raw.replace(/```json|```/g, '').trim());
+    const clean = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+    const parsed = JSON.parse(clean);
 
-    const dateStr = today();
-    const newItems = parsed.map((n, i) => ({ ...n, id: String(Date.now() + i), date: dateStr }));
-    allNews = [...newItems, ...allNews].slice(0, 30);
-    localStorage.setItem('pc_news', JSON.stringify(allNews));
-    renderNews();
+    const date = todayStr();
+    const items = parsed.map(function(n, i) {
+      return {id: String(Date.now() + i), cat: n.cat, title: n.title, body: n.body, source: n.source, date: date};
+    });
+
+    newsList = items.concat(newsList).slice(0, 30);
+    localStorage.setItem('pc_news2', JSON.stringify(newsList));
+    renderAll();
+
   } catch(e) {
     console.error('news error:', e);
-    list.innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div><div style="font-size:14px;">生成に失敗しました。もう一度お試しください。</div></div>';
+    wrap.innerHTML = '<div class="empty-box"><div style="font-size:36px;">⚠️</div><p>生成に失敗しました。しばらく待ってから再度お試しください。</p></div>';
   }
 
   btn.disabled = false;
-  btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>最新ニュースをWeb検索して生成`;
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>今日のニュースを生成';
 });
 
-// 管理者モード
-document.getElementById('admin-toggle').addEventListener('click', () => {
+// 管理者ボタン
+document.getElementById('admin-btn').addEventListener('click', function() {
   if (isAdmin) {
     isAdmin = false;
-    document.getElementById('admin-toggle').textContent = '🔐 管理者モード';
-    document.getElementById('admin-toggle').style.background = 'var(--white)';
-    document.getElementById('admin-toggle').style.color = 'var(--gray-500)';
+    this.textContent = '🔐 管理者モード';
+    this.classList.remove('on');
   } else {
-    const pw = prompt('管理者パスワードを入力してください:');
-    if (pw === ADMIN_PASSWORD) {
+    const pw = prompt('管理者パスワードを入力:');
+    if (pw === ADMIN_PW) {
       isAdmin = true;
-      document.getElementById('admin-toggle').textContent = '✅ 管理者モード中';
-      document.getElementById('admin-toggle').style.background = 'var(--black)';
-      document.getElementById('admin-toggle').style.color = 'var(--white)';
+      this.textContent = '✅ 管理者モード中';
+      this.classList.add('on');
     } else if (pw !== null) {
-      alert('パスワードが違います。');
+      alert('パスワードが違います');
     }
   }
-  renderNews();
+  renderAll();
 });
 
-// 初期表示
-if (allNews.length > 0) {
-  renderNews();
-} else {
-  document.getElementById('empty').style.display = 'block';
-}
-
-// チャットボット
+// チャット
 (function() {
   const fab = document.getElementById('chat-fab');
   const win = document.getElementById('chat-window');
   const msgs = document.getElementById('chat-messages');
   const input = document.getElementById('chat-input');
-  let history = [];
-
-  fab.addEventListener('click', () => {
+  let h = [];
+  fab.addEventListener('click', function() {
     const open = win.style.display !== 'none';
     win.style.display = open ? 'none' : 'flex';
     win.style.flexDirection = 'column';
     if (!open) input.focus();
   });
-  document.getElementById('chat-close').addEventListener('click', () => { win.style.display = 'none'; });
-
-  function addMsg(text, role) {
-    const d = document.createElement('div');
-    d.className = 'msg ' + role;
-    d.textContent = text;
-    msgs.appendChild(d);
-    msgs.scrollTop = msgs.scrollHeight;
-    return d;
-  }
-
+  document.getElementById('chat-close').addEventListener('click', function() { win.style.display = 'none'; });
+  function addMsg(t, r) { const d = document.createElement('div'); d.className = 'msg ' + r; d.textContent = t; msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight; return d; }
   async function send() {
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = '';
-    addMsg(text, 'user');
-    history.push({ role: 'user', content: text });
-    const thinking = addMsg('考え中...', 'thinking-msg');
+    const t = input.value.trim(); if (!t) return;
+    input.value = ''; addMsg(t, 'user'); h.push({role:'user',content:t});
+    const th = addMsg('考え中...', 'thinking-msg');
     try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system: 'あなたは2026年6月現在の日本市場に精通したPCパーツ・自作PCの専門家です。質問に日本語で簡潔に3〜5文で答えてください。RTX 50シリーズ・Ryzen 9000シリーズ・DDR5高騰などの最新状況を踏まえて回答してください。',
-          messages: history,
-          max_tokens: 600
-        })
-      });
+      const res = await fetch('/api/chat', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:600,system:'あなたはPCパーツ・自作PCの専門家です。日本語で簡潔に答えてください。',messages:h})});
       const data = await res.json();
-      const reply = data.content?.map(b => b.text || '').join('') || 'エラーが発生しました。';
-      history.push({ role: 'assistant', content: reply });
-      thinking.remove();
-      addMsg(reply, 'bot');
-    } catch(e) {
-      thinking.remove();
-      addMsg('エラーが発生しました。', 'bot');
-    }
+      const reply = (data.content && data.content[0] && data.content[0].text) || 'エラーが発生しました。';
+      h.push({role:'assistant',content:reply}); th.remove(); addMsg(reply,'bot');
+    } catch(e) { th.remove(); addMsg('エラーが発生しました。','bot'); }
   }
-
   document.getElementById('chat-send').addEventListener('click', send);
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+  input.addEventListener('keydown', function(e) { if (e.key==='Enter') send(); });
 })();
+
+renderAll();
 </script>
 </body>
 </html>
