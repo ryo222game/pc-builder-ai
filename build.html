@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自作PCの作り方 — PC Builder AI</title>
+  <meta name="description" content="初心者向け自作PC組み立てガイド。パーツ選びから組み立て・OSインストールまで手順を丁寧に解説。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0a0a0a; --white: #ffffff;
+      --gray-50: #fafafa; --gray-100: #f4f4f5; --gray-200: #e4e4e7;
+      --gray-300: #d1d1d6; --gray-400: #6b6b72; --gray-500: #4a4a52;
+      --gray-700: #3f3f46;
+      --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
+    }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: var(--gray-50); color: var(--black); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+    header { background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--gray-200); height: 58px; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; position: sticky; top: 0; z-index: 200; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--black); }
+    .logo-mark { width: 30px; height: 30px; background: var(--black); border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; }
+    .logo-mark svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 1.8; }
+    .logo-text { font-size: 14px; font-weight: 600; letter-spacing: -0.02em; }
+    .logo-text span { color: var(--gray-400); font-weight: 400; }
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .badge-free { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 20px; background: var(--gray-100); color: var(--gray-500); border: 1px solid var(--gray-200); }
+    .btn-upgrade { font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: var(--r-sm); background: var(--black); color: var(--white); border: none; cursor: pointer; text-decoration: none; }
+
+    nav { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 0 2rem; display: flex; overflow-x: auto; }
+    .nav-item { font-size: 13px; font-weight: 500; padding: 14px 16px; color: var(--gray-400); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; }
+    .nav-item:hover { color: var(--black); }
+    .nav-item.active { color: var(--black); border-bottom-color: var(--black); }
+
+    .hero { max-width: 760px; margin: 0 auto; padding: 3rem 2rem 2rem; text-align: center; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 1rem; }
+    .hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 24px; height: 1px; background: var(--gray-300); }
+    .hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 0.75rem; }
+    .hero h1 em { font-style: normal; color: var(--gray-400); }
+    .hero p { font-size: 15px; color: var(--gray-500); line-height: 1.7; }
+
+    /* 進捗バー */
+    .progress-wrap { max-width: 760px; margin: 0 auto; padding: 0 2rem 2rem; }
+    .progress-inner { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.25rem 1.5rem; }
+    .progress-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 14px; }
+    .steps-row { display: flex; align-items: center; gap: 0; overflow-x: auto; padding-bottom: 4px; }
+    .step-dot-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0; cursor: pointer; }
+    .step-dot { width: 32px; height: 32px; border-radius: 50%; background: var(--gray-100); border: 2px solid var(--gray-200); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--gray-400); transition: all 0.2s; }
+    .step-dot.active { background: var(--black); border-color: var(--black); color: var(--white); }
+    .step-dot.done { background: var(--gray-700); border-color: var(--gray-700); color: var(--white); }
+    .step-label { font-size: 10px; color: var(--gray-400); white-space: nowrap; font-weight: 500; }
+    .step-label.active { color: var(--black); font-weight: 600; }
+    .step-line { flex: 1; height: 2px; background: var(--gray-200); min-width: 16px; margin-bottom: 22px; }
+    .step-line.done { background: var(--gray-700); }
+
+    /* コンテンツ */
+    .content-wrap { max-width: 760px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+    .step-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.75rem; margin-bottom: 12px; display: none; }
+    .step-card.visible { display: block; }
+    .step-header { display: flex; align-items: center; gap: 14px; margin-bottom: 1.25rem; }
+    .step-icon { width: 44px; height: 44px; border-radius: var(--r-md); background: var(--black); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .step-meta { flex: 1; }
+    .step-num-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 3px; }
+    .step-title { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; color: var(--black); line-height: 1.3; }
+    .step-time { font-size: 11px; color: var(--gray-400); background: var(--gray-100); padding: 3px 8px; border-radius: 20px; flex-shrink: 0; }
+
+    .step-body { font-size: 14px; color: var(--gray-500); line-height: 1.9; }
+    .step-body p { margin-bottom: 1rem; }
+
+    /* 手順リスト */
+    .procedure { display: flex; flex-direction: column; gap: 10px; margin: 1rem 0; }
+    .proc-item { display: flex; gap: 14px; padding: 14px 16px; background: var(--gray-50); border-radius: var(--r-lg); border: 1px solid var(--gray-200); }
+    .proc-num { width: 24px; height: 24px; border-radius: 50%; background: var(--black); color: var(--white); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .proc-text { font-size: 13px; color: var(--gray-500); line-height: 1.7; }
+    .proc-text strong { color: var(--black); display: block; margin-bottom: 3px; font-size: 13px; font-weight: 600; }
+
+    /* 警告ボックス */
+    .warn-box { background: #fff8e1; border: 1px solid #fde68a; border-radius: var(--r-md); padding: 12px 16px; margin: 1rem 0; font-size: 13px; color: #78350f; line-height: 1.7; }
+    .warn-box strong { display: block; margin-bottom: 4px; }
+    .point-box { background: var(--gray-50); border-left: 3px solid var(--black); border-radius: 0 var(--r-md) var(--r-md) 0; padding: 14px 16px; margin: 1rem 0; font-size: 13px; color: var(--gray-500); line-height: 1.7; }
+    .point-box strong { color: var(--black); }
+
+    /* パーツリスト */
+    .parts-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 1rem 0; }
+    .part-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--gray-50); border-radius: var(--r-md); border: 1px solid var(--gray-200); }
+    .part-icon { font-size: 18px; flex-shrink: 0; }
+    .part-name { font-size: 12px; font-weight: 600; color: var(--black); }
+    .part-desc { font-size: 11px; color: var(--gray-400); }
+
+    /* ツールリスト */
+    .tools-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 1rem 0; }
+    .tool-item { display: flex; align-items: center; gap: 6px; padding: 7px 12px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 20px; font-size: 12px; color: var(--gray-500); }
+
+    /* ナビゲーション */
+    .step-nav { display: flex; gap: 10px; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-200); }
+    .nav-btn { flex: 1; padding: 11px; border-radius: var(--r-md); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; border: 1px solid var(--gray-200); }
+    .nav-btn-prev { background: var(--white); color: var(--gray-500); }
+    .nav-btn-prev:hover { border-color: var(--black); color: var(--black); }
+    .nav-btn-next { background: var(--black); color: var(--white); border-color: var(--black); }
+    .nav-btn-next:hover { background: var(--gray-700); }
+    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* 完了画面 */
+    .complete-card { background: var(--black); border-radius: var(--r-xl); padding: 2rem; text-align: center; margin-bottom: 12px; display: none; }
+    .complete-card.visible { display: block; }
+    .complete-icon { font-size: 48px; margin-bottom: 1rem; }
+    .complete-title { font-size: 24px; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+    .complete-sub { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 1.5rem; }
+    .complete-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .complete-btn { padding: 10px 22px; border-radius: var(--r-md); font-size: 13px; font-weight: 600; text-decoration: none; }
+    .complete-btn-primary { background: var(--white); color: var(--black); }
+    .complete-btn-secondary { background: rgba(255,255,255,0.15); color: var(--white); border: 1px solid rgba(255,255,255,0.3); }
+
+    @media (max-width: 520px) {
+      header { padding: 0 1.25rem; }
+      nav { padding: 0 1rem; }
+      .hero, .progress-wrap, .content-wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .hero h1 { font-size: 24px; }
+      .parts-list { grid-template-columns: 1fr; }
+    }
+
+    footer { text-align: center; padding: 2rem; font-size: 11px; color: var(--gray-400); border-top: 1px solid var(--gray-200); line-height: 1.8; }
+    footer a { color: var(--gray-400); text-decoration: none; border-bottom: 1px solid var(--gray-200); }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="index.html">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg>
+    </div>
+    <span class="logo-text">PC Builder <span>AI</span></span>
+  </a>
+  <div class="header-right">
+    <span class="badge-free">FREE PLAN</span>
+    <a class="btn-upgrade" href="#">月額500円で無制限</a>
+  </div>
+</header>
+
+<nav>
+  <a class="nav-item" href="index.html">構成提案</a>
+  <a class="nav-item" href="bto.html">BTO</a>
+  <a class="nav-item" href="reviews.html">レビュー</a>
+  <a class="nav-item" href="news.html">ニュース</a>
+  <a class="nav-item" href="board.html">掲示板</a>
+  <a class="nav-item" href="guide.html">購入ガイド</a>
+  <a class="nav-item active" href="build.html">自作PC</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">DIY PC Build Guide</div>
+  <h1>初めての自作PC<br><em>ステップ別完全ガイド。</em></h1>
+  <p>パーツ選びから組み立て・OS設定まで<br>初心者でもわかるように丁寧に解説します。</p>
+</div>
+
+<!-- 進捗バー -->
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <div class="progress-title">進捗状況</div>
+    <div class="steps-row" id="steps-row"></div>
+  </div>
+</div>
+
+<div class="content-wrap">
+
+  <!-- Step 1: 準備するもの -->
+  <div class="step-card visible" id="card-0">
+    <div class="step-header">
+      <div class="step-icon">🛠️</div>
+      <div class="step-meta">
+        <div class="step-num-label">Step 01 / 07</div>
+        <div class="step-title">準備するもの・必要なパーツ</div>
+      </div>
+      <div class="step-time">⏱ 30分〜数日</div>
+    </div>
+    <div class="step-body">
+      <p>自作PCに必要なパーツを揃えましょう。まずはAIの構成提案ツールで自分の用途に合った構成を確認するのがおすすめです。</p>
+      <div class="parts-list">
+        <div class="part-item"><span class="part-icon">🔲</span><div><div class="part-name">CPU</div><div class="part-desc">処理能力の核</div></div></div>
+        <div class="part-item"><span class="part-icon">⚡</span><div><div class="part-name">マザーボード</div><div class="part-desc">全パーツを繋ぐ基板</div></div></div>
+        <div class="part-item"><span class="part-icon">💾</span><div><div class="part-name">メモリ（RAM）</div><div class="part-desc">作業スペース</div></div></div>
+        <div class="part-item"><span class="part-icon">📀</span><div><div class="part-name">SSD</div><div class="part-desc">データの保存場所</div></div></div>
+        <div class="part-item"><span class="part-icon">🖥️</span><div><div class="part-name">GPU（グラボ）</div><div class="part-desc">映像出力・ゲーム性能</div></div></div>
+        <div class="part-item"><span class="part-icon">🔌</span><div><div class="part-name">電源ユニット</div><div class="part-desc">各パーツに電力を供給</div></div></div>
+        <div class="part-item"><span class="part-icon">📦</span><div><div class="part-name">PCケース</div><div class="part-desc">全パーツを収納</div></div></div>
+        <div class="part-item"><span class="part-icon">❄️</span><div><div class="part-name">CPUクーラー</div><div class="part-desc">CPUの冷却</div></div></div>
+      </div>
+      <p style="margin-top:1rem;">また、組み立てに必要な工具も用意しておきましょう。</p>
+      <div class="tools-list">
+        <div class="tool-item">🔧 プラスドライバー（No.2）</div>
+        <div class="tool-item">📎 結束バンド（配線整理用）</div>
+        <div class="tool-item">🧤 静電気防止手袋（あると安心）</div>
+        <div class="tool-item">💡 懐中電灯・ヘッドライト</div>
+        <div class="tool-item">🪛 マグネット付きドライバー推奨</div>
+      </div>
+      <div class="warn-box" style="margin-top:1rem;">
+        <strong>⚠️ 静電気に注意！</strong>
+        PCパーツは静電気で壊れることがあります。組み立て前に金属製の壁や電源ユニットに触れて静電気を逃がしてから作業しましょう。
+      </div>
+      <div class="step-nav">
+        <button class="nav-btn nav-btn-prev" disabled>← 前へ</button>
+        <button class="nav-btn nav-btn-next" onclick="goStep(1)">次へ：CPUの取り付け →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: CPU -->
+  <div class="step-card" id="card-1">
+    <div class="step-header">
+      <div class="step-icon">🔲</div>
+      <div class="step-meta">
+        <div class="step-num-label">Step 02 / 07</div>
+        <div class="step-title">CPUをマザーボードに取り付ける</div>
+      </div>
+      <div class="step-time">⏱ 10〜15分</div>
+    </div>
+    <div class="step-body">
+      <p>CPUの取り付けは自作PCで最も繊細な作業のひとつです。ピンを曲げないよう慎重に作業しましょう。</p>
+      <div class="procedure">
+        <div class="proc-item"><div class="proc-num">1</div><div class="proc-text"><strong>マザーボードをダンボールの上に置く</strong>静電気防止のため、最初はマザーボードを箱の上に置いて作業します。ケースに入れるのは後でOK。</div></div>
+        <div class="proc-item"><div class="proc-num">2</div><div class="proc-text"><strong>CPUソケットのレバーを持ち上げる</strong>ソケット横のレバーを引き上げてカバーを開きます。ピンに触れないよう注意。</div></div>
+        <div class="proc-item"><div class="proc-num">3</div><div class="proc-text"><strong>CPUの向きを確認して置く</strong>CPU・ソケットにある三角マークを合わせます。絶対に力を入れず、そっと置くだけでOK。</div></div>
+        <div class="proc-item"><div class="proc-num">4</div><div class="proc-text"><strong>レバーを下げてロックする</strong>CPUが正しく置かれたらレバーをゆっくり下げてロック。少し硬く感じるのは正常です。</div></div>
+        <div class="proc-item"><div class="proc-num">5</div><div class="proc-text"><strong>CPUクーラーを取り付ける</strong>付属のグリスをCPU中央に米粒大で塗り、クーラーを上から乗せてネジで固定。対角線上に締めていく。</div></div>
+      </div>
+      <div class="warn-box">
+        <strong>⚠️ 最重要：ピンを絶対に曲げない</strong>
+        AMDのCPUはマザーボード側にピンがあります。斜めに挿すとピンが曲がって修復不能になる場合があります。向きを確認してから真っ直ぐ乗せましょう。
+      </div>
+      <div class="step-nav">
+        <button class="nav-btn nav-btn-prev" onclick="goStep(0)">← 前へ</button>
+        <button class="nav-btn nav-btn-next" onclick="goStep(2)">次へ：メモリの取り付け →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: メモリ -->
+  <div class="step-card" id="card-2">
+    <div class="step-header">
+      <div class="step-icon">💾</div>
+      <div class="step-meta">
+        <div class="step-num-label">Step 03 / 07</div>
+        <div class="step-title">メモリをスロットに挿す</div>
+      </div>
+      <div class="step-time">⏱ 5〜10分</div>
+    </div>
+    <div class="step-body">
+      <p>メモリの取り付けはシンプルですが、スロットの位置を間違えると性能が出ません。マザーボードの説明書でスロット位置を確認してから作業しましょう。</p>
+      <div class="procedure">
+        <div class="proc-item"><div class="proc-num">1</div><div class="proc-text"><strong>スロットの位置を確認する</strong>2枚挿しの場合、マザーボードの説明書に「A2・B2スロット」など推奨スロットが記載されています。必ず確認。</div></div>
+        <div class="proc-item"><div class="proc-num">2</div><div class="proc-text"><strong>スロットのクリップを開く</strong>スロット両端（または片端）のプラスチッククリップを外側に倒して開きます。</div></div>
+        <div class="proc-item"><div class="proc-num">3</div><div class="proc-text"><strong>メモリの向きを確認する</strong>メモリ基板の切り欠きとスロットの突起を合わせます。向きが違うと絶対に挿さりません。</div></div>
+        <div class="proc-item"><div class="proc-num">4</div><div class="proc-text"><strong>上から均等に力をかけて押し込む</strong>「パチン」とクリック音がするまでしっかり押し込みます。片側だけ浮いていると起動しません。</div></div>
+      </div>
+      <div class="point-box"><strong>デュアルチャンネルについて：</strong>メモリは2枚セットで同じスロット色に挿すことでデュアルチャンネル動作になり、性能が上がります。説明書の推奨スロットに挿しましょう。</div>
+      <div class="step-nav">
+        <button class="nav-btn nav-btn-prev" onclick="goStep(1)">← 前へ</button>
+        <button class="nav-btn nav-btn-next" onclick="goStep(3)">次へ：SSDの取り付け →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4: SSD -->
+  <div class="step-card" id="card-3">
+    <div class="step-header">
+      <div class="step-icon">📀</div>
+      <div class="step-meta">
+        <div class="step-num-label">Step 04 / 07</div>
+        <div class="step-title">SSDを取り付ける</div>
+      </div>
+      <div class="step-time">⏱ 5〜10分</div>
+    </div>
+    <div class="step-body">
+      <p>現在のPCはほとんどがM.2 NVMe SSDを使います。マザーボードに直接挿すだけでケーブル不要なのでとても簡単です。</p>
+      <div class="procedure">
+        <div class="proc-item"><div class="proc-num">1</div><div class="proc-text"><strong>M.2スロットの場所を確認する</strong>マザーボードの説明書でM.2スロットの位置を確認。複数ある場合はGen4対応スロットに挿すのが推奨。</div></div>
+        <div class="proc-item"><div class="proc-num">2</div><div class="proc-text"><strong>スロットのネジを外す</strong>M.2スロット端のネジを外して保持具を取り外します。小さいネジなので失くさないよう注意。</div></div>
+        <div class="proc-item"><div class="proc-num">3</div><div class="proc-text"><strong>SSDを斜め30度で挿す</strong>切り欠きを合わせて斜め30度の角度で挿し込みます。ゆっくり押し込むとスッと入ります。</div></div>
+        <div class="proc-item"><div class="proc-num">4</div><div class="proc-text"><strong>SSDを押さえてネジで固定する</strong>SSDを水平に押さえながらネジで固定。締めすぎると基板が割れるので軽く止まる程度でOK。</div></div>
+      </div>
+      <div class="point-box"><strong>ヒートシンクについて：</strong>マザーボードによってはM.2スロットにヒートシンクが付属しています。SSDを挿した後にヒートシンクを被せて固定しましょう。熱暴走を防げます。</div>
+      <div class="step-nav">
+        <button class="nav-btn nav-btn-prev" onclick="goStep(2)">← 前へ</button>
+        <button class="nav-btn nav-btn-next" onclick="goStep(4)">次へ：ケースに組み込む →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 5: ケース組み込み -->
+  <div class="step-card" id="card-4">
+    <div class="step-header">
+      <div class="step-icon">📦</div>
+      <div class="step-meta">
+        <div class="step-num-label">Step 05 / 07</div>
+        <div class="step-title">ケースに組み込む・配線する</div>
+      </div>
+      <div class="step-time">⏱ 30〜60分</div>
+    </div>
+    <div class="step-body">
+      <p>マザーボードをケースに取り付け、電源・GPUを組み込んで配線します。自作PCの中で最も時間がかかる工程です。焦らず丁寧に作業しましょう。</p>
+      <div class="procedure">
+        <div class="proc-item"><div class="proc-num">1</div><div class="proc-text"><strong>ケースにI/Oシールドを取り付ける</strong>マザーボード付属の金属板（I/Oシールド）をケース背面の穴にはめ込みます。向きに注意。</div></div>
+        <div class="proc-item"><div class="proc-num">2</div><div class="proc-text"><strong>スタンドオフを確認・取り付ける</strong>ケースにマザーボード固定用のスタンドオフ（金属製スペーサー）が付いているか確認。マザーボードのサイズに合わせて取り付け。</div></div>
+        <div class="proc-item"><div class="proc-num">3</div><div class="proc-text"><strong>マザーボードをケースに固定する</strong>I/Oシールドに合わせてマザーボードを置き、6〜9本のネジで対角線上に均等に締めます。</div></div>
+        <div class="proc-item"><div class="proc-num">4</div><div class="proc-text"><strong>電源ユニットを取り付ける</strong>ケース底部（または背部）に電源ユニットをネジで固定。ファンの向きはケースに合わせて確認。</div></div>
+        <div class="proc-item"><div class="proc-num">5</div><div class="proc-text"><strong>GPUをPCIeスロットに挿す</strong>マザーボードの最上段PCIe x16スロットのカバーを開けてGPUを挿し込み、ネジで固定。</div></div>
+        <div class="proc-item"><div class="proc-num">6</div><div class="proc-text"><strong>各コネクタを配線する</strong>CPU電源・マザーボード電源・GPU電源・ケースファン・フロントパネル（電源ボタン等）を接続。説明書のピン図を見ながら慎重に。</div></div>
+      </div>
+      <div class="warn-box">
+        <strong>⚠️ フロントパネルの配線は説明書必須</strong>
+        電源ボタン・リセットボタン・LEDの配線は説明書のピン図を見ないと接続できません。向きを間違えると起動しないので必ず確認。
+      </div>
+      <div class="step-nav">
+        <button class="nav-btn nav-btn-prev" onclick="goStep(3)">← 前へ</button>
+        <button class="nav-btn nav-btn-next" onclick="goStep(5)">次へ：動作確認 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 6: 動作確認 -->
+  <div class="step-card" id="card-5">
+    <div class="step-header">
+      <div class="step-icon">⚡</div>
+      <div class="step-meta">
+        <div class="step-num-label">Step 06 / 07</div>
+        <div class="step-title">初回起動・BIOS設定</div>
+      </div>
+      <div class="step-time">⏱ 15〜30分</div>
+    </div>
+    <div class="step-body">
+      <p>全パーツを取り付けたら電源を入れて動作確認をします。最初にBIOSという設定画面が開くので、正しく設定してからOSインストールに進みます。</p>
+      <div class="procedure">
+        <div class="proc-item"><div class="proc-num">1</div><div class="proc-text"><strong>モニターをGPUに接続する</strong>必ずGPUの映像出力端子（DisplayPort推奨）にモニターを繋ぎます。マザーボード側の映像端子は使わない。</div></div>
+        <div class="proc-item"><div class="proc-num">2</div><div class="proc-text"><strong>電源を入れてBIOSを起動する</strong>電源ボタンを押して起動。ロゴ画面でDeleteキーまたはF2キーを連打するとBIOS画面が開きます。</div></div>
+        <div class="proc-item"><div class="proc-num">3</div><div class="proc-text"><strong>メモリの認識を確認する</strong>BIOS画面でCPU・メモリ・SSDが正しく認識されているか確認。認識されていない場合は挿し直しを。</div></div>
+        <div class="proc-item"><div class="proc-num">4</div><div class="proc-text"><strong>XMPプロファイルを有効にする</strong>メモリの設定でXMP（またはEXPO）を有効にするとメモリが定格速度で動作します。有効にしないと遅くなります。</div></div>
+        <div class="proc-item"><div class="proc-num">5</div><div class="proc-text"><strong>設定を保存して再起動する</strong>F10キーで設定を保存して再起動。次のステップでOSをインストールします。</div></div>
+      </div>
+      <div class="point-box"><strong>起動しない場合のチェックリスト：</strong>①電源ケーブルが全部刺さっているか ②メモリが正しいスロットに入っているか ③GPUの補助電源が繋がっているか ④フロントパネルの電源ボタン配線は正しいか</div>
+      <div class="step-nav">
+        <button class="nav-btn nav-btn-prev" onclick="goStep(4)">← 前へ</button>
+        <button class="nav-btn nav-btn-next" onclick="goStep(6)">次へ：OSインストール →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 7: OS -->
+  <div class="step-card" id="card-6">
+    <div class="step-header">
+      <div class="step-icon">💿</div>
+      <div class="step-meta">
+        <div class="step-num-label">Step 07 / 07</div>
+        <div class="step-title">WindowsをインストールしてPC完成！</div>
+      </div>
+      <div class="step-time">⏱ 30〜60分</div>
+    </div>
+    <div class="step-body">
+      <p>最後にWindowsをインストールします。事前に別のPCでUSBインストールメディアを作成しておく必要があります。</p>
+      <div class="procedure">
+        <div class="proc-item"><div class="proc-num">1</div><div class="proc-text"><strong>USBインストールメディアを作成する（別PCで事前に）</strong>Microsoftの公式サイトから「メディア作成ツール」をダウンロードして8GB以上のUSBに書き込む。</div></div>
+        <div class="proc-item"><div class="proc-num">2</div><div class="proc-text"><strong>USBを挿して電源を入れる</strong>作成したUSBをPCに挿して電源ON。BIOSのブート順序でUSBを最優先にするか、F11キーでブートメニューを開いてUSBを選択。</div></div>
+        <div class="proc-item"><div class="proc-num">3</div><div class="proc-text"><strong>Windowsのインストール画面に従う</strong>言語・エディション選択→インストール先のSSD選択→インストール開始。15〜30分で完了します。</div></div>
+        <div class="proc-item"><div class="proc-num">4</div><div class="proc-text"><strong>初期設定を完了する</strong>Microsoftアカウントへのログイン、地域・言語設定などの初期設定を行います。</div></div>
+        <div class="proc-item"><div class="proc-num">5</div><div class="proc-text"><strong>ドライバーをインストールする</strong>GPU・マザーボードの最新ドライバーをメーカー公式サイトからダウンロードしてインストール。これで完成！</div></div>
+      </div>
+      <div class="point-box"><strong>Windowsのライセンスについて：</strong>Windows 11のライセンスは別途購入が必要です（約15,000〜20,000円）。Amazonや家電量販店で「パッケージ版」または「DSP版」を購入できます。</div>
+      <div class="step-nav">
+        <button class="nav-btn nav-btn-prev" onclick="goStep(5)">← 前へ</button>
+        <button class="nav-btn nav-btn-next" onclick="goComplete()">完成！🎉</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 完了 -->
+  <div class="complete-card" id="complete-card">
+    <div class="complete-icon">🎉</div>
+    <div class="complete-title">自作PC完成おめでとう！</div>
+    <div class="complete-sub">全ステップお疲れ様でした。<br>次はベンチマークを回して性能を確認してみましょう。<br>困ったことがあれば掲示板でみんなに相談できます。</div>
+    <div class="complete-buttons">
+      <a class="complete-btn complete-btn-primary" href="index.html">✨ 次の構成を考える</a>
+      <a class="complete-btn complete-btn-secondary" href="board.html">💬 掲示板で相談する</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p><a href="#">利用規約</a> &nbsp;·&nbsp; <a href="#">プライバシーポリシー</a></p>
+</footer>
+
+<script>
+const STEPS = ['準備', 'CPU', 'メモリ', 'SSD', 'ケース', '起動確認', 'OS設定'];
+let currentStep = 0;
+
+function renderProgress() {
+  const row = document.getElementById('steps-row');
+  row.innerHTML = '';
+  STEPS.forEach((label, i) => {
+    const dotWrap = document.createElement('div');
+    dotWrap.className = 'step-dot-wrap';
+    dotWrap.onclick = () => goStep(i);
+    const dot = document.createElement('div');
+    dot.className = 'step-dot' + (i === currentStep ? ' active' : i < currentStep ? ' done' : '');
+    dot.textContent = i < currentStep ? '✓' : i + 1;
+    const lbl = document.createElement('div');
+    lbl.className = 'step-label' + (i === currentStep ? ' active' : '');
+    lbl.textContent = label;
+    dotWrap.appendChild(dot);
+    dotWrap.appendChild(lbl);
+    row.appendChild(dotWrap);
+    if (i < STEPS.length - 1) {
+      const line = document.createElement('div');
+      line.className = 'step-line' + (i < currentStep ? ' done' : '');
+      row.appendChild(line);
+    }
+  });
+}
+
+function goStep(idx) {
+  document.getElementById('card-' + currentStep).classList.remove('visible');
+  document.getElementById('complete-card').classList.remove('visible');
+  currentStep = idx;
+  document.getElementById('card-' + currentStep).classList.add('visible');
+  renderProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goComplete() {
+  document.getElementById('card-' + currentStep).classList.remove('visible');
+  currentStep = STEPS.length;
+  document.getElementById('complete-card').classList.add('visible');
+  renderProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+renderProgress();
+</script>
+</body>
+</html>
