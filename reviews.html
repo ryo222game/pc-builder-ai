@@ -8,49 +8,23 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL3F4HVTTF"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-GL3F4HVTTF');</script>
   <style>
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
-    
-    
-
     .hero { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 2rem; text-align: center; }
     .hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 1rem; }
     .hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 24px; height: 1px; background: var(--gray-300); }
     .hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 0.75rem; }
     .hero h1 em { font-style: normal; color: var(--gray-400); }
     .hero p { font-size: 15px; color: var(--gray-500); line-height: 1.7; }
-
-    /* フィルター */
     .filter-wrap { max-width: 900px; margin: 0 auto; padding: 0 2rem 1.5rem; }
     .filter-inner { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: space-between; }
     .filter-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
     .filter-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); white-space: nowrap; }
-    
-    
-    
-    
     .write-btn { flex-shrink: 0; font-size: 12px; font-weight: 600; padding: 8px 16px; border-radius: var(--r-md); background: var(--black); color: var(--white); border: none; cursor: pointer; font-family: inherit; white-space: nowrap; }
-
-    /* レビュー一覧 */
     .reviews-wrap { max-width: 900px; margin: 0 auto; padding: 0 2rem 4rem; display: flex; flex-direction: column; gap: 10px; }
-
     .review-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.5rem; transition: border-color 0.15s; }
-    .review-card:hover { border-color: var(--gray-300); }
     .review-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 12px; }
     .review-product { flex: 1; }
     .review-cat { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; margin-bottom: 6px; display: inline-block; }
@@ -69,94 +43,56 @@
     .review-title { font-size: 14px; font-weight: 600; color: var(--black); margin-bottom: 8px; }
     .review-body { font-size: 13px; color: var(--gray-500); line-height: 1.8; margin-bottom: 14px; }
     .review-pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-    .pros, .cons { padding: 10px 12px; border-radius: var(--r-md); }
-    .pros { background: #f0fdf4; border: 1px solid #bbf7d0; }
-    .cons { background: #fff1f2; border: 1px solid #fecdd3; }
+    .pros { padding: 10px 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: var(--r-md); }
+    .cons { padding: 10px 12px; background: #fff1f2; border: 1px solid #fecdd3; border-radius: var(--r-md); }
     .pros-title { font-size: 10px; font-weight: 700; color: #166534; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 5px; }
     .cons-title { font-size: 10px; font-weight: 700; color: #9f1239; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 5px; }
     .pros ul, .cons ul { list-style: none; }
-    .pros li, .cons li { font-size: 12px; line-height: 1.7; }
     .pros li::before { content: '✓ '; color: #16a34a; font-weight: 600; }
     .cons li::before { content: '✗ '; color: #dc2626; font-weight: 600; }
-    .review-
+    .pros li, .cons li { font-size: 12px; line-height: 1.7; }
+    .review-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--gray-200); flex-wrap: wrap; gap: 8px; }
     .helpful { font-size: 12px; color: var(--gray-400); display: flex; align-items: center; gap: 8px; }
     .helpful-btn { font-size: 11px; padding: 4px 10px; border-radius: var(--r-sm); border: 1px solid var(--gray-200); background: var(--white); cursor: pointer; color: var(--gray-500); font-family: inherit; transition: all 0.15s; }
     .helpful-btn:hover { border-color: var(--black); color: var(--black); }
-    .amazon-btn { font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: var(--r-sm); background: var(--black); color: var(--white); text-decoration: none; transition: background 0.15s; }
-    .amazon-btn:hover { background: var(--gray-700); }
-
-    /* レビュー投稿モーダル */
+    .amazon-btn { font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: var(--r-sm); background: var(--black); color: var(--white); text-decoration: none; }
+    .admin-btns { display: flex; gap: 6px; }
+    .admin-edit-btn { font-size: 11px; padding: 4px 10px; border-radius: var(--r-sm); border: 1px solid var(--gray-200); background: var(--white); cursor: pointer; color: var(--gray-500); font-family: inherit; }
+    .admin-del-btn { font-size: 11px; padding: 4px 10px; border-radius: var(--r-sm); border: 1px solid #fecdd3; background: #fff1f2; cursor: pointer; color: #dc2626; font-family: inherit; }
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
     .modal { background: var(--white); border-radius: var(--r-xl); width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; }
-    .modal-
+    .modal-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--white); }
     .modal-title { font-size: 15px; font-weight: 600; }
     .modal-close { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--gray-400); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .modal-close:hover { background: var(--gray-100); color: var(--black); }
     .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
     .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-label { font-size: 12px; font-weight: 600; color: var(--gray-500); letter-spacing: 0.04em; }
-    .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--gray-200); border-radius: var(--r-md); font-size: 13px; color: var(--black); background: var(--gray-50); font-family: inherit; outline: none; transition: border-color 0.15s; }
+    .form-label { font-size: 12px; font-weight: 600; color: var(--gray-500); }
+    .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--gray-200); border-radius: var(--r-md); font-size: 13px; color: var(--black); background: var(--gray-50); font-family: inherit; outline: none; }
     .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--black); background: var(--white); }
     .form-textarea { min-height: 100px; resize: vertical; line-height: 1.6; }
     .star-select { display: flex; gap: 6px; }
-    .star-btn { font-size: 22px; cursor: pointer; opacity: 0.3; transition: opacity 0.15s, transform 0.1s; background: none; border: none; padding: 0; }
+    .star-btn { font-size: 22px; cursor: pointer; opacity: 0.3; transition: opacity 0.15s; background: none; border: none; padding: 0; }
     .star-btn.active { opacity: 1; }
-    .star-btn:hover { transform: scale(1.2); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .modal-
+    .modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--gray-200); display: flex; gap: 8px; justify-content: flex-end; }
     .cancel-btn { padding: 9px 18px; border-radius: var(--r-md); border: 1px solid var(--gray-200); background: var(--white); color: var(--gray-500); font-size: 13px; cursor: pointer; font-family: inherit; }
     .submit-btn { padding: 9px 24px; border-radius: var(--r-md); background: var(--black); color: var(--white); border: none; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
     .premium-notice { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--r-md); padding: 12px 14px; font-size: 12px; color: var(--gray-500); line-height: 1.6; text-align: center; }
     .premium-notice strong { color: var(--black); display: block; margin-bottom: 4px; font-size: 13px; }
-
-    
-
-    @media (max-width: 520px) {
-      header { padding: 0 1.25rem; }
-      .hero, .filter-wrap, .reviews-wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
-      .hero h1 { font-size: 24px; }
-      nav { padding: 0 1rem; }
-      .review-pros-cons { grid-template-columns: 1fr; }
-      .form-row { grid-template-columns: 1fr; }
-    }
-
-    
-    
-
-    /* チャットボット共通 */
-    .chat-fab { position: fixed; bottom: 28px; right: 28px; width: 48px; height: 48px; border-radius: 50%; background: var(--black); color: var(--white); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 300; transition: transform 0.15s, background 0.15s; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-    .chat-fab:hover { transform: scale(1.08); background: var(--gray-700); }
-    .chat-window { position: fixed; bottom: 88px; right: 28px; width: 340px; max-height: 460px; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); display: flex; flex-direction: column; z-index: 300; overflow: hidden; }
-    .chat-header { padding: 14px 18px; background: var(--black); color: var(--white); font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
-    .chat-close { background: rgba(255,255,255,0.15); border: none; color: var(--white); font-size: 14px; cursor: pointer; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
-    .chat-close:hover { background: rgba(255,255,255,0.3); }
-    .chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
-    .msg { max-width: 86%; padding: 9px 13px; border-radius: 14px; font-size: 12px; line-height: 1.65; }
-    .msg.bot { background: var(--gray-100); color: var(--black); align-self: flex-start; border-bottom-left-radius: 4px; }
-    .msg.user { background: var(--black); color: var(--white); align-self: flex-end; border-bottom-right-radius: 4px; }
-    .msg.thinking-msg { background: var(--gray-100); color: var(--gray-400); align-self: flex-start; font-style: italic; }
-    .chat-input-row { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--gray-200); background: var(--white); }
-    .chat-input { flex: 1; padding: 8px 13px; border: 1px solid var(--gray-200); border-radius: 20px; font-size: 12px; outline: none; font-family: inherit; background: var(--gray-50); color: var(--black); transition: border-color 0.15s; }
-    .chat-input:focus { border-color: var(--black); background: var(--white); }
-    .chat-send { padding: 8px 14px; background: var(--black); color: var(--white); border: none; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 600; font-family: inherit; transition: background 0.15s; }
-    .chat-send:hover { background: var(--gray-700); }
+    .admin-bar { max-width: 900px; margin: 0 auto; padding: 0 2rem 1rem; }
+    .admin-toggle { font-size: 12px; padding: 6px 14px; border-radius: var(--r-sm); border: 1px solid var(--gray-200); background: var(--white); cursor: pointer; color: var(--gray-500); font-family: inherit; }
+    .admin-toggle.active { background: var(--black); color: var(--white); border-color: var(--black); }
+    .empty-state { text-align: center; padding: 4rem 2rem; color: var(--gray-400); }
+    .empty-state-icon { font-size: 48px; margin-bottom: 1rem; }
+    .empty-state-text { font-size: 15px; margin-bottom: 6px; color: var(--gray-500); }
+    .empty-state-sub { font-size: 13px; color: var(--gray-400); }
+    @media (max-width: 520px) { .review-pros-cons { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .hero, .filter-wrap, .reviews-wrap, .admin-bar { padding-left: 1.25rem; padding-right: 1.25rem; } }
   </style>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL3F4HVTTF"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-GL3F4HVTTF');
-  </script>
 </head>
 <body>
-
 <header>
   <a class="logo" href="home.html">
-    <div class="logo-mark">
-      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg>
-    </div>
+    <div class="logo-mark"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg></div>
     <span class="logo-text">PC Builder <span>AI</span></span>
   </a>
   <div class="header-right">
@@ -164,7 +100,6 @@
     <a class="btn-upgrade" href="https://buy.stripe.com/7sY4gyaxT7gEacWfFicQU00" target="_blank" rel="noopener">月額500円で無制限</a>
   </div>
 </header>
-
 <nav>
   <a class="nav-item" href="index.html">構成提案</a>
   <a class="nav-item" href="guide.html">購入ガイド</a>
@@ -180,7 +115,7 @@
 <div class="hero">
   <div class="hero-eyebrow">User Reviews</div>
   <h1>パーツ・BTOの<br><em>リアルなユーザーレビュー。</em></h1>
-  <p>実際に使った人の声を参考に購入を検討できます。<br>レビューの投稿は月額プランで。</p>
+  <p>実際に使った人の声を参考に購入を検討できます。<br>レビューの投稿は誰でも無料でできます。</p>
 </div>
 
 <div class="filter-wrap">
@@ -198,42 +133,31 @@
   </div>
 </div>
 
-<div class="reviews-wrap" id="reviews-wrap"></div>
+<div class="admin-bar">
+  <button class="admin-toggle" id="admin-toggle">🔐 管理者モード</button>
+</div>
 
-<!-- チャットボット -->
-<button class="chat-fab" id="chat-fab" title="PCについて質問する">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-</button>
-<div class="chat-window" id="chat-window" style="display:none;">
-  <div class="chat-header">
-    <span>🖥️ PC相談 — AI Assistant</span>
-    <button class="chat-close" id="chat-close">✕</button>
-  </div>
-  <div class="chat-messages" id="chat-messages">
-    <div class="msg bot">こんにちは！PCパーツや自作PC、構成についてなんでも聞いてください。</div>
-  </div>
-  <div class="chat-input-row">
-    <input type="text" class="chat-input" id="chat-input" placeholder="質問を入力...">
-    <button class="chat-send" id="chat-send">送信</button>
+<div class="reviews-wrap" id="reviews-wrap">
+  <div class="empty-state">
+    <div class="empty-state-icon">📝</div>
+    <div class="empty-state-text">まだレビューがありません</div>
+    <div class="empty-state-sub">最初のレビューを投稿してみましょう！</div>
   </div>
 </div>
 
 <footer>
-  <p><a href="legal.html">利用規約</a> &nbsp;·&nbsp; <a href="legal.html">プライバシーポリシー</a></p>
+  <p>本サービスはAmazonアソシエイトプログラムに参加しています。<br>
+  <a href="legal.html">利用規約</a> &nbsp;·&nbsp; <a href="legal.html">プライバシーポリシー</a></p>
 </footer>
 
 <!-- 投稿モーダル -->
 <div class="modal-overlay" id="modal" style="display:none;">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title">レビューを書く</span>
+      <span class="modal-title" id="modal-title-text">レビューを書く</span>
       <button class="modal-close" id="modal-close">✕</button>
     </div>
     <div class="modal-body">
-      <div class="premium-notice">
-        <strong>🔒 月額プラン限定機能</strong>
-        レビューの投稿は月額500円プランのユーザーのみご利用いただけます。
-      </div>
       <div class="form-group">
         <div class="form-label">カテゴリ</div>
         <select class="form-select" id="f-cat">
@@ -277,7 +201,7 @@
       <div class="form-row">
         <div class="form-group">
           <div class="form-label">良かった点（1行ずつ）</div>
-          <textarea class="form-textarea" id="f-pros" placeholder="フレームレートが大幅に向上&#10;静音性が高い" style="min-height:70px;"></textarea>
+          <textarea class="form-textarea" id="f-pros" placeholder="フレームレートが向上&#10;静音性が高い" style="min-height:70px;"></textarea>
         </div>
         <div class="form-group">
           <div class="form-label">気になった点（1行ずつ）</div>
@@ -292,84 +216,69 @@
   </div>
 </div>
 
+<!-- 管理者パスワードモーダル -->
+<div class="modal-overlay" id="admin-modal" style="display:none;">
+  <div class="modal" style="max-width:360px;">
+    <div class="modal-header">
+      <span class="modal-title">🔐 管理者ログイン</span>
+      <button class="modal-close" onclick="document.getElementById('admin-modal').style.display='none'">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <div class="form-label">管理者パスワード</div>
+        <input type="password" class="form-input" id="admin-pw" placeholder="パスワードを入力">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" onclick="document.getElementById('admin-modal').style.display='none'">キャンセル</button>
+      <button class="submit-btn" id="admin-login-btn">ログイン</button>
+    </div>
+  </div>
+</div>
+
+<!-- チャットボット -->
+<button class="chat-fab" id="chat-fab" title="PCについて質問する">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+</button>
+<div class="chat-window" id="chat-window" style="display:none;">
+  <div class="chat-header">
+    <span>PC相談 — AI Assistant</span>
+    <button class="chat-close" id="chat-close">✕</button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg bot">こんにちは！PCパーツや自作PC、構成についてなんでも聞いてください。</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chat-input" placeholder="質問を入力...">
+    <button class="chat-send" id="chat-send">送信</button>
+  </div>
+</div>
+
 <script>
 const AMAZON_TAG = 'pcbuilderai-22';
+const ADMIN_PASSWORD = 'pcbuilder2026';
 let filterCat = 'all';
 let selectedRating = 0;
+let isAdmin = false;
+let editingId = null;
+let reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+let helpfulCounts = JSON.parse(localStorage.getItem('helpful') || '{}');
 
-const SAMPLE_REVIEWS = [
-  {
-    id: 1, cat: 'parts', product: 'NVIDIA GeForce RTX 5070',
-    reviewer: 'ゲーマー太郎', date: '2026年6月20日', use: 'ゲーミング（WQHD・144fps）',
-    rating: 5, title: '4070 Tiから乗り換えて大正解。WQHD144fps余裕で出る',
-    body: 'RTX 4070 Ti SuperからRTX 5070に乗り換えました。Cyberpunk 2077のWQHDでのフレームレートが平均90fps→140fpsに向上。DLSS 4のマルチフレーム生成が優秀で、4K60fpsも十分狙えます。消費電力も前世代より抑えられており、夏場も安心です。',
-    pros: ['WQHD144fps以上が余裕', 'DLSS 4が非常に優秀', '前世代より省電力'],
-    cons: ['価格が高め（13万円台）', 'RTX 5070 Tiとの差が気になる'],
-    helpful: 42, amazonUrl: 'https://www.amazon.co.jp/s?k=RTX+5070+グラフィックボード&tag=' + AMAZON_TAG
-  },
-  {
-    id: 2, cat: 'bto', product: 'GALLERIA XA7R-R57（Ryzen 7 9800X3D / RTX 5070）',
-    reviewer: 'じゅんぺい', date: '2026年6月15日', use: 'ゲーミング・FPS',
-    rating: 4, title: '初自作民にとって最高の選択肢。サポートも丁寧',
-    body: '自作PCに挑戦しようと思っていたものの知識不足で断念し、こちらを購入。Ryzen 7 9800X3DはFPSゲームで本当に強く、Apex LegendsでWQHD240fps超えを記録しました。ドスパラのサポートは電話対応が丁寧で初心者でも安心。BTOにして正解でした。',
-    pros: ['Ryzen 9800X3DでFPS最強', 'サポートが手厚い', '注文から1週間で到着'],
-    cons: ['付属ケーブルが少ない', 'ケースが少し安っぽい'],
-    helpful: 28, amazonUrl: 'https://www.amazon.co.jp/s?k=GALLERIA+ゲーミングPC+RTX5070&tag=' + AMAZON_TAG
-  },
-  {
-    id: 3, cat: 'peripheral', product: 'LG UltraGear 27GR95QE-B（27インチ OLED 240Hz）',
-    reviewer: 'えりか＠PC沼', date: '2026年6月10日', use: 'ゲーミング・動画視聴',
-    rating: 5, title: 'OLEDの発色に感動。一度使ったら液晶には戻れない',
-    body: 'IPSモニターから乗り換えました。OLEDの黒の深さと色域の広さは別次元です。Apex Legendsでは240Hzの恩恵でキャラの動きが格段に滑らかになりました。映画鑑賞も映像美が素晴らしく、毎日使うのが楽しみになっています。応答速度も0.03msで残像ゼロ。',
-    pros: ['OLEDの発色・コントラストが最高', '240Hzで動きが滑らか', '応答速度0.03ms'],
-    cons: ['焼き付きが心配（長期使用）', '価格が高い（9万円台）'],
-    helpful: 67, amazonUrl: 'https://www.amazon.co.jp/s?k=LG+OLED+ゲーミングモニター+240Hz&tag=' + AMAZON_TAG
-  },
-  {
-    id: 4, cat: 'parts', product: 'AMD Ryzen 7 9800X3D',
-    reviewer: 'self_build_pc', date: '2026年6月5日', use: 'ゲーミング・配信',
-    rating: 5, title: 'ゲーミングCPUの頂点。Intelを選ぶ理由がなくなった',
-    body: 'Core i9-13900KからRyzen 7 9800X3Dに換装。3D V-Cacheの効果は絶大で、特にオープンワールド系ゲームでの1%lowフレームが大幅改善されました。消費電力も大幅に下がり、冬場のPC熱問題が解消。ゲーミング用途ならこれ一択だと思います。',
-    pros: ['3D V-Cacheでゲーム性能最強', '省電力で発熱が少ない', '1%lowが大幅改善'],
-    cons: ['OC非対応', '価格が高い（6万円台）'],
-    helpful: 89, amazonUrl: 'https://www.amazon.co.jp/s?k=Ryzen+7+9800X3D&tag=' + AMAZON_TAG
-  },
-  {
-    id: 5, cat: 'peripheral', product: 'Logicool G Pro X Superlight 2 DEX',
-    reviewer: 'fps_master99', date: '2026年5月28日', use: 'FPS・競技ゲーム',
-    rating: 4, title: '60gの軽さが武器。センサー精度も申し分なし',
-    body: 'Superlight初代から乗り換え。60gの軽さはそのままにセンサーがHERO 25Kに強化され、カーソルの追従性がさらに向上しました。ハニカムシェルではないのでクリック感がしっかりしており、誤クリックが激減。Apex・VALORANTどちらでも快適に使えています。',
-    pros: ['60gの圧倒的な軽さ', 'センサー精度が高い', 'クリック感が良好'],
-    cons: ['充電端子がMicro-USB', '価格がやや高い'],
-    helpful: 34, amazonUrl: 'https://www.amazon.co.jp/s?k=Logicool+G+Pro+X+Superlight+2&tag=' + AMAZON_TAG
-  },
-];
-
-let reviews = [...SAMPLE_REVIEWS];
-const helpfulCounts = {};
-
-function stars(rating) {
-  return Array.from({length: 5}, (_, i) =>
-    `<span class="star">${i < rating ? '★' : '☆'}</span>`
-  ).join('');
-}
-
-function catClass(cat) {
-  return { parts: 'cat-parts', bto: 'cat-bto', peripheral: 'cat-peripheral' }[cat] || '';
-}
-function catLabel(cat) {
-  return { parts: 'パーツ', bto: 'BTO', peripheral: '周辺機器' }[cat] || '';
-}
+function catClass(cat) { return { parts:'cat-parts', bto:'cat-bto', peripheral:'cat-peripheral' }[cat]||''; }
+function catLabel(cat) { return { parts:'パーツ', bto:'BTO', peripheral:'周辺機器' }[cat]||''; }
+function stars(r) { return Array.from({length:5},(_,i)=>`<span class="star">${i<r?'★':'☆'}</span>`).join(''); }
 
 function renderReviews() {
   const wrap = document.getElementById('reviews-wrap');
-  const filtered = filterCat === 'all' ? reviews : reviews.filter(r => r.cat === filterCat);
-  if (filtered.length === 0) {
-    wrap.innerHTML = '<div class="empty"><div style="font-size:36px;margin-bottom:12px;">📝</div><div style="font-size:14px;">まだレビューがありません</div></div>';
+  const filtered = filterCat==='all' ? reviews : reviews.filter(r=>r.cat===filterCat);
+  if (filtered.length===0) {
+    wrap.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📝</div><div class="empty-state-text">まだレビューがありません</div><div class="empty-state-sub">最初のレビューを投稿してみましょう！</div></div>`;
     return;
   }
-  wrap.innerHTML = filtered.map(r => `
-    <div class="review-card">
+  wrap.innerHTML = filtered.map(r => {
+    const helpful = helpfulCounts[r.id] !== undefined ? helpfulCounts[r.id] : (r.helpful||0);
+    return `
+    <div class="review-card" id="review-${r.id}">
       <div class="review-header">
         <div class="review-product">
           <span class="review-cat ${catClass(r.cat)}">${catLabel(r.cat)}</span>
@@ -388,31 +297,52 @@ function renderReviews() {
       <div class="review-title">${r.title}</div>
       <div class="review-body">${r.body}</div>
       <div class="review-pros-cons">
-        <div class="pros">
-          <div class="pros-title">Good</div>
-          <ul>${r.pros.map(p => `<li>${p}</li>`).join('')}</ul>
-        </div>
-        <div class="cons">
-          <div class="cons-title">Bad</div>
-          <ul>${r.cons.map(c => `<li>${c}</li>`).join('')}</ul>
-        </div>
+        <div class="pros"><div class="pros-title">Good</div><ul>${r.pros.map(p=>`<li>${p}</li>`).join('')}</ul></div>
+        <div class="cons"><div class="cons-title">Bad</div><ul>${r.cons.map(c=>`<li>${c}</li>`).join('')}</ul></div>
       </div>
       <div class="review-footer">
         <div class="helpful">
-          <span>参考になった: ${helpfulCounts[r.id] !== undefined ? helpfulCounts[r.id] : r.helpful}件</span>
-          <button class="helpful-btn" onclick="markHelpful(${r.id})">👍 参考になった</button>
+          <span>参考になった: ${helpful}件</span>
+          <button class="helpful-btn" onclick="markHelpful('${r.id}')">👍 参考になった</button>
         </div>
-        <a class="amazon-btn" href="${r.amazonUrl}" target="_blank" rel="noopener sponsored">Amazonで見る →</a>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <a class="amazon-btn" href="https://www.amazon.co.jp/s?k=${encodeURIComponent(r.product)}&tag=${AMAZON_TAG}" target="_blank" rel="noopener sponsored">Amazonで見る →</a>
+          ${isAdmin ? `<div class="admin-btns"><button class="admin-edit-btn" onclick="openEdit('${r.id}')">✏️ 編集</button><button class="admin-del-btn" onclick="deleteReview('${r.id}')">🗑️ 削除</button></div>` : ''}
+        </div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 function markHelpful(id) {
+  helpfulCounts[id] = (helpfulCounts[id] !== undefined ? helpfulCounts[id] : 0) + 1;
+  localStorage.setItem('helpful', JSON.stringify(helpfulCounts));
+  renderReviews();
+}
+
+function deleteReview(id) {
+  if (!confirm('このレビューを削除しますか？')) return;
+  reviews = reviews.filter(r => r.id !== id);
+  localStorage.setItem('reviews', JSON.stringify(reviews));
+  renderReviews();
+}
+
+function openEdit(id) {
   const r = reviews.find(r => r.id === id);
   if (!r) return;
-  helpfulCounts[id] = (helpfulCounts[id] !== undefined ? helpfulCounts[id] : r.helpful) + 1;
-  renderReviews();
+  editingId = id;
+  document.getElementById('modal-title-text').textContent = 'レビューを編集';
+  document.getElementById('f-cat').value = r.cat;
+  document.getElementById('f-product').value = r.product;
+  document.getElementById('f-name').value = r.reviewer;
+  document.getElementById('f-use').value = r.use;
+  document.getElementById('f-title').value = r.title;
+  document.getElementById('f-body').value = r.body;
+  document.getElementById('f-pros').value = r.pros.join('\n');
+  document.getElementById('f-cons').value = r.cons.join('\n');
+  selectedRating = r.rating;
+  document.querySelectorAll('.star-btn').forEach((b,i) => b.classList.toggle('active', i < selectedRating));
+  document.getElementById('modal').style.display = 'flex';
 }
 
 document.querySelectorAll('.chip[data-val]').forEach(chip => {
@@ -424,24 +354,27 @@ document.querySelectorAll('.chip[data-val]').forEach(chip => {
   });
 });
 
-// モーダル
 document.getElementById('write-btn').addEventListener('click', () => {
+  editingId = null;
+  document.getElementById('modal-title-text').textContent = 'レビューを書く';
+  document.getElementById('f-product').value = '';
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-use').value = '';
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-body').value = '';
+  document.getElementById('f-pros').value = '';
+  document.getElementById('f-cons').value = '';
+  selectedRating = 0;
+  document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('modal').style.display = 'flex';
 });
-document.getElementById('modal-close').addEventListener('click', () => {
-  document.getElementById('modal').style.display = 'none';
-});
-document.getElementById('cancel-btn').addEventListener('click', () => {
-  document.getElementById('modal').style.display = 'none';
-});
+document.getElementById('modal-close').addEventListener('click', () => { document.getElementById('modal').style.display = 'none'; });
+document.getElementById('cancel-btn').addEventListener('click', () => { document.getElementById('modal').style.display = 'none'; });
 
-// 星選択
 document.querySelectorAll('.star-btn').forEach(btn => {
   btn.addEventListener('click', function() {
     selectedRating = parseInt(this.dataset.val);
-    document.querySelectorAll('.star-btn').forEach((b, i) => {
-      b.classList.toggle('active', i < selectedRating);
-    });
+    document.querySelectorAll('.star-btn').forEach((b,i) => b.classList.toggle('active', i < selectedRating));
   });
 });
 
@@ -454,90 +387,65 @@ document.getElementById('submit-btn').addEventListener('click', () => {
   const use = document.getElementById('f-use').value.trim();
   const pros = document.getElementById('f-pros').value.trim().split('\n').filter(Boolean);
   const cons = document.getElementById('f-cons').value.trim().split('\n').filter(Boolean);
-
   if (!product || !name || !title || !body || selectedRating === 0) {
     alert('製品名・ニックネーム・評価・タイトル・本文は必須です。');
     return;
   }
-
-  const newReview = {
-    id: Date.now(), cat, product,
-    reviewer: name, date: new Date().toLocaleDateString('ja-JP', {year:'numeric',month:'long',day:'numeric'}),
-    use: use || '用途未記入',
-    rating: selectedRating, title, body,
-    pros: pros.length ? pros : ['記載なし'],
-    cons: cons.length ? cons : ['記載なし'],
-    helpful: 0,
-    amazonUrl: 'https://www.amazon.co.jp/s?k=' + encodeURIComponent(product) + '&tag=' + AMAZON_TAG
-  };
-
-  reviews.unshift(newReview);
+  if (editingId) {
+    const idx = reviews.findIndex(r => r.id === editingId);
+    if (idx !== -1) {
+      reviews[idx] = { ...reviews[idx], cat, product, reviewer: name, use: use||'用途未記入', rating: selectedRating, title, body, pros: pros.length?pros:['記載なし'], cons: cons.length?cons:['記載なし'] };
+    }
+  } else {
+    reviews.unshift({ id: Date.now().toString(), cat, product, reviewer: name, date: new Date().toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric'}), use: use||'用途未記入', rating: selectedRating, title, body, pros: pros.length?pros:['記載なし'], cons: cons.length?cons:['記載なし'], helpful: 0 });
+  }
+  localStorage.setItem('reviews', JSON.stringify(reviews));
   document.getElementById('modal').style.display = 'none';
-  filterCat = 'all';
-  document.querySelectorAll('.chip[data-val]').forEach(c => c.classList.toggle('active', c.dataset.val === 'all'));
   renderReviews();
 });
 
-renderReviews();
+// 管理者モード
+document.getElementById('admin-toggle').addEventListener('click', () => {
+  if (isAdmin) {
+    isAdmin = false;
+    document.getElementById('admin-toggle').classList.remove('active');
+    document.getElementById('admin-toggle').textContent = '🔐 管理者モード';
+    renderReviews();
+  } else {
+    document.getElementById('admin-modal').style.display = 'flex';
+  }
+});
 
-// チャットボット
+document.getElementById('admin-login-btn').addEventListener('click', () => {
+  const pw = document.getElementById('admin-pw').value;
+  if (pw === ADMIN_PASSWORD) {
+    isAdmin = true;
+    document.getElementById('admin-modal').style.display = 'none';
+    document.getElementById('admin-toggle').classList.add('active');
+    document.getElementById('admin-toggle').textContent = '✅ 管理者モード中';
+    document.getElementById('admin-pw').value = '';
+    renderReviews();
+  } else {
+    alert('パスワードが違います。');
+  }
+});
+
+// チャット
 (function() {
   const fab = document.getElementById('chat-fab');
   const win = document.getElementById('chat-window');
   const msgs = document.getElementById('chat-messages');
   const input = document.getElementById('chat-input');
   let history = [];
-
-  fab.addEventListener('click', () => {
-    const open = win.style.display !== 'none';
-    win.style.display = open ? 'none' : 'flex';
-    win.style.flexDirection = 'column';
-    if (!open) input.focus();
-  });
-  document.getElementById('chat-close').addEventListener('click', () => { win.style.display = 'none'; });
-
-  function addMsg(text, role) {
-    const d = document.createElement('div');
-    d.className = 'msg ' + role;
-    d.textContent = text;
-    msgs.appendChild(d);
-    msgs.scrollTop = msgs.scrollHeight;
-    return d;
-  }
-
-  async function send() {
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = '';
-    addMsg(text, 'user');
-    history.push({ role: 'user', content: text });
-    const thinking = addMsg('考え中...', 'thinking-msg');
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system: 'あなたは2026年6月現在の日本市場に精通したPCパーツ・自作PCの専門家です。質問に日本語で簡潔に3〜5文で答えてください。RTX 50シリーズ・Ryzen 9000シリーズ・DDR5高騰などの最新状況を踏まえて回答してください。',
-          messages: history,
-          max_tokens: 600
-        })
-      });
-      const data = await res.json();
-      const reply = data.choices?.[0]?.message?.content
-        || data.content?.map(b => b.text||'').join('')
-        || 'エラーが発生しました。';
-      history.push({ role: 'assistant', content: reply });
-      thinking.remove();
-      addMsg(reply, 'bot');
-    } catch(e) {
-      thinking.remove();
-      addMsg('エラーが発生しました。', 'bot');
-    }
-  }
-
-  document.getElementById('chat-send').addEventListener('click', send);
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+  fab.addEventListener('click', () => { const open = win.style.display!=='none'; win.style.display=open?'none':'flex'; win.style.flexDirection='column'; if(!open)input.focus(); });
+  document.getElementById('chat-close').addEventListener('click', () => { win.style.display='none'; });
+  function addMsg(text,role){const d=document.createElement('div');d.className='msg '+role;d.textContent=text;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d;}
+  async function send(){const text=input.value.trim();if(!text)return;input.value='';addMsg(text,'user');history.push({role:'user',content:text});const t=addMsg('考え中...','thinking-msg');try{const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o',max_tokens:600,system:'あなたはPCパーツ・自作PCの専門家です。質問に日本語で簡潔に答えてください。',messages:history})});const data=await res.json();const reply=data.choices?.[0]?.message?.content||data.content?.map(b=>b.text||'').join('')||'エラーが発生しました。';history.push({role:'assistant',content:reply});t.remove();addMsg(reply,'bot');}catch(e){t.remove();addMsg('エラーが発生しました。','bot');}}
+  document.getElementById('chat-send').addEventListener('click',send);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')send();});
 })();
+
+renderReviews();
 </script>
 </body>
 </html>

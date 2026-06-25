@@ -4,168 +4,99 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>掲示板 — PC Builder AI</title>
-  <meta name="description" content="PCパーツ・自作PC・BTOについて自由に話し合える掲示板。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL3F4HVTTF"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-GL3F4HVTTF');</script>
   <style>
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-    
-    
-    
-
     .hero { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 2rem; text-align: center; }
     .hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 1rem; }
     .hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 24px; height: 1px; background: var(--gray-300); }
     .hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 0.75rem; }
     .hero h1 em { font-style: normal; color: var(--gray-400); }
     .hero p { font-size: 15px; color: var(--gray-500); line-height: 1.7; }
-
-    /* フィルター・投稿ボタン */
     .toolbar { max-width: 900px; margin: 0 auto; padding: 0 2rem 1.5rem; }
     .toolbar-inner { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
     .toolbar-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
     .filter-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); white-space: nowrap; }
-    
-    
-    
-    
     .post-btn { flex-shrink: 0; font-size: 12px; font-weight: 600; padding: 8px 16px; border-radius: var(--r-md); background: var(--black); color: var(--white); border: none; cursor: pointer; font-family: inherit; white-space: nowrap; }
-
-    /* スレッド一覧 */
+    .admin-bar { max-width: 900px; margin: 0 auto; padding: 0 2rem 0.5rem; }
+    .admin-toggle { font-size: 12px; padding: 6px 14px; border-radius: var(--r-sm); border: 1px solid var(--gray-200); background: var(--white); cursor: pointer; color: var(--gray-500); font-family: inherit; }
+    .admin-toggle.active { background: var(--black); color: var(--white); border-color: var(--black); }
     .board-wrap { max-width: 900px; margin: 0 auto; padding: 0 2rem 4rem; }
     .thread-list { display: flex; flex-direction: column; gap: 8px; }
-
     .thread-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.25rem 1.5rem; cursor: pointer; transition: border-color 0.15s, transform 0.1s; }
     .thread-card:hover { border-color: var(--gray-300); transform: translateY(-1px); }
-    .thread-card.pinned { border-color: var(--black); }
     .thread-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 8px; }
     .thread-badges { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
     .badge { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; }
-    .badge-pinned { background: var(--black); color: var(--white); }
     .badge-cat-parts { background: var(--black); color: var(--white); }
     .badge-cat-bto { background: var(--gray-100); color: var(--gray-700); }
     .badge-cat-build { background: #dbeafe; color: #1e40af; }
     .badge-cat-general { background: #f3e8ff; color: #6b21a8; }
     .badge-cat-sale { background: #dcfce7; color: #166534; }
-    .badge-new { background: #fee2e2; color: #991b1b; }
     .thread-stats { display: flex; gap: 12px; flex-shrink: 0; }
-    .stat { font-size: 11px; color: var(--gray-400); display: flex; align-items: center; gap: 3px; }
-    .thread-title { font-size: 15px; font-weight: 600; color: var(--black); line-height: 1.4; margin-bottom: 6px; letter-spacing: -0.01em; }
+    .stat { font-size: 11px; color: var(--gray-400); }
+    .thread-title { font-size: 15px; font-weight: 600; color: var(--black); line-height: 1.4; margin-bottom: 6px; }
     .thread-preview { font-size: 12px; color: var(--gray-500); line-height: 1.6; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .thread-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .thread-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: space-between; }
+    .thread-meta-left { display: flex; gap: 10px; flex-wrap: wrap; }
     .thread-author { font-size: 11px; color: var(--gray-400); }
     .thread-date { font-size: 11px; color: var(--gray-400); }
     .thread-last { font-size: 11px; color: var(--gray-500); background: var(--gray-100); padding: 2px 8px; border-radius: 20px; }
-
-    /* スレッド詳細 */
-    .thread-detail { display: none; }
+    .admin-thread-btns { display: flex; gap: 6px; }
+    .admin-del-btn { font-size: 11px; padding: 3px 8px; border-radius: var(--r-sm); border: 1px solid #fecdd3; background: #fff1f2; cursor: pointer; color: #dc2626; font-family: inherit; }
+    .detail-view { display: none; }
     .detail-header { max-width: 900px; margin: 0 auto; padding: 1.5rem 2rem 0; }
     .back-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--gray-400); cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; margin-bottom: 1rem; }
     .back-btn:hover { color: var(--black); }
     .detail-title-wrap { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.5rem; margin-bottom: 1rem; }
     .detail-title { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 10px; }
     .detail-meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-
     .comments-wrap { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
     .comment { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-lg); padding: 1.25rem; margin-bottom: 8px; }
     .comment.op { border-color: var(--black); }
-    .comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px; }
     .comment-author { font-size: 13px; font-weight: 600; color: var(--black); }
     .comment-op-badge { font-size: 10px; font-weight: 700; background: var(--black); color: var(--white); padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
     .comment-date { font-size: 11px; color: var(--gray-400); }
     .comment-body { font-size: 13px; color: var(--gray-500); line-height: 1.8; margin-bottom: 10px; }
-    .comment-actions { display: flex; gap: 8px; }
-    .like-btn { font-size: 11px; padding: 4px 10px; border-radius: var(--r-sm); border: 1px solid var(--gray-200); background: var(--white); cursor: pointer; color: var(--gray-500); font-family: inherit; transition: all 0.15s; }
+    .comment-actions { display: flex; gap: 8px; align-items: center; }
+    .like-btn { font-size: 11px; padding: 4px 10px; border-radius: var(--r-sm); border: 1px solid var(--gray-200); background: var(--white); cursor: pointer; color: var(--gray-500); font-family: inherit; }
     .like-btn:hover { border-color: var(--black); color: var(--black); }
-    .reply-btn { font-size: 11px; padding: 4px 10px; border-radius: var(--r-sm); border: none; background: none; cursor: pointer; color: var(--gray-400); font-family: inherit; }
-    .reply-btn:hover { color: var(--black); }
-
-    /* 返信フォーム */
     .reply-form { max-width: 900px; margin: 1rem auto 4rem; padding: 0 2rem; }
     .reply-form-inner { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.25rem; }
     .reply-form-title { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 10px; }
-    .premium-notice { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--r-md); padding: 12px 14px; font-size: 12px; color: var(--gray-500); line-height: 1.6; text-align: center; margin-bottom: 10px; }
-    .premium-notice strong { color: var(--black); display: block; margin-bottom: 4px; font-size: 13px; }
-    .reply-name { width: 100%; padding: 9px 12px; border: 1px solid var(--gray-200); border-radius: var(--r-md); font-size: 13px; color: var(--black); background: var(--gray-50); font-family: inherit; outline: none; margin-bottom: 8px; transition: border-color 0.15s; }
+    .reply-name { width: 100%; padding: 9px 12px; border: 1px solid var(--gray-200); border-radius: var(--r-md); font-size: 13px; color: var(--black); background: var(--gray-50); font-family: inherit; outline: none; margin-bottom: 8px; }
     .reply-name:focus { border-color: var(--black); background: var(--white); }
-    .reply-textarea { width: 100%; min-height: 80px; padding: 9px 12px; border: 1px solid var(--gray-200); border-radius: var(--r-md); font-size: 13px; color: var(--black); background: var(--gray-50); font-family: inherit; outline: none; resize: vertical; line-height: 1.6; transition: border-color 0.15s; }
+    .reply-textarea { width: 100%; min-height: 80px; padding: 9px 12px; border: 1px solid var(--gray-200); border-radius: var(--r-md); font-size: 13px; color: var(--black); background: var(--gray-50); font-family: inherit; outline: none; resize: vertical; line-height: 1.6; }
     .reply-textarea:focus { border-color: var(--black); background: var(--white); }
     .reply-submit { margin-top: 8px; padding: 9px 20px; border-radius: var(--r-md); background: var(--black); color: var(--white); border: none; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
-
-    /* 新規スレッドモーダル */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
     .modal { background: var(--white); border-radius: var(--r-xl); width: 100%; max-width: 500px; }
     .modal-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; }
     .modal-title { font-size: 15px; font-weight: 600; }
-    .modal-close { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--gray-400); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .modal-close { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--gray-400); }
     .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 10px; }
     .form-label { font-size: 12px; font-weight: 600; color: var(--gray-500); margin-bottom: 5px; display: block; }
-    .form-input, .form-select, .form-textarea { width: 100%; padding: 9px 12px; border: 1px solid var(--gray-200); border-radius: var(--r-md); font-size: 13px; color: var(--black); background: var(--gray-50); font-family: inherit; outline: none; transition: border-color 0.15s; }
+    .form-input, .form-select, .form-textarea { width: 100%; padding: 9px 12px; border: 1px solid var(--gray-200); border-radius: var(--r-md); font-size: 13px; color: var(--black); background: var(--gray-50); font-family: inherit; outline: none; }
     .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--black); background: var(--white); }
     .form-textarea { min-height: 100px; resize: vertical; line-height: 1.6; }
-    .modal-
+    .modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--gray-200); display: flex; gap: 8px; justify-content: flex-end; }
     .cancel-btn { padding: 9px 18px; border-radius: var(--r-md); border: 1px solid var(--gray-200); background: var(--white); color: var(--gray-500); font-size: 13px; cursor: pointer; font-family: inherit; }
     .submit-btn { padding: 9px 24px; border-radius: var(--r-md); background: var(--black); color: var(--white); border: none; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
-
-    @media (max-width: 520px) {
-      header { padding: 0 1.25rem; }
-      .hero, .toolbar, .board-wrap, .detail-header, .comments-wrap, .reply-form { padding-left: 1.25rem; padding-right: 1.25rem; }
-      .hero h1 { font-size: 24px; }
-      nav { padding: 0 1rem; }
-    }
-
-    
-    
-
-    /* チャットボット共通 */
-    .chat-fab { position: fixed; bottom: 28px; right: 28px; width: 48px; height: 48px; border-radius: 50%; background: var(--black); color: var(--white); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 300; transition: transform 0.15s, background 0.15s; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-    .chat-fab:hover { transform: scale(1.08); background: var(--gray-700); }
-    .chat-window { position: fixed; bottom: 88px; right: 28px; width: 340px; max-height: 460px; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); display: flex; flex-direction: column; z-index: 300; overflow: hidden; }
-    .chat-header { padding: 14px 18px; background: var(--black); color: var(--white); font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
-    .chat-close { background: rgba(255,255,255,0.15); border: none; color: var(--white); font-size: 14px; cursor: pointer; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
-    .chat-close:hover { background: rgba(255,255,255,0.3); }
-    .chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
-    .msg { max-width: 86%; padding: 9px 13px; border-radius: 14px; font-size: 12px; line-height: 1.65; }
-    .msg.bot { background: var(--gray-100); color: var(--black); align-self: flex-start; border-bottom-left-radius: 4px; }
-    .msg.user { background: var(--black); color: var(--white); align-self: flex-end; border-bottom-right-radius: 4px; }
-    .msg.thinking-msg { background: var(--gray-100); color: var(--gray-400); align-self: flex-start; font-style: italic; }
-    .chat-input-row { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--gray-200); background: var(--white); }
-    .chat-input { flex: 1; padding: 8px 13px; border: 1px solid var(--gray-200); border-radius: 20px; font-size: 12px; outline: none; font-family: inherit; background: var(--gray-50); color: var(--black); transition: border-color 0.15s; }
-    .chat-input:focus { border-color: var(--black); background: var(--white); }
-    .chat-send { padding: 8px 14px; background: var(--black); color: var(--white); border: none; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 600; font-family: inherit; transition: background 0.15s; }
-    .chat-send:hover { background: var(--gray-700); }
+    .empty-state { text-align: center; padding: 4rem 2rem; color: var(--gray-400); }
+    .empty-state-icon { font-size: 48px; margin-bottom: 1rem; }
+    .empty-state-text { font-size: 15px; color: var(--gray-500); margin-bottom: 6px; }
+    .empty-state-sub { font-size: 13px; }
+    @media (max-width: 520px) { header { padding: 0 1.25rem; } nav { padding: 0 1rem; } .hero, .toolbar, .board-wrap, .detail-header, .comments-wrap, .reply-form, .admin-bar { padding-left: 1.25rem; padding-right: 1.25rem; } .hero h1 { font-size: 24px; } }
   </style>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL3F4HVTTF"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-GL3F4HVTTF');
-  </script>
 </head>
 <body>
-
 <header>
   <a class="logo" href="home.html">
-    <div class="logo-mark">
-      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg>
-    </div>
+    <div class="logo-mark"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg></div>
     <span class="logo-text">PC Builder <span>AI</span></span>
   </a>
   <div class="header-right">
@@ -173,7 +104,6 @@
     <a class="btn-upgrade" href="https://buy.stripe.com/7sY4gyaxT7gEacWfFicQU00" target="_blank" rel="noopener">月額500円で無制限</a>
   </div>
 </header>
-
 <nav>
   <a class="nav-item" href="index.html">構成提案</a>
   <a class="nav-item" href="guide.html">購入ガイド</a>
@@ -193,7 +123,6 @@
     <h1>PCについて<br><em>自由に話し合おう。</em></h1>
     <p>パーツ選び・自作PC・BTO・周辺機器など<br>なんでも気軽に投稿してください。</p>
   </div>
-
   <div class="toolbar">
     <div class="toolbar-inner">
       <div class="toolbar-left">
@@ -210,14 +139,16 @@
       <button class="post-btn" id="post-btn">✏️ スレッドを立てる</button>
     </div>
   </div>
-
+  <div class="admin-bar">
+    <button class="admin-toggle" id="admin-toggle">🔐 管理者モード</button>
+  </div>
   <div class="board-wrap">
     <div class="thread-list" id="thread-list"></div>
   </div>
 </div>
 
 <!-- スレッド詳細 -->
-<div id="detail-view" class="thread-detail">
+<div id="detail-view" class="detail-view">
   <div class="detail-header">
     <button class="back-btn" id="back-btn">← 掲示板に戻る</button>
     <div class="detail-title-wrap" id="detail-title-wrap"></div>
@@ -226,32 +157,10 @@
   <div class="reply-form">
     <div class="reply-form-inner">
       <div class="reply-form-title">返信する</div>
-      <div class="premium-notice">
-        <strong>🔒 月額プラン限定機能</strong>
-        返信の投稿は月額500円プランのユーザーのみご利用いただけます。
-      </div>
       <input type="text" class="reply-name" id="reply-name" placeholder="ニックネーム">
       <textarea class="reply-textarea" id="reply-body" placeholder="返信内容を入力..."></textarea>
       <button class="reply-submit" id="reply-submit">返信を投稿する</button>
     </div>
-  </div>
-</div>
-
-<!-- チャットボット -->
-<button class="chat-fab" id="chat-fab" title="PCについて質問する">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-</button>
-<div class="chat-window" id="chat-window" style="display:none;">
-  <div class="chat-header">
-    <span>🖥️ PC相談 — AI Assistant</span>
-    <button class="chat-close" id="chat-close">✕</button>
-  </div>
-  <div class="chat-messages" id="chat-messages">
-    <div class="msg bot">こんにちは！PCパーツや自作PC、構成についてなんでも聞いてください。</div>
-  </div>
-  <div class="chat-input-row">
-    <input type="text" class="chat-input" id="chat-input" placeholder="質問を入力...">
-    <button class="chat-send" id="chat-send">送信</button>
   </div>
 </div>
 
@@ -267,32 +176,10 @@
       <button class="modal-close" id="modal-close">✕</button>
     </div>
     <div class="modal-body">
-      <div class="premium-notice">
-        <strong>🔒 月額プラン限定機能</strong>
-        スレッドの投稿は月額500円プランのユーザーのみご利用いただけます。
-      </div>
-      <div>
-        <label class="form-label">カテゴリ</label>
-        <select class="form-select" id="f-cat">
-          <option value="parts">パーツ</option>
-          <option value="bto">BTO</option>
-          <option value="build">自作相談</option>
-          <option value="sale">セール</option>
-          <option value="general">雑談</option>
-        </select>
-      </div>
-      <div>
-        <label class="form-label">ニックネーム</label>
-        <input type="text" class="form-input" id="f-name" placeholder="例: 自作初心者">
-      </div>
-      <div>
-        <label class="form-label">タイトル</label>
-        <input type="text" class="form-input" id="f-title" placeholder="例: 予算15万でゲーミングPC組みたい">
-      </div>
-      <div>
-        <label class="form-label">本文</label>
-        <textarea class="form-textarea" id="f-body" placeholder="詳しい内容を書いてください..."></textarea>
-      </div>
+      <div><label class="form-label">カテゴリ</label><select class="form-select" id="f-cat"><option value="parts">パーツ</option><option value="bto">BTO</option><option value="build">自作相談</option><option value="sale">セール</option><option value="general">雑談</option></select></div>
+      <div><label class="form-label">ニックネーム</label><input type="text" class="form-input" id="f-name" placeholder="例: 自作初心者"></div>
+      <div><label class="form-label">タイトル</label><input type="text" class="form-input" id="f-title" placeholder="例: 予算15万でゲーミングPC組みたい"></div>
+      <div><label class="form-label">本文</label><textarea class="form-textarea" id="f-body" placeholder="詳しい内容を書いてください..."></textarea></div>
     </div>
     <div class="modal-footer">
       <button class="cancel-btn" id="cancel-btn">キャンセル</button>
@@ -301,282 +188,185 @@
   </div>
 </div>
 
-<script>
-const CAT_LABEL = { parts: 'パーツ', bto: 'BTO', build: '自作相談', sale: 'セール', general: '雑談' };
-const CAT_CLASS = { parts: 'badge-cat-parts', bto: 'badge-cat-bto', build: 'badge-cat-build', sale: 'badge-cat-sale', general: 'badge-cat-general' };
+<!-- 管理者パスワードモーダル -->
+<div class="modal-overlay" id="admin-modal" style="display:none;">
+  <div class="modal" style="max-width:360px;">
+    <div class="modal-header">
+      <span class="modal-title">🔐 管理者ログイン</span>
+      <button class="modal-close" onclick="document.getElementById('admin-modal').style.display='none'">✕</button>
+    </div>
+    <div class="modal-body">
+      <div><label class="form-label">管理者パスワード</label><input type="password" class="form-input" id="admin-pw" placeholder="パスワードを入力"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" onclick="document.getElementById('admin-modal').style.display='none'">キャンセル</button>
+      <button class="submit-btn" id="admin-login-btn">ログイン</button>
+    </div>
+  </div>
+</div>
 
+<!-- チャットボット -->
+<button class="chat-fab" id="chat-fab"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></button>
+<div class="chat-window" id="chat-window" style="display:none;">
+  <div class="chat-header"><span>PC相談 — AI Assistant</span><button class="chat-close" id="chat-close">✕</button></div>
+  <div class="chat-messages" id="chat-messages"><div class="msg bot">こんにちは！PCについてなんでも聞いてください。</div></div>
+  <div class="chat-input-row"><input type="text" class="chat-input" id="chat-input" placeholder="質問を入力..."><button class="chat-send" id="chat-send">送信</button></div>
+</div>
+
+<script>
+const ADMIN_PASSWORD = 'pcbuilder2026';
+const CAT_LABEL = { parts:'パーツ', bto:'BTO', build:'自作相談', sale:'セール', general:'雑談' };
+const CAT_CLASS = { parts:'badge-cat-parts', bto:'badge-cat-bto', build:'badge-cat-build', sale:'badge-cat-sale', general:'badge-cat-general' };
 let filterCat = 'all';
 let currentThread = null;
-let likeCounts = {};
-
-const THREADS = [
-  {
-    id: 1, cat: 'build', pinned: true,
-    title: '【初心者歓迎】自作PC相談スレ — 構成チェックお気軽に',
-    author: '管理人', date: '2026年6月1日', lastReply: '2分前', views: 1842, replies: 87,
-    body: '自作PCの構成相談はここで受け付けます！予算・用途・候補パーツを書いてくれれば、みんなでアドバイスします。初心者の方も遠慮なくどうぞ。',
-    comments: [
-      { id: 1, author: '管理人', date: '2026年6月1日 10:00', body: '自作PCの構成相談はここで受け付けます！予算・用途・候補パーツを書いてくれれば、みんなでアドバイスします。初心者の方も遠慮なくどうぞ。', isOP: true, likes: 34 },
-      { id: 2, author: 'じゅんぺい', date: '2026年6月10日 14:23', body: '予算15万で初めての自作PCを組もうと思っています。主な用途はApex LegendsとVALORANTです。RTX 5070 + Ryzen 7 9800X3Dの構成を考えていますが、予算オーバーになってしまいます。どうすればいいでしょうか？', isOP: false, likes: 12 },
-      { id: 3, author: 'ゲーマー太郎', date: '2026年6月10日 15:01', body: '15万だとRTX 5070は厳しいですね。RTX 4070 Super + Ryzen 5 9600Xの組み合わせが現実的だと思います。FPSゲームならこの構成でフルHD144fps余裕で出ますよ。', isOP: false, likes: 28 },
-      { id: 4, author: 'self_build_pc', date: '2026年6月10日 16:45', body: 'メモリはDDR5が現在高騰中なので、予算を抑えるならDDR4対応のIntelプラットフォームも選択肢に入ります。Core i5-14600K + RTX 4070ならギリギリ15万に収まるかも。', isOP: false, likes: 19 },
-    ]
-  },
-  {
-    id: 2, cat: 'parts', pinned: false,
-    title: 'RTX 5070購入者集まれ！実際の性能・温度・消費電力レポート',
-    author: 'ゲーマー太郎', date: '2026年6月18日', lastReply: '1時間前', views: 934, replies: 43,
-    body: 'RTX 5070を購入した方、実際の使用感を共有しましょう。ゲームのFPS・温度・消費電力など気になる情報をまとめていきたいと思います。',
-    comments: [
-      { id: 1, author: 'ゲーマー太郎', date: '2026年6月18日 09:00', body: 'RTX 5070を購入した方、実際の使用感を共有しましょう。私はMSI製を購入しました。Cyberpunk 2077 WQHDで平均138fps出ています。温度は負荷時72℃で非常に優秀です。', isOP: true, likes: 45 },
-      { id: 2, author: 'えりか＠PC沼', date: '2026年6月18日 11:30', body: 'ASUSのROG Strix版を購入しました。同じくCyberpunk WQHDで140fps前後。三連ファンなので温度は68℃と更に低め。ただし価格が13.5万と高かった…', isOP: false, likes: 31 },
-      { id: 3, author: 'fps_master99', date: '2026年6月19日 20:15', body: '消費電力はアイドル時15W、フル負荷時180W程度でした。RTX 4070 Ti Superより40W近く下がっていて驚きです。電源は650Wで余裕でした。', isOP: false, likes: 52 },
-    ]
-  },
-  {
-    id: 3, cat: 'sale', pinned: false,
-    title: '【セール情報】Amazon タイムセール・値下がり情報まとめ',
-    author: 'セール番長', date: '2026年6月20日', lastReply: '30分前', views: 2103, replies: 156,
-    body: 'PCパーツ・周辺機器のセール・値下がり情報を共有するスレです。Amazonのタイムセール・楽天スーパーセール・各ショップのキャンペーンなどどんどん書き込んでください。',
-    comments: [
-      { id: 1, author: 'セール番長', date: '2026年6月20日 08:00', body: 'PCパーツ・周辺機器のセール・値下がり情報を共有するスレです。どんどん書き込んでください！', isOP: true, likes: 67 },
-      { id: 2, author: 'お得情報収集家', date: '2026年6月20日 10:12', body: '【速報】AmazonでCorsair DDR5-6000 32GBが48,000円に値下がりしています。先週より7,000円安い！在庫少なめなので早めに。', isOP: false, likes: 89 },
-      { id: 3, author: 'じゅんぺい', date: '2026年6月20日 14:30', body: 'Samsung 2TB NVMe Gen4 SSDが18,800円になってます。最安値更新してるかも。', isOP: false, likes: 44 },
-    ]
-  },
-  {
-    id: 4, cat: 'bto', pinned: false,
-    title: 'GALLERIAとG-Tuneどっちがいい？BTOメーカー比較スレ',
-    author: 'BTO検討中', date: '2026年6月15日', lastReply: '3時間前', views: 677, replies: 29,
-    body: '初めてBTOパソコンを買おうと思っているのですが、GALLERIAとG-Tuneで迷っています。サポート・品質・コスパなどの観点で経験者の意見を聞かせてください。',
-    comments: [
-      { id: 1, author: 'BTO検討中', date: '2026年6月15日 19:00', body: '初めてBTOパソコンを買おうと思っているのですが、GALLERIAとG-Tuneで迷っています。予算は20万で、主にFPSゲームをプレイします。', isOP: true, likes: 15 },
-      { id: 2, author: 'self_build_pc', date: '2026年6月15日 20:30', body: 'どちらも品質は高いですが、G-Tuneはマウスコンピューターが製造していて国内生産なのでサポートが手厚い印象です。GALLERIAは価格が若干安くコスパ重視ならこちら。', isOP: false, likes: 33 },
-      { id: 3, author: 'ゲーマー太郎', date: '2026年6月16日 09:15', body: 'FPSメインならどちらもRyzen 9800X3D搭載モデルを選ぶのがおすすめです。CPUの差がFPSゲームには一番影響します。', isOP: false, likes: 27 },
-    ]
-  },
-  {
-    id: 5, cat: 'general', pinned: false,
-    title: 'みんなのデスク環境見せて！スペック・こだわり自慢スレ',
-    author: 'デスク沼住人', date: '2026年6月12日', lastReply: '5時間前', views: 1456, replies: 72,
-    body: 'みんなのデスク環境やPC構成を自慢しましょう！モニター・マウス・キーボード・チェアなど、こだわりポイントも教えてください。',
-    comments: [
-      { id: 1, author: 'デスク沼住人', date: '2026年6月12日 20:00', body: 'みんなのデスク環境やPC構成を自慢しましょう！私はLG OLEDモニター×2枚 + RTX 5080構成です。モニターアームはErgotronのLXを使っています。', isOP: true, likes: 58 },
-      { id: 2, author: 'えりか＠PC沼', date: '2026年6月13日 12:00', body: '私は白で統一した構成です。Lian LiのO11 Air Mini（白）+ NZXTの白ファン + ホワイトのRGBメモリで見た目重視。性能よりも見た目が大事だと思ってます笑', isOP: false, likes: 71 },
-    ]
-  },
-];
-
-let threads = [...THREADS];
+let isAdmin = false;
+let likeCounts = JSON.parse(localStorage.getItem('board_likes') || '{}');
+let threads = JSON.parse(localStorage.getItem('threads') || '[]');
 
 function renderThreads() {
   const list = document.getElementById('thread-list');
-  const filtered = filterCat === 'all' ? threads : threads.filter(t => t.cat === filterCat);
-  if (filtered.length === 0) {
-    list.innerHTML = '<div style="text-align:center;padding:4rem 2rem;color:var(--gray-400);font-size:14px;">スレッドがありません</div>';
+  const filtered = filterCat==='all' ? threads : threads.filter(t=>t.cat===filterCat);
+  if (filtered.length===0) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">💬</div><div class="empty-state-text">まだスレッドがありません</div><div class="empty-state-sub">最初のスレッドを立ててみましょう！</div></div>`;
     return;
   }
   list.innerHTML = filtered.map(t => `
-    <div class="thread-card ${t.pinned ? 'pinned' : ''}" onclick="openThread(${t.id})">
+    <div class="thread-card" onclick="openThread('${t.id}')">
       <div class="thread-header">
-        <div class="thread-badges">
-          ${t.pinned ? '<span class="badge badge-pinned">📌 固定</span>' : ''}
-          <span class="badge ${CAT_CLASS[t.cat]}">${CAT_LABEL[t.cat]}</span>
-          ${t.replies > 50 ? '<span class="badge badge-new">HOT</span>' : ''}
-        </div>
-        <div class="thread-stats">
-          <span class="stat">💬 ${t.replies}</span>
-          <span class="stat">👁 ${t.views}</span>
-        </div>
+        <div class="thread-badges"><span class="badge ${CAT_CLASS[t.cat]}">${CAT_LABEL[t.cat]}</span></div>
+        <div class="thread-stats"><span class="stat">💬 ${t.comments.length}</span><span class="stat">👁 ${t.views||0}</span></div>
       </div>
       <div class="thread-title">${t.title}</div>
       <div class="thread-preview">${t.body}</div>
       <div class="thread-meta">
-        <span class="thread-author">👤 ${t.author}</span>
-        <span class="thread-date">${t.date}</span>
-        <span class="thread-last">最終返信: ${t.lastReply}</span>
+        <div class="thread-meta-left">
+          <span class="thread-author">👤 ${t.author}</span>
+          <span class="thread-date">${t.date}</span>
+          <span class="thread-last">最終返信: ${t.lastReply}</span>
+        </div>
+        ${isAdmin ? `<div class="admin-thread-btns" onclick="event.stopPropagation()"><button class="admin-del-btn" onclick="deleteThread('${t.id}')">🗑️ 削除</button></div>` : ''}
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function openThread(id) {
-  currentThread = threads.find(t => t.id === id);
+  currentThread = threads.find(t=>t.id===id);
   if (!currentThread) return;
-
+  currentThread.views = (currentThread.views||0) + 1;
+  saveThreads();
   document.getElementById('list-view').style.display = 'none';
   document.getElementById('detail-view').style.display = 'block';
-  window.scrollTo(0, 0);
-
+  window.scrollTo(0,0);
   document.getElementById('detail-title-wrap').innerHTML = `
-    <div class="thread-badges" style="margin-bottom:8px;">
-      <span class="badge ${CAT_CLASS[currentThread.cat]}">${CAT_LABEL[currentThread.cat]}</span>
-    </div>
+    <div class="thread-badges" style="margin-bottom:8px;"><span class="badge ${CAT_CLASS[currentThread.cat]}">${CAT_LABEL[currentThread.cat]}</span></div>
     <div class="detail-title">${currentThread.title}</div>
-    <div class="detail-meta">
-      <span class="thread-author">👤 ${currentThread.author}</span>
-      <span class="thread-date">${currentThread.date}</span>
-      <span class="stat">💬 ${currentThread.replies}件の返信</span>
-      <span class="stat">👁 ${currentThread.views}閲覧</span>
-    </div>`;
-
+    <div class="detail-meta"><span class="thread-author">👤 ${currentThread.author}</span><span class="thread-date">${currentThread.date}</span><span class="stat">💬 ${currentThread.comments.length}件の返信</span></div>`;
   renderComments();
 }
 
 function renderComments() {
-  document.getElementById('comments-wrap').innerHTML = currentThread.comments.map(c => `
-    <div class="comment ${c.isOP ? 'op' : ''}">
+  document.getElementById('comments-wrap').innerHTML = currentThread.comments.map(c => {
+    const key = currentThread.id + '-' + c.id;
+    const likes = likeCounts[key] !== undefined ? likeCounts[key] : (c.likes||0);
+    return `<div class="comment ${c.isOP?'op':''}">
       <div class="comment-header">
-        <div>
-          <span class="comment-author">${c.author}</span>
-          ${c.isOP ? '<span class="comment-op-badge">OP</span>' : ''}
+        <div><span class="comment-author">${c.author}</span>${c.isOP?'<span class="comment-op-badge">OP</span>':''}</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="comment-date">${c.date}</span>
+          ${isAdmin ? `<button class="admin-del-btn" onclick="deleteComment('${c.id}')">🗑️</button>` : ''}
         </div>
-        <span class="comment-date">${c.date}</span>
       </div>
       <div class="comment-body">${c.body}</div>
-      <div class="comment-actions">
-        <button class="like-btn" onclick="likeComment(${c.id})">
-          👍 ${likeCounts[currentThread.id + '-' + c.id] !== undefined ? likeCounts[currentThread.id + '-' + c.id] : c.likes}
-        </button>
-        <button class="reply-btn" onclick="document.getElementById('reply-body').focus()">返信</button>
-      </div>
-    </div>
-  `).join('');
+      <div class="comment-actions"><button class="like-btn" onclick="likeComment('${c.id}')">👍 ${likes}</button></div>
+    </div>`;
+  }).join('');
 }
 
-function likeComment(commentId) {
-  const key = currentThread.id + '-' + commentId;
-  const c = currentThread.comments.find(c => c.id === commentId);
-  likeCounts[key] = (likeCounts[key] !== undefined ? likeCounts[key] : c.likes) + 1;
+function likeComment(cid) {
+  const key = currentThread.id + '-' + cid;
+  likeCounts[key] = (likeCounts[key]!==undefined ? likeCounts[key] : 0) + 1;
+  localStorage.setItem('board_likes', JSON.stringify(likeCounts));
   renderComments();
 }
 
+function deleteThread(id) {
+  if (!confirm('このスレッドを削除しますか？')) return;
+  threads = threads.filter(t=>t.id!==id);
+  saveThreads();
+  renderThreads();
+}
+
+function deleteComment(cid) {
+  if (!confirm('この返信を削除しますか？')) return;
+  currentThread.comments = currentThread.comments.filter(c=>c.id!==cid);
+  saveThreads();
+  renderComments();
+}
+
+function saveThreads() {
+  localStorage.setItem('threads', JSON.stringify(threads));
+}
+
 document.getElementById('back-btn').addEventListener('click', () => {
-  document.getElementById('detail-view').style.display = 'none';
-  document.getElementById('list-view').style.display = 'block';
-  window.scrollTo(0, 0);
+  document.getElementById('detail-view').style.display='none';
+  document.getElementById('list-view').style.display='block';
+  window.scrollTo(0,0);
 });
 
 document.getElementById('reply-submit').addEventListener('click', () => {
   const name = document.getElementById('reply-name').value.trim();
   const body = document.getElementById('reply-body').value.trim();
-  if (!name || !body) { alert('ニックネームと返信内容を入力してください。'); return; }
-  const newComment = {
-    id: Date.now(), author: name,
-    date: new Date().toLocaleString('ja-JP', {year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}),
-    body, isOP: false, likes: 0
-  };
-  currentThread.comments.push(newComment);
-  currentThread.replies++;
+  if (!name||!body) { alert('ニックネームと返信内容を入力してください。'); return; }
+  currentThread.comments.push({ id: Date.now().toString(), author: name, date: new Date().toLocaleString('ja-JP',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}), body, isOP: false, likes: 0 });
   currentThread.lastReply = 'たった今';
+  saveThreads();
   document.getElementById('reply-name').value = '';
   document.getElementById('reply-body').value = '';
   renderComments();
-  document.getElementById('comments-wrap').lastElementChild.scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('comments-wrap').lastElementChild?.scrollIntoView({behavior:'smooth'});
 });
 
 document.querySelectorAll('.chip[data-val]').forEach(chip => {
   chip.addEventListener('click', function() {
     filterCat = this.dataset.val;
-    document.querySelectorAll('.chip[data-val]').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.chip[data-val]').forEach(c=>c.classList.remove('active'));
     this.classList.add('active');
     renderThreads();
   });
 });
 
-document.getElementById('post-btn').addEventListener('click', () => {
-  document.getElementById('modal').style.display = 'flex';
-});
-document.getElementById('modal-close').addEventListener('click', () => {
-  document.getElementById('modal').style.display = 'none';
-});
-document.getElementById('cancel-btn').addEventListener('click', () => {
-  document.getElementById('modal').style.display = 'none';
-});
+document.getElementById('post-btn').addEventListener('click', () => { document.getElementById('modal').style.display='flex'; });
+document.getElementById('modal-close').addEventListener('click', () => { document.getElementById('modal').style.display='none'; });
+document.getElementById('cancel-btn').addEventListener('click', () => { document.getElementById('modal').style.display='none'; });
 
 document.getElementById('modal-submit').addEventListener('click', () => {
   const cat = document.getElementById('f-cat').value;
   const name = document.getElementById('f-name').value.trim();
   const title = document.getElementById('f-title').value.trim();
   const body = document.getElementById('f-body').value.trim();
-  if (!name || !title || !body) { alert('すべての項目を入力してください。'); return; }
-  const newThread = {
-    id: Date.now(), cat, pinned: false,
-    title, author: name,
-    date: new Date().toLocaleDateString('ja-JP', {year:'numeric',month:'long',day:'numeric'}),
-    lastReply: 'たった今', views: 1, replies: 0, body,
-    comments: [{ id: 1, author: name, date: new Date().toLocaleString('ja-JP'), body, isOP: true, likes: 0 }]
-  };
-  threads.unshift(newThread);
-  document.getElementById('modal').style.display = 'none';
-  document.getElementById('f-name').value = '';
-  document.getElementById('f-title').value = '';
-  document.getElementById('f-body').value = '';
-  filterCat = 'all';
-  document.querySelectorAll('.chip[data-val]').forEach(c => c.classList.toggle('active', c.dataset.val === 'all'));
+  if (!name||!title||!body) { alert('すべての項目を入力してください。'); return; }
+  const now = new Date();
+  threads.unshift({ id: Date.now().toString(), cat, title, author: name, date: now.toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric'}), lastReply: 'たった今', views: 0, body, comments: [{ id: '1', author: name, date: now.toLocaleString('ja-JP',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'}), body, isOP: true, likes: 0 }] });
+  saveThreads();
+  document.getElementById('modal').style.display='none';
+  document.getElementById('f-name').value=''; document.getElementById('f-title').value=''; document.getElementById('f-body').value='';
   renderThreads();
 });
 
+// 管理者モード
+document.getElementById('admin-toggle').addEventListener('click', () => {
+  if (isAdmin) { isAdmin=false; document.getElementById('admin-toggle').classList.remove('active'); document.getElementById('admin-toggle').textContent='🔐 管理者モード'; renderThreads(); }
+  else { document.getElementById('admin-modal').style.display='flex'; }
+});
+document.getElementById('admin-login-btn').addEventListener('click', () => {
+  if (document.getElementById('admin-pw').value===ADMIN_PASSWORD) { isAdmin=true; document.getElementById('admin-modal').style.display='none'; document.getElementById('admin-toggle').classList.add('active'); document.getElementById('admin-toggle').textContent='✅ 管理者モード中'; document.getElementById('admin-pw').value=''; renderThreads(); }
+  else { alert('パスワードが違います。'); }
+});
+
+// チャット
+(function(){const fab=document.getElementById('chat-fab'),win=document.getElementById('chat-window'),msgs=document.getElementById('chat-messages'),input=document.getElementById('chat-input');let h=[];fab.addEventListener('click',()=>{const o=win.style.display!=='none';win.style.display=o?'none':'flex';win.style.flexDirection='column';if(!o)input.focus();});document.getElementById('chat-close').addEventListener('click',()=>{win.style.display='none';});function addMsg(t,r){const d=document.createElement('div');d.className='msg '+r;d.textContent=t;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d;}async function send(){const t=input.value.trim();if(!t)return;input.value='';addMsg(t,'user');h.push({role:'user',content:t});const th=addMsg('考え中...','thinking-msg');try{const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o',max_tokens:600,system:'あなたはPCパーツ・自作PCの専門家です。質問に日本語で簡潔に答えてください。',messages:h})});const data=await res.json();const reply=data.choices?.[0]?.message?.content||data.content?.map(b=>b.text||'').join('')||'エラーが発生しました。';h.push({role:'assistant',content:reply});th.remove();addMsg(reply,'bot');}catch(e){th.remove();addMsg('エラーが発生しました。','bot');}}document.getElementById('chat-send').addEventListener('click',send);input.addEventListener('keydown',e=>{if(e.key==='Enter')send();});})();
+
 renderThreads();
-
-// チャットボット
-(function() {
-  const fab = document.getElementById('chat-fab');
-  const win = document.getElementById('chat-window');
-  const msgs = document.getElementById('chat-messages');
-  const input = document.getElementById('chat-input');
-  let history = [];
-
-  fab.addEventListener('click', () => {
-    const open = win.style.display !== 'none';
-    win.style.display = open ? 'none' : 'flex';
-    win.style.flexDirection = 'column';
-    if (!open) input.focus();
-  });
-  document.getElementById('chat-close').addEventListener('click', () => { win.style.display = 'none'; });
-
-  function addMsg(text, role) {
-    const d = document.createElement('div');
-    d.className = 'msg ' + role;
-    d.textContent = text;
-    msgs.appendChild(d);
-    msgs.scrollTop = msgs.scrollHeight;
-    return d;
-  }
-
-  async function send() {
-    const text = input.value.trim();
-    if (!text) return;
-    input.value = '';
-    addMsg(text, 'user');
-    history.push({ role: 'user', content: text });
-    const thinking = addMsg('考え中...', 'thinking-msg');
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system: 'あなたは2026年6月現在の日本市場に精通したPCパーツ・自作PCの専門家です。質問に日本語で簡潔に3〜5文で答えてください。RTX 50シリーズ・Ryzen 9000シリーズ・DDR5高騰などの最新状況を踏まえて回答してください。',
-          messages: history,
-          max_tokens: 600
-        })
-      });
-      const data = await res.json();
-      const reply = data.choices?.[0]?.message?.content
-        || data.content?.map(b => b.text||'').join('')
-        || 'エラーが発生しました。';
-      history.push({ role: 'assistant', content: reply });
-      thinking.remove();
-      addMsg(reply, 'bot');
-    } catch(e) {
-      thinking.remove();
-      addMsg('エラーが発生しました。', 'bot');
-    }
-  }
-
-  document.getElementById('chat-send').addEventListener('click', send);
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
-})();
 </script>
 </body>
 </html>
