@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>レビュー — PC Builder AI</title>
+  <meta name="description" content="PCパーツ・BTOパソコンのユーザーレビュー。実際に使った人の声を参考に購入を検討できます。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+
+    .hero { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 2rem; text-align: center; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 1rem; }
+    .hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 24px; height: 1px; background: var(--gray-300); }
+    .hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 0.75rem; }
+    .hero h1 em { font-style: normal; color: var(--gray-400); }
+    .hero p { font-size: 15px; color: var(--gray-500); line-height: 1.7; }
+
+    /* フィルター */
+    .filter-wrap { max-width: 900px; margin: 0 auto; padding: 0 2rem 1.5rem; }
+    .filter-inner { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: space-between; }
+    .filter-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .filter-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); white-space: nowrap; }
+    
+    
+    
+    
+    .write-btn { flex-shrink: 0; font-size: 12px; font-weight: 600; padding: 8px 16px; border-radius: var(--r-md); background: var(--black); color: var(--white); border: none; cursor: pointer; font-family: inherit; white-space: nowrap; }
+
+    /* レビュー一覧 */
+    .reviews-wrap { max-width: 900px; margin: 0 auto; padding: 0 2rem 4rem; display: flex; flex-direction: column; gap: 10px; }
+
+    .review-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.5rem; transition: border-color 0.15s; }
+    .review-card:hover { border-color: var(--gray-300); }
+    .review-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 12px; }
+    .review-product { flex: 1; }
+    .review-cat { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; margin-bottom: 6px; display: inline-block; }
+    .cat-parts { background: var(--black); color: var(--white); }
+    .cat-bto { background: var(--gray-100); color: var(--gray-700); }
+    .cat-peripheral { background: #dbeafe; color: #1e40af; }
+    .review-product-name { font-size: 15px; font-weight: 600; color: var(--black); line-height: 1.3; letter-spacing: -0.01em; }
+    .review-rating { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .stars { display: flex; gap: 2px; }
+    .star { font-size: 14px; }
+    .rating-num { font-size: 16px; font-weight: 700; color: var(--black); }
+    .review-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+    .reviewer { font-size: 12px; font-weight: 500; color: var(--black); }
+    .review-date { font-size: 11px; color: var(--gray-400); }
+    .review-use { font-size: 11px; color: var(--gray-500); background: var(--gray-100); padding: 2px 8px; border-radius: 20px; }
+    .review-title { font-size: 14px; font-weight: 600; color: var(--black); margin-bottom: 8px; }
+    .review-body { font-size: 13px; color: var(--gray-500); line-height: 1.8; margin-bottom: 14px; }
+    .review-pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .pros, .cons { padding: 10px 12px; border-radius: var(--r-md); }
+    .pros { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .cons { background: #fff1f2; border: 1px solid #fecdd3; }
+    .pros-title { font-size: 10px; font-weight: 700; color: #166534; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 5px; }
+    .cons-title { font-size: 10px; font-weight: 700; color: #9f1239; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 5px; }
+    .pros ul, .cons ul { list-style: none; }
+    .pros li, .cons li { font-size: 12px; line-height: 1.7; }
+    .pros li::before { content: '✓ '; color: #16a34a; font-weight: 600; }
+    .cons li::before { content: '✗ '; color: #dc2626; font-weight: 600; }
+    .review-
+    .helpful { font-size: 12px; color: var(--gray-400); display: flex; align-items: center; gap: 8px; }
+    .helpful-btn { font-size: 11px; padding: 4px 10px; border-radius: var(--r-sm); border: 1px solid var(--gray-200); background: var(--white); cursor: pointer; color: var(--gray-500); font-family: inherit; transition: all 0.15s; }
+    .helpful-btn:hover { border-color: var(--black); color: var(--black); }
+    .amazon-btn { font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: var(--r-sm); background: var(--black); color: var(--white); text-decoration: none; transition: background 0.15s; }
+    .amazon-btn:hover { background: var(--gray-700); }
+
+    /* レビュー投稿モーダル */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+    .modal { background: var(--white); border-radius: var(--r-xl); width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; }
+    .modal-
+    .modal-title { font-size: 15px; font-weight: 600; }
+    .modal-close { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--gray-400); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .modal-close:hover { background: var(--gray-100); color: var(--black); }
+    .modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-label { font-size: 12px; font-weight: 600; color: var(--gray-500); letter-spacing: 0.04em; }
+    .form-input, .form-select, .form-textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--gray-200); border-radius: var(--r-md); font-size: 13px; color: var(--black); background: var(--gray-50); font-family: inherit; outline: none; transition: border-color 0.15s; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--black); background: var(--white); }
+    .form-textarea { min-height: 100px; resize: vertical; line-height: 1.6; }
+    .star-select { display: flex; gap: 6px; }
+    .star-btn { font-size: 22px; cursor: pointer; opacity: 0.3; transition: opacity 0.15s, transform 0.1s; background: none; border: none; padding: 0; }
+    .star-btn.active { opacity: 1; }
+    .star-btn:hover { transform: scale(1.2); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .modal-
+    .cancel-btn { padding: 9px 18px; border-radius: var(--r-md); border: 1px solid var(--gray-200); background: var(--white); color: var(--gray-500); font-size: 13px; cursor: pointer; font-family: inherit; }
+    .submit-btn { padding: 9px 24px; border-radius: var(--r-md); background: var(--black); color: var(--white); border: none; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+    .premium-notice { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--r-md); padding: 12px 14px; font-size: 12px; color: var(--gray-500); line-height: 1.6; text-align: center; }
+    .premium-notice strong { color: var(--black); display: block; margin-bottom: 4px; font-size: 13px; }
+
+    
+
+    @media (max-width: 520px) {
+      header { padding: 0 1.25rem; }
+      .hero, .filter-wrap, .reviews-wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .hero h1 { font-size: 24px; }
+      nav { padding: 0 1rem; }
+      .review-pros-cons { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    
+    
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="home.html">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg>
+    </div>
+    <span class="logo-text">PC Builder <span>AI</span></span>
+  </a>
+  <div class="header-right">
+    <span class="badge-free">FREE PLAN</span>
+    <a class="btn-upgrade" href="#">月額500円で無制限</a>
+  </div>
+</header>
+
+<nav>
+  <a class="nav-item" href="index.html">構成提案</a>
+  <a class="nav-item" href="guide.html">購入ガイド</a>
+  <a class="nav-item" href="bto.html">BTO</a>
+  <a class="nav-item" href="build.html">自作PC</a>
+  <a class="nav-item" href="peripherals.html">周辺機器</a>
+  <a class="nav-item" href="price.html">価格チェック</a>
+  <a class="nav-item" href="news.html">ニュース</a>
+  <a class="nav-item active" href="reviews.html">レビュー</a>
+  <a class="nav-item" href="board.html">掲示板</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">User Reviews</div>
+  <h1>パーツ・BTOの<br><em>リアルなユーザーレビュー。</em></h1>
+  <p>実際に使った人の声を参考に購入を検討できます。<br>レビューの投稿は月額プランで。</p>
+</div>
+
+<div class="filter-wrap">
+  <div class="filter-inner">
+    <div class="filter-left">
+      <div class="filter-label">カテゴリ</div>
+      <div class="chips" id="chips-cat">
+        <div class="chip active" data-val="all">すべて</div>
+        <div class="chip" data-val="parts">パーツ</div>
+        <div class="chip" data-val="bto">BTO</div>
+        <div class="chip" data-val="peripheral">周辺機器</div>
+      </div>
+    </div>
+    <button class="write-btn" id="write-btn">✏️ レビューを書く</button>
+  </div>
+</div>
+
+<div class="reviews-wrap" id="reviews-wrap"></div>
+
+<footer>
+  <p><a href="#">利用規約</a> &nbsp;·&nbsp; <a href="#">プライバシーポリシー</a></p>
+</footer>
+
+<!-- 投稿モーダル -->
+<div class="modal-overlay" id="modal" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">レビューを書く</span>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="premium-notice">
+        <strong>🔒 月額プラン限定機能</strong>
+        レビューの投稿は月額500円プランのユーザーのみご利用いただけます。
+      </div>
+      <div class="form-group">
+        <div class="form-label">カテゴリ</div>
+        <select class="form-select" id="f-cat">
+          <option value="parts">パーツ</option>
+          <option value="bto">BTO</option>
+          <option value="peripheral">周辺機器</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <div class="form-label">製品名</div>
+        <input type="text" class="form-input" id="f-product" placeholder="例: NVIDIA GeForce RTX 5070">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <div class="form-label">ニックネーム</div>
+          <input type="text" class="form-input" id="f-name" placeholder="例: ゲーマー太郎">
+        </div>
+        <div class="form-group">
+          <div class="form-label">用途</div>
+          <input type="text" class="form-input" id="f-use" placeholder="例: ゲーミング">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="form-label">評価</div>
+        <div class="star-select" id="star-select">
+          <button class="star-btn" data-val="1">★</button>
+          <button class="star-btn" data-val="2">★</button>
+          <button class="star-btn" data-val="3">★</button>
+          <button class="star-btn" data-val="4">★</button>
+          <button class="star-btn" data-val="5">★</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="form-label">タイトル</div>
+        <input type="text" class="form-input" id="f-title" placeholder="例: 期待以上のパフォーマンスで大満足">
+      </div>
+      <div class="form-group">
+        <div class="form-label">レビュー本文</div>
+        <textarea class="form-textarea" id="f-body" placeholder="使用感・性能・コスパなど詳しく教えてください"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <div class="form-label">良かった点（1行ずつ）</div>
+          <textarea class="form-textarea" id="f-pros" placeholder="フレームレートが大幅に向上&#10;静音性が高い" style="min-height:70px;"></textarea>
+        </div>
+        <div class="form-group">
+          <div class="form-label">気になった点（1行ずつ）</div>
+          <textarea class="form-textarea" id="f-cons" placeholder="価格が高め&#10;消費電力が大きい" style="min-height:70px;"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" id="cancel-btn">キャンセル</button>
+      <button class="submit-btn" id="submit-btn">投稿する</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const AMAZON_TAG = 'pcbuilderai-22';
+let filterCat = 'all';
+let selectedRating = 0;
+
+const SAMPLE_REVIEWS = [
+  {
+    id: 1, cat: 'parts', product: 'NVIDIA GeForce RTX 5070',
+    reviewer: 'ゲーマー太郎', date: '2026年6月20日', use: 'ゲーミング（WQHD・144fps）',
+    rating: 5, title: '4070 Tiから乗り換えて大正解。WQHD144fps余裕で出る',
+    body: 'RTX 4070 Ti SuperからRTX 5070に乗り換えました。Cyberpunk 2077のWQHDでのフレームレートが平均90fps→140fpsに向上。DLSS 4のマルチフレーム生成が優秀で、4K60fpsも十分狙えます。消費電力も前世代より抑えられており、夏場も安心です。',
+    pros: ['WQHD144fps以上が余裕', 'DLSS 4が非常に優秀', '前世代より省電力'],
+    cons: ['価格が高め（13万円台）', 'RTX 5070 Tiとの差が気になる'],
+    helpful: 42, amazonUrl: 'https://www.amazon.co.jp/s?k=RTX+5070+グラフィックボード&tag=' + AMAZON_TAG
+  },
+  {
+    id: 2, cat: 'bto', product: 'GALLERIA XA7R-R57（Ryzen 7 9800X3D / RTX 5070）',
+    reviewer: 'じゅんぺい', date: '2026年6月15日', use: 'ゲーミング・FPS',
+    rating: 4, title: '初自作民にとって最高の選択肢。サポートも丁寧',
+    body: '自作PCに挑戦しようと思っていたものの知識不足で断念し、こちらを購入。Ryzen 7 9800X3DはFPSゲームで本当に強く、Apex LegendsでWQHD240fps超えを記録しました。ドスパラのサポートは電話対応が丁寧で初心者でも安心。BTOにして正解でした。',
+    pros: ['Ryzen 9800X3DでFPS最強', 'サポートが手厚い', '注文から1週間で到着'],
+    cons: ['付属ケーブルが少ない', 'ケースが少し安っぽい'],
+    helpful: 28, amazonUrl: 'https://www.amazon.co.jp/s?k=GALLERIA+ゲーミングPC+RTX5070&tag=' + AMAZON_TAG
+  },
+  {
+    id: 3, cat: 'peripheral', product: 'LG UltraGear 27GR95QE-B（27インチ OLED 240Hz）',
+    reviewer: 'えりか＠PC沼', date: '2026年6月10日', use: 'ゲーミング・動画視聴',
+    rating: 5, title: 'OLEDの発色に感動。一度使ったら液晶には戻れない',
+    body: 'IPSモニターから乗り換えました。OLEDの黒の深さと色域の広さは別次元です。Apex Legendsでは240Hzの恩恵でキャラの動きが格段に滑らかになりました。映画鑑賞も映像美が素晴らしく、毎日使うのが楽しみになっています。応答速度も0.03msで残像ゼロ。',
+    pros: ['OLEDの発色・コントラストが最高', '240Hzで動きが滑らか', '応答速度0.03ms'],
+    cons: ['焼き付きが心配（長期使用）', '価格が高い（9万円台）'],
+    helpful: 67, amazonUrl: 'https://www.amazon.co.jp/s?k=LG+OLED+ゲーミングモニター+240Hz&tag=' + AMAZON_TAG
+  },
+  {
+    id: 4, cat: 'parts', product: 'AMD Ryzen 7 9800X3D',
+    reviewer: 'self_build_pc', date: '2026年6月5日', use: 'ゲーミング・配信',
+    rating: 5, title: 'ゲーミングCPUの頂点。Intelを選ぶ理由がなくなった',
+    body: 'Core i9-13900KからRyzen 7 9800X3Dに換装。3D V-Cacheの効果は絶大で、特にオープンワールド系ゲームでの1%lowフレームが大幅改善されました。消費電力も大幅に下がり、冬場のPC熱問題が解消。ゲーミング用途ならこれ一択だと思います。',
+    pros: ['3D V-Cacheでゲーム性能最強', '省電力で発熱が少ない', '1%lowが大幅改善'],
+    cons: ['OC非対応', '価格が高い（6万円台）'],
+    helpful: 89, amazonUrl: 'https://www.amazon.co.jp/s?k=Ryzen+7+9800X3D&tag=' + AMAZON_TAG
+  },
+  {
+    id: 5, cat: 'peripheral', product: 'Logicool G Pro X Superlight 2 DEX',
+    reviewer: 'fps_master99', date: '2026年5月28日', use: 'FPS・競技ゲーム',
+    rating: 4, title: '60gの軽さが武器。センサー精度も申し分なし',
+    body: 'Superlight初代から乗り換え。60gの軽さはそのままにセンサーがHERO 25Kに強化され、カーソルの追従性がさらに向上しました。ハニカムシェルではないのでクリック感がしっかりしており、誤クリックが激減。Apex・VALORANTどちらでも快適に使えています。',
+    pros: ['60gの圧倒的な軽さ', 'センサー精度が高い', 'クリック感が良好'],
+    cons: ['充電端子がMicro-USB', '価格がやや高い'],
+    helpful: 34, amazonUrl: 'https://www.amazon.co.jp/s?k=Logicool+G+Pro+X+Superlight+2&tag=' + AMAZON_TAG
+  },
+];
+
+let reviews = [...SAMPLE_REVIEWS];
+const helpfulCounts = {};
+
+function stars(rating) {
+  return Array.from({length: 5}, (_, i) =>
+    `<span class="star">${i < rating ? '★' : '☆'}</span>`
+  ).join('');
+}
+
+function catClass(cat) {
+  return { parts: 'cat-parts', bto: 'cat-bto', peripheral: 'cat-peripheral' }[cat] || '';
+}
+function catLabel(cat) {
+  return { parts: 'パーツ', bto: 'BTO', peripheral: '周辺機器' }[cat] || '';
+}
+
+function renderReviews() {
+  const wrap = document.getElementById('reviews-wrap');
+  const filtered = filterCat === 'all' ? reviews : reviews.filter(r => r.cat === filterCat);
+  if (filtered.length === 0) {
+    wrap.innerHTML = '<div class="empty"><div style="font-size:36px;margin-bottom:12px;">📝</div><div style="font-size:14px;">まだレビューがありません</div></div>';
+    return;
+  }
+  wrap.innerHTML = filtered.map(r => `
+    <div class="review-card">
+      <div class="review-header">
+        <div class="review-product">
+          <span class="review-cat ${catClass(r.cat)}">${catLabel(r.cat)}</span>
+          <div class="review-product-name">${r.product}</div>
+        </div>
+        <div class="review-rating">
+          <div class="stars">${stars(r.rating)}</div>
+          <span class="rating-num">${r.rating}.0</span>
+        </div>
+      </div>
+      <div class="review-meta">
+        <span class="reviewer">👤 ${r.reviewer}</span>
+        <span class="review-date">${r.date}</span>
+        <span class="review-use">${r.use}</span>
+      </div>
+      <div class="review-title">${r.title}</div>
+      <div class="review-body">${r.body}</div>
+      <div class="review-pros-cons">
+        <div class="pros">
+          <div class="pros-title">Good</div>
+          <ul>${r.pros.map(p => `<li>${p}</li>`).join('')}</ul>
+        </div>
+        <div class="cons">
+          <div class="cons-title">Bad</div>
+          <ul>${r.cons.map(c => `<li>${c}</li>`).join('')}</ul>
+        </div>
+      </div>
+      <div class="review-footer">
+        <div class="helpful">
+          <span>参考になった: ${helpfulCounts[r.id] !== undefined ? helpfulCounts[r.id] : r.helpful}件</span>
+          <button class="helpful-btn" onclick="markHelpful(${r.id})">👍 参考になった</button>
+        </div>
+        <a class="amazon-btn" href="${r.amazonUrl}" target="_blank" rel="noopener sponsored">Amazonで見る →</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+function markHelpful(id) {
+  const r = reviews.find(r => r.id === id);
+  if (!r) return;
+  helpfulCounts[id] = (helpfulCounts[id] !== undefined ? helpfulCounts[id] : r.helpful) + 1;
+  renderReviews();
+}
+
+document.querySelectorAll('.chip[data-val]').forEach(chip => {
+  chip.addEventListener('click', function() {
+    filterCat = this.dataset.val;
+    document.querySelectorAll('.chip[data-val]').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+    renderReviews();
+  });
+});
+
+// モーダル
+document.getElementById('write-btn').addEventListener('click', () => {
+  document.getElementById('modal').style.display = 'flex';
+});
+document.getElementById('modal-close').addEventListener('click', () => {
+  document.getElementById('modal').style.display = 'none';
+});
+document.getElementById('cancel-btn').addEventListener('click', () => {
+  document.getElementById('modal').style.display = 'none';
+});
+
+// 星選択
+document.querySelectorAll('.star-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    selectedRating = parseInt(this.dataset.val);
+    document.querySelectorAll('.star-btn').forEach((b, i) => {
+      b.classList.toggle('active', i < selectedRating);
+    });
+  });
+});
+
+document.getElementById('submit-btn').addEventListener('click', () => {
+  const product = document.getElementById('f-product').value.trim();
+  const name = document.getElementById('f-name').value.trim();
+  const title = document.getElementById('f-title').value.trim();
+  const body = document.getElementById('f-body').value.trim();
+  const cat = document.getElementById('f-cat').value;
+  const use = document.getElementById('f-use').value.trim();
+  const pros = document.getElementById('f-pros').value.trim().split('\n').filter(Boolean);
+  const cons = document.getElementById('f-cons').value.trim().split('\n').filter(Boolean);
+
+  if (!product || !name || !title || !body || selectedRating === 0) {
+    alert('製品名・ニックネーム・評価・タイトル・本文は必須です。');
+    return;
+  }
+
+  const newReview = {
+    id: Date.now(), cat, product,
+    reviewer: name, date: new Date().toLocaleDateString('ja-JP', {year:'numeric',month:'long',day:'numeric'}),
+    use: use || '用途未記入',
+    rating: selectedRating, title, body,
+    pros: pros.length ? pros : ['記載なし'],
+    cons: cons.length ? cons : ['記載なし'],
+    helpful: 0,
+    amazonUrl: 'https://www.amazon.co.jp/s?k=' + encodeURIComponent(product) + '&tag=' + AMAZON_TAG
+  };
+
+  reviews.unshift(newReview);
+  document.getElementById('modal').style.display = 'none';
+  filterCat = 'all';
+  document.querySelectorAll('.chip[data-val]').forEach(c => c.classList.toggle('active', c.dataset.val === 'all'));
+  renderReviews();
+});
+
+renderReviews();
+</script>
+</body>
+</html>

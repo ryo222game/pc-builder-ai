@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PC Builder AI — AIが最適なPCを提案する</title>
+  <meta name="description" content="予算と用途を入れるだけでAIが最適なPC構成・BTOを提案。価格チェック・自作ガイド・掲示板まで、PCのことならここで全部解決。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0a0a0a; --white: #ffffff;
+      --gray-50: #fafafa; --gray-100: #f4f4f5; --gray-200: #e4e4e7;
+      --gray-300: #d1d1d6; --gray-400: #6b6b72; --gray-500: #4a4a52;
+      --gray-700: #3f3f46;
+      --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: var(--black); color: var(--white); min-height: 100vh; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+    /* ── Header ── */
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(to bottom, rgba(10,10,10,0.9), transparent); }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); }
+    .logo-mark { width: 30px; height: 30px; background: var(--white); border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; }
+    .logo-mark svg { width: 16px; height: 16px; fill: none; stroke: var(--black); stroke-width: 1.8; }
+    .logo-text { font-size: 14px; font-weight: 600; letter-spacing: -0.02em; }
+    .logo-text span { color: rgba(255,255,255,0.4); font-weight: 400; }
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .btn-enter { font-size: 13px; font-weight: 600; padding: 8px 18px; border-radius: var(--r-sm); background: var(--white); color: var(--black); border: none; cursor: pointer; text-decoration: none; transition: opacity 0.15s; }
+    .btn-enter:hover { opacity: 0.85; }
+
+    /* ── Hero ── */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 4rem; position: relative; overflow: hidden; }
+
+    /* グリッド背景 */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+    }
+
+    /* グロー */
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 20px; margin-bottom: 2rem; }
+    .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+    .hero h1 { font-size: clamp(40px, 8vw, 80px); font-weight: 700; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 1.5rem; }
+    .hero h1 .line1 { display: block; }
+    .hero h1 .line2 { display: block; color: rgba(255,255,255,0.25); }
+
+    .hero-sub { font-size: clamp(15px, 2vw, 18px); color: rgba(255,255,255,0.45); line-height: 1.7; margin-bottom: 2.5rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+    .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 4rem; }
+    .cta-primary { font-size: 14px; font-weight: 600; padding: 13px 28px; border-radius: var(--r-md); background: var(--white); color: var(--black); text-decoration: none; transition: opacity 0.15s, transform 0.1s; }
+    .cta-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .cta-secondary { font-size: 14px; font-weight: 500; padding: 13px 28px; border-radius: var(--r-md); background: rgba(255,255,255,0.08); color: var(--white); text-decoration: none; border: 1px solid rgba(255,255,255,0.12); transition: background 0.15s; }
+    .cta-secondary:hover { background: rgba(255,255,255,0.12); }
+
+    /* スタッツ */
+    .hero-stats { display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; color: var(--white); }
+    .stat-label { font-size: 11px; color: rgba(255,255,255,0.35); font-weight: 500; letter-spacing: 0.05em; margin-top: 3px; }
+
+    /* ── 機能一覧 ── */
+    .features { background: var(--gray-50); color: var(--black); padding: 6rem 2rem; }
+    .features-inner { max-width: 900px; margin: 0 auto; }
+    .section-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 1rem; text-align: center; }
+    .section-title { font-size: clamp(24px, 4vw, 36px); font-weight: 600; letter-spacing: -0.03em; color: var(--black); margin-bottom: 3rem; text-align: center; line-height: 1.2; }
+    .section-title em { font-style: normal; color: var(--gray-400); }
+
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .feature-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.5rem; transition: border-color 0.15s, transform 0.15s; text-decoration: none; color: inherit; display: block; }
+    .feature-card:hover { border-color: var(--gray-400); transform: translateY(-2px); }
+    .feature-icon { font-size: 28px; margin-bottom: 1rem; }
+    .feature-name { font-size: 15px; font-weight: 600; color: var(--black); margin-bottom: 6px; letter-spacing: -0.01em; }
+    .feature-desc { font-size: 13px; color: var(--gray-500); line-height: 1.7; }
+    .feature-link { font-size: 12px; font-weight: 600; color: var(--gray-400); margin-top: 12px; display: inline-flex; align-items: center; gap: 4px; }
+
+    /* ── フロー ── */
+    .flow { background: var(--black); color: var(--white); padding: 6rem 2rem; }
+    .flow-inner { max-width: 760px; margin: 0 auto; }
+    .flow-steps { display: flex; flex-direction: column; gap: 1px; margin-top: 3rem; }
+    .flow-step { display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.5rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--r-xl); }
+    .flow-num { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.5); flex-shrink: 0; }
+    .flow-content { flex: 1; }
+    .flow-title { font-size: 16px; font-weight: 600; color: var(--white); margin-bottom: 5px; }
+    .flow-desc { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.7; }
+    .flow-arrow { display: flex; justify-content: center; color: rgba(255,255,255,0.15); font-size: 20px; padding: 4px 0; }
+
+    /* ── CTA最終 ── */
+    .final-cta { background: var(--gray-50); padding: 6rem 2rem; text-align: center; }
+    .final-cta-inner { max-width: 600px; margin: 0 auto; }
+    .final-cta h2 { font-size: clamp(28px, 5vw, 42px); font-weight: 700; letter-spacing: -0.03em; color: var(--black); margin-bottom: 1rem; line-height: 1.2; }
+    .final-cta p { font-size: 15px; color: var(--gray-500); margin-bottom: 2rem; line-height: 1.7; }
+    .final-cta-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: var(--r-lg); background: var(--black); color: var(--white); text-decoration: none; transition: opacity 0.15s, transform 0.1s; }
+    .final-cta-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    /* Footer */
+    footer { background: var(--black); padding: 2rem; text-align: center; font-size: 11px; color: rgba(255,255,255,0.25); line-height: 1.8; border-top: 1px solid rgba(255,255,255,0.06); }
+    footer a { color: rgba(255,255,255,0.25); text-decoration: none; }
+    footer a:hover { color: rgba(255,255,255,0.5); }
+
+    @media (max-width: 640px) {
+      header { padding: 1rem 1.25rem; }
+      .hero { padding: 7rem 1.25rem 3rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.5rem; }
+      .features, .flow, .final-cta { padding: 4rem 1.25rem; }
+    }
+    @media (max-width: 900px) {
+      .features-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="home.html">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg>
+    </div>
+    <span class="logo-text">PC Builder <span>AI</span></span>
+  </a>
+  <div class="header-right">
+    <a class="cta-secondary" href="index.html" style="padding:7px 16px;font-size:13px;">ログイン</a>
+    <a class="btn-enter" href="index.html">無料で始める →</a>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">AI-Powered · 無料で使える · 毎日更新</div>
+    <h1>
+      <span class="line1">PCのことは、</span>
+      <span class="line2">全部ここで。</span>
+    </h1>
+    <p class="hero-sub">予算と用途を入れるだけでAIが最適なPC構成を提案。BTO・自作・周辺機器・価格チェックまで、PCに関するすべてが揃っています。</p>
+    <div class="hero-cta">
+      <a class="cta-primary" href="index.html">✨ 無料で構成を提案してもらう</a>
+      <a class="cta-secondary" href="guide.html">初めての方はこちら →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">9</div><div class="stat-label">機能を搭載</div></div>
+      <div class="stat"><div class="stat-num">無料</div><div class="stat-label">基本機能は全て無料</div></div>
+      <div class="stat"><div class="stat-num">毎日</div><div class="stat-label">ニュースを更新</div></div>
+      <div class="stat"><div class="stat-num">AI</div><div class="stat-label">最新モデルを使用</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 機能一覧 -->
+<section class="features">
+  <div class="features-inner">
+    <div class="section-eyebrow">Features</div>
+    <div class="section-title">PCに関するすべてが<br><em>ひとつのサイトに。</em></div>
+    <div class="features-grid">
+      <a class="feature-card" href="index.html">
+        <div class="feature-icon">✨</div>
+        <div class="feature-name">AI構成提案</div>
+        <div class="feature-desc">予算・用途・ゲームタイトルを入力するだけで最適なパーツ構成をAIが提案。Amazonへのリンク付き。</div>
+        <div class="feature-link">試してみる →</div>
+      </a>
+      <a class="feature-card" href="bto.html">
+        <div class="feature-icon">🖥️</div>
+        <div class="feature-name">BTOおすすめ</div>
+        <div class="feature-desc">ゲーミング・クリエイター向けBTOを予算・用途別に厳選紹介。メーカー直・Amazon・価格.comへのリンク付き。</div>
+        <div class="feature-link">BTOを探す →</div>
+      </a>
+      <a class="feature-card" href="price.html">
+        <div class="feature-icon">📊</div>
+        <div class="feature-name">価格チェック</div>
+        <div class="feature-desc">気になるパーツの価格動向をAIが分析。今が買い時かどうかを「買い時・待て・普通」で判定します。</div>
+        <div class="feature-link">価格を調べる →</div>
+      </a>
+      <a class="feature-card" href="guide.html">
+        <div class="feature-icon">📖</div>
+        <div class="feature-name">初心者購入ガイド</div>
+        <div class="feature-desc">「BTO vs 自作どっちがいい？」「予算はいくら必要？」など、初めてPCを買う人の疑問を解消。</div>
+        <div class="feature-link">ガイドを読む →</div>
+      </a>
+      <a class="feature-card" href="build.html">
+        <div class="feature-icon">🔧</div>
+        <div class="feature-name">自作PCの作り方</div>
+        <div class="feature-desc">CPU取り付けからOSインストールまで7ステップで解説。インタラクティブなステップ形式で迷わない。</div>
+        <div class="feature-link">作り方を見る →</div>
+      </a>
+      <a class="feature-card" href="peripherals.html">
+        <div class="feature-icon">🖱️</div>
+        <div class="feature-name">周辺機器セット</div>
+        <div class="feature-desc">ゲーミング・クリエイター・テレワーク別におすすめのモニター・マウス・キーボードをセットで紹介。</div>
+        <div class="feature-link">セットを見る →</div>
+      </a>
+      <a class="feature-card" href="news.html">
+        <div class="feature-icon">📰</div>
+        <div class="feature-name">PCニュース</div>
+        <div class="feature-desc">パーツ・BTO・周辺機器の最新ニュースをAIが毎日生成。直近1ヶ月の情報のみをお届けします。</div>
+        <div class="feature-link">ニュースを見る →</div>
+      </a>
+      <a class="feature-card" href="reviews.html">
+        <div class="feature-icon">⭐</div>
+        <div class="feature-name">ユーザーレビュー</div>
+        <div class="feature-desc">実際に使ったユーザーのリアルなレビューを掲載。良かった点・気になった点をわかりやすく整理。</div>
+        <div class="feature-link">レビューを読む →</div>
+      </a>
+      <a class="feature-card" href="board.html">
+        <div class="feature-icon">💬</div>
+        <div class="feature-name">掲示板</div>
+        <div class="feature-desc">構成の相談・セール情報の共有・デスク環境自慢など、PCについて自由に話し合えるコミュニティ。</div>
+        <div class="feature-link">掲示板を見る →</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 使い方フロー -->
+<section class="flow">
+  <div class="flow-inner">
+    <div class="section-eyebrow" style="color:rgba(255,255,255,0.3);">How it works</div>
+    <div class="section-title" style="color:var(--white);">3ステップで<br><em style="color:rgba(255,255,255,0.25);">PCが決まる。</em></div>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-content">
+          <div class="flow-title">予算と用途を入力する</div>
+          <div class="flow-desc">スライダーで予算を設定して、用途（ゲーミング・動画編集など）を選ぶだけ。使うゲームやアプリ名も入れるとより精度が上がります。</div>
+        </div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-content">
+          <div class="flow-title">AIが最適な構成を提案する</div>
+          <div class="flow-desc">CPU・GPU・メモリ・SSDなど全パーツをAIが自動で選定。2026年の最新パーツ・実勢価格を考慮した現実的な構成が数秒で出てきます。</div>
+        </div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-content">
+          <div class="flow-title">Amazonで購入する</div>
+          <div class="flow-desc">各パーツに「Amazonで見る」ボタンが付いているのでそのまま購入できます。迷ったら価格.comで最安値を確認したり、掲示板で相談もできます。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 最終CTA -->
+<section class="final-cta">
+  <div class="final-cta-inner">
+    <h2>さっそく試してみよう。<br>無料で使えます。</h2>
+    <p>アカウント登録不要。予算と用途を入力するだけで今すぐ使えます。</p>
+    <a class="final-cta-btn" href="index.html">
+      ✨ 無料で構成提案を試す
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>
+    <a href="index.html">構成提案</a> &nbsp;·&nbsp;
+    <a href="guide.html">購入ガイド</a> &nbsp;·&nbsp;
+    <a href="bto.html">BTO</a> &nbsp;·&nbsp;
+    <a href="build.html">自作PC</a> &nbsp;·&nbsp;
+    <a href="peripherals.html">周辺機器</a> &nbsp;·&nbsp;
+    <a href="price.html">価格チェック</a> &nbsp;·&nbsp;
+    <a href="news.html">ニュース</a> &nbsp;·&nbsp;
+    <a href="reviews.html">レビュー</a> &nbsp;·&nbsp;
+    <a href="board.html">掲示板</a>
+  </p>
+  <p style="margin-top:12px;">
+    本サービスはAmazonアソシエイトプログラムに参加しています。<br>
+    <a href="#">利用規約</a> &nbsp;·&nbsp; <a href="#">プライバシーポリシー</a>
+  </p>
+</footer>
+
+</body>
+</html>

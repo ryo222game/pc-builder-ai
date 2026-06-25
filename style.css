@@ -1,0 +1,177 @@
+/* ============================================
+   PC Builder AI — 共通スタイルシート
+   ============================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #0a0a0a; --white: #ffffff;
+  --gray-50: #fafafa; --gray-100: #f4f4f5; --gray-200: #e4e4e7;
+  --gray-300: #d1d1d6; --gray-400: #6b6b72; --gray-500: #4a4a52;
+  --gray-700: #3f3f46; --gray-900: #18181b;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+  background: var(--gray-50);
+  color: var(--black);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ── */
+header {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--gray-200);
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--black); }
+.logo-mark { width: 30px; height: 30px; background: var(--black); border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; }
+.logo-mark svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 1.8; }
+.logo-text { font-size: 14px; font-weight: 600; letter-spacing: -0.02em; }
+.logo-text span { color: var(--gray-400); font-weight: 400; }
+.header-right { display: flex; align-items: center; gap: 10px; }
+.badge-free { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 20px; background: var(--gray-100); color: var(--gray-500); border: 1px solid var(--gray-200); letter-spacing: 0.02em; }
+.btn-upgrade { font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: var(--r-sm); background: var(--black); color: var(--white); border: none; cursor: pointer; text-decoration: none; transition: background 0.15s; }
+.btn-upgrade:hover { background: var(--gray-700); }
+
+/* ── Nav ── */
+nav { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 0 2rem; display: flex; overflow-x: auto; }
+.nav-item { font-size: 13px; font-weight: 500; padding: 14px 16px; color: var(--gray-400); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.15s; }
+.nav-item:hover { color: var(--black); }
+.nav-item.active { color: var(--black); border-bottom-color: var(--black); }
+
+/* ── Hero（共通） ── */
+.hero { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 2rem; text-align: center; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 1rem; }
+.hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 24px; height: 1px; background: var(--gray-300); }
+.hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 0.75rem; }
+.hero h1 em { font-style: normal; color: var(--gray-400); }
+.hero p { font-size: 15px; color: var(--gray-500); line-height: 1.7; }
+
+/* ── カード共通 ── */
+.card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.5rem; margin-bottom: 1.25rem; }
+
+/* ── チップ共通 ── */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { padding: 7px 16px; border-radius: 20px; border: 1px solid var(--gray-200); font-size: 13px; cursor: pointer; background: var(--white); color: var(--gray-500); transition: all 0.15s; user-select: none; }
+.chip:hover { border-color: var(--gray-400); color: var(--black); }
+.chip.active { background: var(--black); border-color: var(--black); color: var(--white); font-weight: 500; }
+
+/* ── フォーム要素共通 ── */
+select, input[type="text"], input[type="range"], textarea {
+  font-family: inherit;
+}
+select, input[type="text"], textarea {
+  width: 100%; padding: 9px 12px; border: 1px solid var(--gray-200);
+  border-radius: var(--r-md); font-size: 14px; color: var(--black);
+  background: var(--gray-50); appearance: none; outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+select:focus, input[type="text"]:focus, textarea:focus { border-color: var(--black); background: var(--white); }
+input[type="range"] { width: 100%; height: 2px; appearance: none; background: var(--gray-200); border-radius: 2px; outline: none; cursor: pointer; accent-color: var(--black); }
+input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--black); border: 3px solid var(--white); box-shadow: 0 0 0 1px var(--gray-300); cursor: pointer; transition: box-shadow 0.15s; }
+input[type="range"]::-webkit-slider-thumb:hover { box-shadow: 0 0 0 1px var(--black); }
+
+/* ── ボタン共通 ── */
+.btn-primary { width: 100%; padding: 13px; font-size: 15px; font-weight: 600; border-radius: var(--r-md); background: var(--black); color: var(--white); border: none; cursor: pointer; transition: opacity 0.15s, transform 0.1s; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.btn-primary:hover { opacity: 0.9; }
+.btn-primary:active { transform: scale(0.99); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn-outline { padding: 7px 16px; border-radius: var(--r-md); border: 1px solid var(--gray-200); background: var(--white); color: var(--gray-700); font-size: 13px; cursor: pointer; font-family: inherit; transition: all 0.15s; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
+.btn-outline:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+
+/* ── ローディングドット共通 ── */
+.thinking { display: flex; align-items: center; gap: 10px; color: var(--gray-400); font-size: 14px; padding: 1rem 0; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--black); animation: pulse 1.2s infinite; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes pulse { 0%,100%{opacity:0.2;transform:scale(0.8);} 50%{opacity:1;transform:scale(1);} }
+
+/* ── Usage bar ── */
+.usage-bar { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--gray-500); margin-bottom: 1.5rem; padding: 10px 14px; background: var(--white); border-radius: var(--r-sm); border: 1px solid var(--gray-200); }
+.usage-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gray-200); }
+.usage-dot.used { background: var(--black); }
+
+/* ── コメント・ポイントボックス ── */
+.comment-box { margin-top: 1rem; padding: 12px 14px; background: var(--gray-50); border-left: 3px solid var(--black); border-radius: 0 var(--r-sm) var(--r-sm) 0; font-size: 13px; color: var(--gray-500); line-height: 1.7; }
+.warn-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: var(--r-md); padding: 12px 16px; font-size: 13px; color: #78350f; line-height: 1.7; margin: 1rem 0; }
+.warn-box strong { display: block; margin-bottom: 4px; }
+.point-box { background: var(--gray-50); border-left: 3px solid var(--black); border-radius: 0 var(--r-md) var(--r-md) 0; padding: 14px 16px; margin: 1rem 0; font-size: 13px; color: var(--gray-500); line-height: 1.7; }
+.point-box strong { color: var(--black); }
+
+/* ── Upgrade・Premium box ── */
+.upgrade-box { margin-top: 1rem; padding: 1.25rem; background: var(--gray-50); border-radius: var(--r-md); text-align: center; border: 1px solid var(--gray-200); }
+.upgrade-box p { font-size: 13px; color: var(--gray-500); margin-bottom: 12px; line-height: 1.7; }
+.upgrade-box-btn { padding: 9px 24px; font-size: 13px; font-weight: 600; border-radius: var(--r-sm); background: var(--black); color: var(--white); border: none; cursor: pointer; font-family: inherit; transition: background 0.15s; }
+.upgrade-box-btn:hover { background: var(--gray-700); }
+
+/* ── チャットボット ── */
+.chat-fab { position: fixed; bottom: 28px; right: 28px; width: 48px; height: 48px; border-radius: 50%; background: var(--black); color: var(--white); border: none; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; z-index: 300; transition: transform 0.15s, background 0.15s; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.chat-fab:hover { transform: scale(1.08); background: var(--gray-700); }
+.chat-window { position: fixed; bottom: 88px; right: 28px; width: 340px; max-height: 460px; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); display: flex; flex-direction: column; z-index: 300; overflow: hidden; }
+.chat-header { padding: 14px 18px; background: var(--black); color: var(--white); font-size: 13px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+.chat-close { background: rgba(255,255,255,0.15); border: none; color: var(--white); font-size: 14px; cursor: pointer; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+.chat-close:hover { background: rgba(255,255,255,0.3); }
+.chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.msg { max-width: 86%; padding: 9px 13px; border-radius: 14px; font-size: 12px; line-height: 1.65; }
+.msg.bot { background: var(--gray-100); color: var(--black); align-self: flex-start; border-bottom-left-radius: 4px; }
+.msg.user { background: var(--black); color: var(--white); align-self: flex-end; border-bottom-right-radius: 4px; }
+.msg.thinking-msg { background: var(--gray-100); color: var(--gray-400); align-self: flex-start; font-style: italic; }
+.chat-input-row { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--gray-200); background: var(--white); }
+.chat-input { flex: 1; padding: 8px 13px; border: 1px solid var(--gray-200); border-radius: 20px; font-size: 12px; outline: none; font-family: inherit; background: var(--gray-50); color: var(--black); transition: border-color 0.15s; }
+.chat-input:focus { border-color: var(--black); background: var(--white); }
+.chat-send { padding: 8px 14px; background: var(--black); color: var(--white); border: none; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 600; font-family: inherit; transition: background 0.15s; }
+.chat-send:hover { background: var(--gray-700); }
+
+/* ── セクションラベル共通 ── */
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 1rem; }
+
+/* ── モーダル共通 ── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+.modal { background: var(--white); border-radius: var(--r-xl); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
+.modal-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--white); }
+.modal-title { font-size: 15px; font-weight: 600; }
+.modal-close { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--gray-400); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+.modal-close:hover { background: var(--gray-100); color: var(--black); }
+.modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 10px; }
+.modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--gray-200); display: flex; gap: 8px; justify-content: flex-end; }
+.cancel-btn { padding: 9px 18px; border-radius: var(--r-md); border: 1px solid var(--gray-200); background: var(--white); color: var(--gray-500); font-size: 13px; cursor: pointer; font-family: inherit; }
+.submit-btn { padding: 9px 24px; border-radius: var(--r-md); background: var(--black); color: var(--white); border: none; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: background 0.15s; }
+.submit-btn:hover { background: var(--gray-700); }
+
+/* ── フォームラベル共通 ── */
+.form-label { font-size: 12px; font-weight: 600; color: var(--gray-500); margin-bottom: 5px; display: block; letter-spacing: 0.04em; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ── フッター共通 ── */
+footer { text-align: center; padding: 2rem; font-size: 11px; color: var(--gray-400); border-top: 1px solid var(--gray-200); margin-top: 2rem; line-height: 1.8; }
+footer a { color: var(--gray-400); text-decoration: none; border-bottom: 1px solid var(--gray-200); }
+footer a:hover { color: var(--gray-500); }
+
+/* ── 空状態 ── */
+.empty { text-align: center; padding: 4rem 2rem; color: var(--gray-400); }
+.empty-icon { font-size: 36px; margin-bottom: 12px; }
+.empty-text { font-size: 14px; }
+
+/* ── レスポンシブ共通 ── */
+@media (max-width: 520px) {
+  header { padding: 0 1.25rem; }
+  nav { padding: 0 1rem; }
+  .hero { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .hero h1 { font-size: 24px; }
+  .form-row { grid-template-columns: 1fr; }
+}
