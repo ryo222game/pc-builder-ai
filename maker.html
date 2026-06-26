@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>メーカー情報 — PC Builder AI</title>
+  <meta name="description" content="NVIDIA・AMD・Intel・Samsung などPCパーツメーカーの詳細情報・製品ラインナップ・比較。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL3F4HVTTF"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-GL3F4HVTTF');</script>
+  <style>
+    .hero { max-width: 960px; margin: 0 auto; padding: 3rem 2rem 2rem; text-align: center; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 1rem; }
+    .hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 24px; height: 1px; background: var(--gray-300); }
+    .hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 0.75rem; }
+    .hero h1 em { font-style: normal; color: var(--gray-400); }
+    .hero p { font-size: 15px; color: var(--gray-500); line-height: 1.7; }
+
+    /* メーカーグリッド */
+    .makers-wrap { max-width: 960px; margin: 0 auto; padding: 0 2rem 2rem; }
+    .makers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 2rem; }
+    .maker-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.25rem; cursor: pointer; transition: border-color 0.15s, transform 0.1s; text-align: center; }
+    .maker-card:hover { border-color: var(--gray-400); transform: translateY(-2px); }
+    .maker-card.active { border-color: var(--black); background: var(--black); }
+    .maker-logo { width: 48px; height: 48px; border-radius: var(--r-md); background: var(--black); color: var(--white); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; margin: 0 auto 10px; }
+    .maker-card.active .maker-logo { background: var(--white); color: var(--black); }
+    .maker-card-name { font-size: 13px; font-weight: 600; color: var(--black); }
+    .maker-card.active .maker-card-name { color: var(--white); }
+    .maker-card-cat { font-size: 11px; color: var(--gray-400); margin-top: 3px; }
+    .maker-card.active .maker-card-cat { color: rgba(255,255,255,0.6); }
+
+    /* 詳細エリア */
+    .detail-wrap { max-width: 960px; margin: 0 auto; padding: 0 2rem 5rem; }
+    .detail-header { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.75rem; margin-bottom: 12px; }
+    .detail-top { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1rem; }
+    .detail-logo { width: 64px; height: 64px; border-radius: var(--r-lg); background: var(--black); color: var(--white); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; flex-shrink: 0; }
+    .detail-name { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; color: var(--black); }
+    .detail-sub { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
+    .detail-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1rem; }
+    .stat-box { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--r-md); padding: 12px 14px; }
+    .stat-box-val { font-size: 18px; font-weight: 700; color: var(--black); }
+    .stat-box-label { font-size: 11px; color: var(--gray-400); margin-top: 3px; }
+    .detail-desc { font-size: 14px; color: var(--gray-500); line-height: 1.8; }
+
+    /* 製品一覧 */
+    .products-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.5rem; margin-bottom: 12px; }
+    .card-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 1rem; }
+    .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .product-item { padding: 12px 14px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--r-md); cursor: pointer; transition: border-color 0.15s; }
+    .product-item:hover { border-color: var(--black); }
+    .product-item-name { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 3px; }
+    .product-item-price { font-size: 12px; color: var(--gray-500); }
+    .product-item-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; display: inline-block; margin-top: 4px; }
+
+    /* 比較 */
+    .compare-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.5rem; margin-bottom: 12px; position: relative; }
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .compare-table th { padding: 10px 14px; background: var(--black); color: var(--white); font-weight: 600; text-align: left; }
+    .compare-table th:first-child { border-radius: 6px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 6px 0 0; }
+    .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--gray-100); color: var(--gray-500); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 500; color: var(--black); }
+    .compare-table td.best { color: #16a34a; font-weight: 600; }
+
+    .premium-overlay-box { position: absolute; inset: 0; background: rgba(250,250,250,0.85); backdrop-filter: blur(4px); border-radius: var(--r-xl); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+    .premium-overlay-box p { font-size: 14px; font-weight: 600; color: var(--black); }
+    .premium-overlay-box a { padding: 9px 22px; background: var(--black); color: var(--white); border-radius: var(--r-md); font-size: 13px; font-weight: 600; text-decoration: none; }
+
+    .loading-wrap { text-align: center; padding: 3rem; }
+    .ad-wrap { max-width: 960px; margin: 0 auto 1.5rem; padding: 0 2rem; }
+    .ad-placeholder { background: var(--white); border: 1px dashed var(--gray-300); border-radius: var(--r-md); padding: 12px; text-align: center; font-size: 11px; color: var(--gray-400); min-height: 90px; display: flex; align-items: center; justify-content: center; }
+
+    @media (max-width: 640px) {
+      header { padding: 0 1.25rem; }
+      nav { padding: 0 1rem; }
+      .hero, .makers-wrap, .detail-wrap, .ad-wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .hero h1 { font-size: 24px; }
+      .makers-grid { grid-template-columns: repeat(2, 1fr); }
+      .detail-stats { grid-template-columns: 1fr 1fr; }
+      .products-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2996318130032504" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="home.html">
+    <div class="logo-mark"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg></div>
+    <span class="logo-text">PC Builder <span>AI</span></span>
+  </a>
+  <div class="header-right">
+    <span class="badge-free">FREE PLAN</span>
+    <a class="btn-upgrade" href="https://buy.stripe.com/7sY4gyaxT7gEacWfFicQU00" target="_blank" rel="noopener">月額500円で無制限</a>
+  </div>
+</header>
+
+<nav>
+  <a class="nav-item" href="index.html">構成提案</a>
+  <a class="nav-item" href="guide.html">購入ガイド</a>
+  <a class="nav-item" href="bto.html">BTO</a>
+  <a class="nav-item" href="build.html">自作PC</a>
+  <a class="nav-item" href="peripherals.html">周辺機器</a>
+  <a class="nav-item" href="product.html">製品情報</a>
+  <a class="nav-item" href="ranking.html">ランキング</a>
+  <a class="nav-item active" href="maker.html">メーカー</a>
+  <a class="nav-item" href="price.html">価格チェック</a>
+  <a class="nav-item" href="reviews.html">レビュー</a>
+  <a class="nav-item" href="board.html">掲示板</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">Maker Information</div>
+  <h1>PCパーツ<br><em>メーカー情報。</em></h1>
+  <p>NVIDIA・AMD・Intel などの主要メーカーの<br>製品ラインナップ・特徴・比較をまとめています。</p>
+</div>
+
+<!-- メーカー選択 -->
+<div class="makers-wrap">
+  <div class="makers-grid" id="makers-grid">
+    <div class="maker-card active" onclick="selectMaker('NVIDIA', this)">
+      <div class="maker-logo">NV</div>
+      <div class="maker-card-name">NVIDIA</div>
+      <div class="maker-card-cat">GPU</div>
+    </div>
+    <div class="maker-card" onclick="selectMaker('AMD', this)">
+      <div class="maker-logo">AMD</div>
+      <div class="maker-card-name">AMD</div>
+      <div class="maker-card-cat">CPU・GPU</div>
+    </div>
+    <div class="maker-card" onclick="selectMaker('Intel', this)">
+      <div class="maker-logo">In</div>
+      <div class="maker-card-name">Intel</div>
+      <div class="maker-card-cat">CPU</div>
+    </div>
+    <div class="maker-card" onclick="selectMaker('Samsung', this)">
+      <div class="maker-logo">Sa</div>
+      <div class="maker-card-name">Samsung</div>
+      <div class="maker-card-cat">メモリ・SSD</div>
+    </div>
+    <div class="maker-card" onclick="selectMaker('Corsair', this)">
+      <div class="maker-logo">Co</div>
+      <div class="maker-card-name">Corsair</div>
+      <div class="maker-card-cat">メモリ・周辺機器</div>
+    </div>
+    <div class="maker-card" onclick="selectMaker('ASUS', this)">
+      <div class="maker-logo">AS</div>
+      <div class="maker-card-name">ASUS</div>
+      <div class="maker-card-cat">マザーボード・GPU</div>
+    </div>
+    <div class="maker-card" onclick="selectMaker('MSI', this)">
+      <div class="maker-logo">MSI</div>
+      <div class="maker-card-name">MSI</div>
+      <div class="maker-card-cat">マザーボード・GPU</div>
+    </div>
+    <div class="maker-card" onclick="selectMaker('Logicool', this)">
+      <div class="maker-logo">Lo</div>
+      <div class="maker-card-name">Logicool</div>
+      <div class="maker-card-cat">周辺機器</div>
+    </div>
+  </div>
+</div>
+
+<div class="ad-wrap">
+  <div class="ad-placeholder">広告枠（Google AdSense設定後に表示）</div>
+</div>
+
+<div class="detail-wrap" id="detail-wrap">
+  <div class="loading-wrap"><div class="thinking" style="justify-content:center;"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span>メーカー情報を取得中...</span></div></div>
+</div>
+
+<footer>
+  <p>情報はAIによる推定です。正確な情報は各メーカー公式サイトでご確認ください。<br>
+  <a href="legal.html">利用規約</a> &nbsp;·&nbsp; <a href="legal.html">プライバシーポリシー</a></p>
+</footer>
+
+<button class="chat-fab" id="chat-fab">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+</button>
+<div class="chat-window" id="chat-window" style="display:none;">
+  <div class="chat-header"><span>PC相談 — AI Assistant</span><button class="chat-close" id="chat-close">✕</button></div>
+  <div class="chat-messages" id="chat-messages"><div class="msg bot">メーカーや製品についてなんでも聞いてください！</div></div>
+  <div class="chat-input-row"><input type="text" class="chat-input" id="chat-input" placeholder="質問を入力..."><button class="chat-send" id="chat-send">送信</button></div>
+</div>
+
+<script>
+const AMAZON_TAG = 'pcbuilderai-22';
+const STRIPE_URL = 'https://buy.stripe.com/7sY4gyaxT7gEacWfFicQU00';
+let makerCache = {};
+let currentMaker = 'NVIDIA';
+
+function selectMaker(name, el) {
+  currentMaker = name;
+  document.querySelectorAll('.maker-card').forEach(function(c) { c.classList.remove('active'); });
+  el.classList.add('active');
+  loadMaker(name);
+}
+
+function goProduct(name) {
+  window.location.href = 'product.html?q=' + encodeURIComponent(name);
+}
+
+async function loadMaker(name) {
+  if (makerCache[name]) { renderMaker(makerCache[name]); return; }
+
+  const wrap = document.getElementById('detail-wrap');
+  wrap.innerHTML = '<div class="loading-wrap"><div class="thinking" style="justify-content:center;"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span>' + name + ' の情報を取得中...</span></div></div>';
+
+  const prompt = '2026年6月現在の' + name + 'についての詳細情報をJSON形式で返してください（```や説明文は不要）:\n{\n  "name": "' + name + '",\n  "fullName": "正式社名",\n  "founded": "設立年",\n  "country": "本社所在国",\n  "ceo": "現在のCEO名",\n  "marketShare": "主要カテゴリでの市場シェア（例：GPU市場80%）",\n  "description": "企業説明（150文字程度）",\n  "strength": "強み（50文字）",\n  "weakness": "弱み（50文字）",\n  "products": [\n    {\n      "name": "製品名（型番まで）",\n      "category": "カテゴリ",\n      "price": 価格（整数）,\n      "badge": "flagship" または "popular" または "cospa" または "new",\n      "badgeLabel": "フラッグシップ" または "人気" または "コスパ" または "最新",\n      "point": "特徴（30文字）"\n    }\n  ],\n  "competitors": [\n    {\n      "name": "競合メーカー名",\n      "comparison": {\n        "市場シェア": "値",\n        "価格帯": "値",\n        "特徴": "値"\n      }\n    }\n  ]\n}\n\n製品は代表的なもの6製品を掲載。2026年6月の実勢価格を使用。';
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ max_tokens: 2000, messages: [{role:'user',content:prompt}] })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const raw = (data.content && data.content[0] && data.content[0].text) || '';
+    if (!raw) throw new Error('empty');
+    const clean = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+    const parsed = JSON.parse(clean);
+    makerCache[name] = parsed;
+    renderMaker(parsed);
+  } catch(e) {
+    console.error(e);
+    wrap.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--gray-400);font-size:14px;">⚠️ 情報の取得に失敗しました。もう一度お試しください。</div>';
+  }
+}
+
+function renderMaker(d) {
+  const wrap = document.getElementById('detail-wrap');
+  const badgeClass = {flagship:'background:#f3e8ff;color:#6b21a8;',popular:'background:#dbeafe;color:#1e40af;',cospa:'background:#dcfce7;color:#166534;',new:'background:#fee2e2;color:#991b1b;'};
+  const logo = (d.name||'?').slice(0,2).toUpperCase();
+
+  let html = '';
+
+  // ヘッダー
+  html += '<div class="detail-header">';
+  html += '<div class="detail-top">';
+  html += '<div class="detail-logo">' + logo + '</div>';
+  html += '<div><div class="detail-name">' + d.name + '</div><div class="detail-sub">' + (d.fullName||'') + ' · ' + (d.country||'') + ' · 設立' + (d.founded||'') + '</div></div>';
+  html += '</div>';
+  html += '<div class="detail-stats">';
+  html += '<div class="stat-box"><div class="stat-box-val">' + (d.founded||'-') + '</div><div class="stat-box-label">設立年</div></div>';
+  html += '<div class="stat-box"><div class="stat-box-val">' + (d.country||'-') + '</div><div class="stat-box-label">本社</div></div>';
+  html += '<div class="stat-box"><div class="stat-box-val" style="font-size:13px;">' + (d.marketShare||'-') + '</div><div class="stat-box-label">市場シェア</div></div>';
+  html += '<div class="stat-box"><div class="stat-box-val" style="font-size:13px;">' + (d.ceo||'-') + '</div><div class="stat-box-label">CEO</div></div>';
+  html += '</div>';
+  html += '<div class="detail-desc">' + (d.description||'') + '</div>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;">';
+  html += '<div style="padding:10px 12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;"><div style="font-size:10px;font-weight:700;color:#166534;letter-spacing:0.06em;margin-bottom:4px;">STRENGTH</div><div style="font-size:12px;color:#166534;">' + (d.strength||'') + '</div></div>';
+  html += '<div style="padding:10px 12px;background:#fff1f2;border:1px solid #fecdd3;border-radius:8px;"><div style="font-size:10px;font-weight:700;color:#9f1239;letter-spacing:0.06em;margin-bottom:4px;">WEAKNESS</div><div style="font-size:12px;color:#9f1239;">' + (d.weakness||'') + '</div></div>';
+  html += '</div>';
+  html += '</div>';
+
+  // 主要製品
+  const products = d.products || [];
+  const freeProducts = products.slice(0, 4);
+  const premiumProducts = products.slice(4);
+
+  html += '<div class="products-card">';
+  html += '<div class="card-title">📦 主要製品ラインナップ</div>';
+  html += '<div class="products-grid">';
+  freeProducts.forEach(function(p) {
+    const bc = badgeClass[p.badge] || '';
+    html += '<div class="product-item" onclick="goProduct(\'' + p.name.replace(/'/g,"\\'") + '\')">';
+    html += '<div class="product-item-name">' + p.name + '</div>';
+    html += '<div class="product-item-price">¥' + (p.price||0).toLocaleString() + ' · ' + p.category + '</div>';
+    if (p.badge) { html += '<div class="product-item-badge" style="' + bc + '">' + (p.badgeLabel||'') + '</div>'; }
+    html += '<div style="font-size:11px;color:var(--gray-400);margin-top:4px;">' + (p.point||'') + '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  if (premiumProducts.length > 0) {
+    html += '<div style="position:relative;margin-top:8px;">';
+    html += '<div class="products-grid" style="filter:blur(3px);pointer-events:none;user-select:none;">';
+    premiumProducts.forEach(function(p) {
+      html += '<div class="product-item"><div class="product-item-name">' + p.name + '</div><div class="product-item-price">¥' + (p.price||0).toLocaleString() + '</div></div>';
+    });
+    html += '</div>';
+    html += '<div style="position:absolute;inset:0;background:rgba(250,250,250,0.85);backdrop-filter:blur(2px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-radius:8px;"><p style="font-size:13px;font-weight:600;">🔒 全製品は月額プランで</p><a href="' + STRIPE_URL + '" target="_blank" rel="noopener" style="padding:7px 16px;background:var(--black);color:var(--white);border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;">月額500円で解除</a></div>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // 競合比較（有料ロック）
+  const competitors = d.competitors || [];
+  if (competitors.length > 0) {
+    html += '<div class="compare-card">';
+    html += '<div class="card-title">⚖️ 競合メーカーとの比較</div>';
+    const compKeys = Object.keys((competitors[0] && competitors[0].comparison) || {});
+    html += '<table class="compare-table">';
+    html += '<tr><th>メーカー</th>' + compKeys.map(function(k) { return '<th>' + k + '</th>'; }).join('') + '</tr>';
+    html += '<tr><td style="font-weight:700;">' + d.name + ' ⭐</td>' + compKeys.map(function() { return '<td>—</td>'; }).join('') + '</tr>';
+    competitors.forEach(function(c) {
+      html += '<tr><td>' + c.name + '</td>' + compKeys.map(function(k) { return '<td>' + ((c.comparison && c.comparison[k])||'-') + '</td>'; }).join('') + '</tr>';
+    });
+    html += '</table>';
+    html += '<div class="premium-overlay-box"><p>🔒 詳細比較は月額プランで</p><a href="' + STRIPE_URL + '" target="_blank" rel="noopener">月額500円で解除</a></div>';
+    html += '</div>';
+  }
+
+  wrap.innerHTML = html;
+}
+
+// チャット
+(function() {
+  const fab = document.getElementById('chat-fab');
+  const win = document.getElementById('chat-window');
+  const msgs = document.getElementById('chat-messages');
+  const input = document.getElementById('chat-input');
+  let h = [];
+  fab.addEventListener('click', function() {
+    const open = win.style.display !== 'none';
+    win.style.display = open ? 'none' : 'flex';
+    win.style.flexDirection = 'column';
+    if (!open) input.focus();
+  });
+  document.getElementById('chat-close').addEventListener('click', function() { win.style.display = 'none'; });
+  function addMsg(t, r) { const d = document.createElement('div'); d.className = 'msg ' + r; d.textContent = t; msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight; return d; }
+  async function send() {
+    const t = input.value.trim(); if (!t) return;
+    input.value = ''; addMsg(t, 'user'); h.push({role:'user',content:t});
+    const th = addMsg('考え中...', 'thinking-msg');
+    try {
+      const res = await fetch('/api/chat', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:600,system:'あなたはPCパーツメーカーの専門家です。現在' + currentMaker + 'について調べています。日本語で簡潔に答えてください。',messages:h})});
+      const data = await res.json();
+      const reply = (data.content && data.content[0] && data.content[0].text) || 'エラーが発生しました。';
+      h.push({role:'assistant',content:reply}); th.remove(); addMsg(reply,'bot');
+    } catch(e) { th.remove(); addMsg('エラーが発生しました。','bot'); }
+  }
+  document.getElementById('chat-send').addEventListener('click', send);
+  input.addEventListener('keydown', function(e) { if (e.key==='Enter') send(); });
+})();
+
+// 初期ロード
+loadMaker('NVIDIA');
+</script>
+</body>
+</html>

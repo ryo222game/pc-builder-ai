@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>製品詳細 — PC Builder AI</title>
+  <meta name="description" content="PCパーツ・製品の詳細情報。スペック・価格推移・レビュー・比較をまとめて確認。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL3F4HVTTF"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-GL3F4HVTTF');</script>
+  <!-- Google AdSense（審査通過後にdata-ad-clientを設定） -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+  <style>
+    body { background: var(--gray-50); }
+    /* 検索セクション */
+    .search-section { max-width: 900px; margin: 0 auto; padding: 2rem 2rem 0; }
+    .search-box { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.5rem; }
+    .search-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 10px; }
+    .search-row { display: flex; gap: 8px; }
+    .search-input { flex: 1; padding: 11px 14px; border: 1px solid var(--gray-200); border-radius: var(--r-md); font-size: 14px; color: var(--black); background: var(--gray-50); outline: none; font-family: inherit; transition: border-color 0.15s; }
+    .search-input:focus { border-color: var(--black); background: var(--white); }
+    .search-btn { padding: 11px 20px; border-radius: var(--r-md); background: var(--black); color: var(--white); border: none; cursor: pointer; font-size: 13px; font-weight: 600; font-family: inherit; white-space: nowrap; }
+    .quick-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .quick-chip { padding: 5px 12px; border-radius: 20px; border: 1px solid var(--gray-200); font-size: 12px; cursor: pointer; background: var(--white); color: var(--gray-500); transition: all 0.15s; }
+    .quick-chip:hover { border-color: var(--black); color: var(--black); }
+
+    /* 広告枠 */
+    .ad-wrap { max-width: 900px; margin: 1.5rem auto 0; padding: 0 2rem; }
+    .ad-placeholder { background: var(--white); border: 1px dashed var(--gray-300); border-radius: var(--r-md); padding: 12px; text-align: center; font-size: 11px; color: var(--gray-400); min-height: 90px; display: flex; align-items: center; justify-content: center; }
+
+    /* 製品詳細 */
+    .product-wrap { max-width: 900px; margin: 0 auto; padding: 1.5rem 2rem 5rem; }
+    .product-header { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.75rem; margin-bottom: 12px; }
+    .product-breadcrumb { font-size: 12px; color: var(--gray-400); margin-bottom: 12px; }
+    .product-breadcrumb span { color: var(--gray-300); margin: 0 6px; }
+    .product-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+    .product-left { flex: 1; min-width: 200px; }
+    .product-cat { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 8px; }
+    .product-name { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; color: var(--black); line-height: 1.2; margin-bottom: 8px; }
+    .product-maker { font-size: 13px; color: var(--gray-500); margin-bottom: 14px; }
+    .product-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .product-tag { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: var(--gray-100); color: var(--gray-600); font-weight: 500; }
+    .product-right { text-align: right; flex-shrink: 0; }
+    .price-label { font-size: 11px; color: var(--gray-400); margin-bottom: 4px; }
+    .price-current { font-size: 32px; font-weight: 700; letter-spacing: -0.03em; color: var(--black); }
+    .price-change { font-size: 13px; font-weight: 600; margin-top: 4px; }
+    .price-change.up { color: #dc2626; }
+    .price-change.down { color: #16a34a; }
+    .price-change.flat { color: var(--gray-400); }
+    .product-actions { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+    .btn-amazon { padding: 9px 16px; border-radius: var(--r-md); background: #FF9900; color: var(--white); font-size: 12px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; font-family: inherit; }
+    .btn-kakaku { padding: 9px 16px; border-radius: var(--r-md); background: var(--white); color: var(--black); font-size: 12px; font-weight: 600; text-decoration: none; border: 1px solid var(--gray-200); }
+    .btn-kakaku:hover { background: var(--gray-50); }
+
+    /* グリッドレイアウト */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px; }
+
+    /* カード共通 */
+    .info-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.5rem; }
+    .card-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 1rem; }
+
+    /* スペック表 */
+    .spec-table { width: 100%; border-collapse: collapse; }
+    .spec-table tr { border-bottom: 1px solid var(--gray-100); }
+    .spec-table tr:last-child { border-bottom: none; }
+    .spec-table td { padding: 9px 0; font-size: 13px; }
+    .spec-table td:first-child { color: var(--gray-500); width: 45%; }
+    .spec-table td:last-child { color: var(--black); font-weight: 500; }
+
+    /* 価格グラフ */
+    .chart-container { position: relative; height: 200px; }
+    .chart-note { font-size: 11px; color: var(--gray-400); margin-top: 8px; text-align: right; }
+
+    /* 統計カード */
+    .stat-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.25rem; }
+    .stat-label { font-size: 11px; color: var(--gray-400); font-weight: 500; margin-bottom: 6px; }
+    .stat-value { font-size: 20px; font-weight: 700; color: var(--black); letter-spacing: -0.02em; }
+    .stat-sub { font-size: 11px; color: var(--gray-400); margin-top: 3px; }
+
+    /* メーカー情報 */
+    .maker-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.5rem; margin-bottom: 12px; }
+    .maker-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .maker-logo { width: 48px; height: 48px; border-radius: var(--r-md); background: var(--black); color: var(--white); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; flex-shrink: 0; }
+    .maker-name { font-size: 18px; font-weight: 600; color: var(--black); }
+    .maker-desc { font-size: 13px; color: var(--gray-500); line-height: 1.7; }
+    .maker-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+    .maker-stat { text-align: center; padding: 10px; background: var(--gray-50); border-radius: var(--r-md); }
+    .maker-stat-val { font-size: 16px; font-weight: 700; color: var(--black); }
+    .maker-stat-label { font-size: 11px; color: var(--gray-400); margin-top: 3px; }
+
+    /* 比較セクション */
+    .compare-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 1.5rem; margin-bottom: 12px; }
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .compare-table th { padding: 10px 14px; background: var(--black); color: var(--white); font-weight: 600; text-align: left; }
+    .compare-table th:first-child { border-radius: var(--r-sm) 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 var(--r-sm) 0 0; }
+    .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--gray-100); color: var(--gray-500); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 500; color: var(--black); }
+    .compare-table td.highlight { color: #16a34a; font-weight: 600; }
+    .compare-table td.lowlight { color: #dc2626; }
+
+    /* 有料ロック */
+    .premium-section { position: relative; }
+    .premium-overlay-box { position: absolute; inset: 0; background: rgba(250,250,250,0.85); backdrop-filter: blur(4px); border-radius: var(--r-xl); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; z-index: 10; }
+    .premium-overlay-box p { font-size: 14px; font-weight: 600; color: var(--black); }
+    .premium-overlay-box a { padding: 9px 22px; background: var(--black); color: var(--white); border-radius: var(--r-md); font-size: 13px; font-weight: 600; text-decoration: none; }
+
+    /* 購入判定 */
+    .verdict-bar { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: var(--r-md); margin-bottom: 1rem; }
+    .verdict-bar.buy { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .verdict-bar.wait { background: #fff1f2; border: 1px solid #fecdd3; }
+    .verdict-bar.ok { background: #fefce8; border: 1px solid #fde68a; }
+    .verdict-icon { font-size: 24px; }
+    .verdict-text { font-size: 14px; font-weight: 600; }
+    .verdict-sub { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+
+    /* ローディング */
+    .loading-wrap { text-align: center; padding: 4rem 2rem; }
+    .loading-wrap .thinking { justify-content: center; }
+
+    /* 空状態 */
+    .empty-wrap { text-align: center; padding: 3rem 2rem; }
+
+    @media (max-width: 640px) {
+      header { padding: 0 1.25rem; }
+      nav { padding: 0 1rem; }
+      .search-section, .product-wrap, .ad-wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .product-top { flex-direction: column; }
+      .product-right { text-align: left; }
+      .maker-stats { grid-template-columns: 1fr 1fr; }
+      .search-row { flex-direction: column; }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2996318130032504" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="home.html">
+    <div class="logo-mark"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg></div>
+    <span class="logo-text">PC Builder <span>AI</span></span>
+  </a>
+  <div class="header-right">
+    <span class="badge-free">FREE PLAN</span>
+    <a class="btn-upgrade" href="https://buy.stripe.com/7sY4gyaxT7gEacWfFicQU00" target="_blank" rel="noopener">月額500円で無制限</a>
+  </div>
+</header>
+
+<nav>
+  <a class="nav-item" href="index.html">構成提案</a>
+  <a class="nav-item" href="guide.html">購入ガイド</a>
+  <a class="nav-item" href="bto.html">BTO</a>
+  <a class="nav-item" href="build.html">自作PC</a>
+  <a class="nav-item" href="peripherals.html">周辺機器</a>
+  <a class="nav-item active" href="product.html">製品情報</a>
+  <a class="nav-item" href="ranking.html">ランキング</a>
+  <a class="nav-item" href="maker.html">メーカー</a>
+  <a class="nav-item" href="price.html">価格チェック</a>
+  <a class="nav-item" href="reviews.html">レビュー</a>
+  <a class="nav-item" href="board.html">掲示板</a>
+</nav>
+
+<!-- 検索 -->
+<div class="search-section">
+  <div class="search-box">
+    <div class="search-title">製品・メーカーを検索</div>
+    <div class="search-row">
+      <input type="text" class="search-input" id="search-input" placeholder="例: RTX 5070、Ryzen 7 9800X3D、NVIDIA、Samsung">
+      <button class="search-btn" id="search-btn">🔍 検索</button>
+    </div>
+    <div class="quick-chips">
+      <div class="quick-chip" onclick="search('RTX 5070')">RTX 5070</div>
+      <div class="quick-chip" onclick="search('RTX 5080')">RTX 5080</div>
+      <div class="quick-chip" onclick="search('Ryzen 7 9800X3D')">Ryzen 7 9800X3D</div>
+      <div class="quick-chip" onclick="search('Core Ultra 9 285K')">Core Ultra 9 285K</div>
+      <div class="quick-chip" onclick="search('DDR5 32GB')">DDR5 32GB</div>
+      <div class="quick-chip" onclick="search('Samsung 990 Pro 2TB')">Samsung 990 Pro 2TB</div>
+      <div class="quick-chip" onclick="search('NVIDIA')">NVIDIA（メーカー）</div>
+      <div class="quick-chip" onclick="search('AMD')">AMD（メーカー）</div>
+    </div>
+  </div>
+</div>
+
+<!-- 広告枠（AdSense審査通過後に有効化） -->
+<div class="ad-wrap">
+  <div class="ad-placeholder">
+    広告枠（Google AdSense設定後に表示されます）
+  </div>
+</div>
+
+<!-- 製品情報エリア -->
+<div class="product-wrap" id="product-wrap">
+  <div class="empty-wrap">
+    <div style="font-size:48px;margin-bottom:1rem;">🖥️</div>
+    <div style="font-size:16px;font-weight:600;color:var(--black);margin-bottom:6px;">製品・メーカーを検索してください</div>
+    <div style="font-size:13px;color:var(--gray-500);">上の検索欄にパーツ名やメーカー名を入力すると、詳細情報が表示されます。</div>
+  </div>
+</div>
+
+<footer>
+  <p>価格情報はAIによる推定値です。実際の価格はAmazon・価格.comでご確認ください。<br>
+  本サービスはAmazonアソシエイトプログラムに参加しています。<br>
+  <a href="legal.html">利用規約</a> &nbsp;·&nbsp; <a href="legal.html">プライバシーポリシー</a></p>
+</footer>
+
+<button class="chat-fab" id="chat-fab">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+</button>
+<div class="chat-window" id="chat-window" style="display:none;">
+  <div class="chat-header"><span>PC相談 — AI Assistant</span><button class="chat-close" id="chat-close">✕</button></div>
+  <div class="chat-messages" id="chat-messages"><div class="msg bot">こんにちは！製品について詳しく知りたいことがあれば何でも聞いてください。</div></div>
+  <div class="chat-input-row"><input type="text" class="chat-input" id="chat-input" placeholder="質問を入力..."><button class="chat-send" id="chat-send">送信</button></div>
+</div>
+
+<script>
+const AMAZON_TAG = 'pcbuilderai-22';
+const STRIPE_URL = 'https://buy.stripe.com/7sY4gyaxT7gEacWfFicQU00';
+let priceChart = null;
+let currentProduct = null;
+
+// URLパラメータから製品名を取得
+const urlParams = new URLSearchParams(window.location.search);
+const queryFromUrl = urlParams.get('q');
+if (queryFromUrl) {
+  document.getElementById('search-input').value = queryFromUrl;
+  search(queryFromUrl);
+}
+
+document.getElementById('search-btn').addEventListener('click', function() {
+  const q = document.getElementById('search-input').value.trim();
+  if (q) search(q);
+});
+document.getElementById('search-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { const q = this.value.trim(); if (q) search(q); }
+});
+
+function search(query) {
+  document.getElementById('search-input').value = query;
+  // URLを更新（ブラウザ履歴に追加）
+  history.pushState(null, '', '?q=' + encodeURIComponent(query));
+  document.title = query + ' — PC Builder AI';
+  loadProduct(query);
+}
+
+async function loadProduct(query) {
+  const wrap = document.getElementById('product-wrap');
+  wrap.innerHTML = '<div class="loading-wrap"><div class="thinking"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span>' + query + ' の情報を取得中...</span></div></div>';
+  if (priceChart) { priceChart.destroy(); priceChart = null; }
+
+  const prompt = `あなたは2026年6月現在の日本のPCパーツ市場の専門家です。
+以下の製品またはメーカーについて詳細情報をJSON形式で返してください。
+
+検索クエリ: "${query}"
+
+これが製品名の場合とメーカー名の場合で対応を変えてください。
+
+必ず以下のJSON形式のみで返答してください（\`\`\`や説明文は不要）:
+{
+  "type": "product" または "maker",
+  "name": "正式名称",
+  "category": "GPU / CPU / メモリ / SSD / マザーボード / モニター / 周辺機器 / メーカー のいずれか",
+  "maker": "メーカー名",
+  "makerDesc": "メーカーの説明（100文字程度）",
+  "makerFounded": "設立年",
+  "makerCountry": "本社所在国",
+  "makerProducts": "主力製品カテゴリ（例：GPU、CPU）",
+  "tags": ["タグ1", "タグ2", "タグ3"],
+  "currentPrice": 現在の推定価格（円・整数、メーカーの場合は0）,
+  "priceHistory": [7つの価格（3ヶ月前〜現在・週次）の整数配列],
+  "priceLabels": ["3ヶ月前","2.5ヶ月前","2ヶ月前","1.5ヶ月前","1ヶ月前","2週間前","現在"],
+  "minPrice3m": 3ヶ月最安値（整数）,
+  "maxPrice3m": 3ヶ月最高値（整数）,
+  "avgPrice3m": 3ヶ月平均（整数）,
+  "verdict": "buy" または "wait" または "ok",
+  "verdictReason": "買い時判定の理由（50文字程度）",
+  "specs": {
+    "キー1": "値1",
+    "キー2": "値2"
+  },
+  "compareProducts": [
+    {
+      "name": "比較製品名",
+      "price": 価格（整数）,
+      "specs": {"スペックキー": "値"}
+    }
+  ],
+  "pointGood": "この製品の良い点（80文字）",
+  "pointBad": "この製品の気になる点（80文字）",
+  "releaseDate": "発売時期",
+  "popularity": "高い / 普通 / 低い"
+}
+
+2026年6月の日本市場の実勢価格を使うこと。製品が不明な場合は最も近い製品で回答。`;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        max_tokens: 1500,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const raw = (data.content && data.content[0] && data.content[0].text) || '';
+    if (!raw) throw new Error('empty');
+    const clean = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+    const d = JSON.parse(clean);
+    currentProduct = d;
+    renderProduct(d);
+  } catch(e) {
+    console.error(e);
+    wrap.innerHTML = '<div class="empty-wrap"><div style="font-size:36px;">⚠️</div><div style="font-size:15px;color:var(--gray-500);margin-top:12px;">情報の取得に失敗しました。もう一度お試しください。</div></div>';
+  }
+}
+
+function renderProduct(d) {
+  const wrap = document.getElementById('product-wrap');
+  const isProduct = d.type === 'product';
+  const verdictConfig = {
+    buy: { cls: 'buy', icon: '✅', text: '今が買い時！', color: '#16a34a' },
+    wait: { cls: 'wait', icon: '⏳', text: 'もう少し待って', color: '#dc2626' },
+    ok:   { cls: 'ok',   icon: '💡', text: '普通の価格',   color: '#d97706' }
+  };
+  const vc = verdictConfig[d.verdict] || verdictConfig.ok;
+
+  let html = '';
+
+  // ── ヘッダー ──
+  html += '<div class="product-header">';
+  html += '<div class="product-breadcrumb">製品情報 <span>›</span> ' + d.category + ' <span>›</span> ' + d.name + '</div>';
+  html += '<div class="product-top">';
+  html += '<div class="product-left">';
+  html += '<div class="product-cat">' + d.category + '</div>';
+  html += '<div class="product-name">' + d.name + '</div>';
+  html += '<div class="product-maker">by ' + d.maker + '　|　発売: ' + (d.releaseDate || '不明') + '　|　人気度: ' + (d.popularity || '-') + '</div>';
+  html += '<div class="product-tags">' + (d.tags || []).map(function(t) { return '<span class="product-tag">' + t + '</span>'; }).join('') + '</div>';
+  html += '</div>';
+
+  if (isProduct && d.currentPrice > 0) {
+    html += '<div class="product-right">';
+    html += '<div class="price-label">現在の推定価格</div>';
+    html += '<div class="price-current">¥' + d.currentPrice.toLocaleString() + '</div>';
+    html += '<div class="price-change ' + vc.cls + '">' + vc.icon + ' ' + vc.text + '</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // アクションボタン
+  if (isProduct) {
+    html += '<div class="product-actions">';
+    html += '<a class="btn-amazon" href="https://www.amazon.co.jp/s?k=' + encodeURIComponent(d.name) + '&tag=' + AMAZON_TAG + '" target="_blank" rel="noopener sponsored">🛒 Amazonで見る</a>';
+    html += '<a class="btn-kakaku" href="https://kakaku.com/search_results/' + encodeURIComponent(d.name) + '/" target="_blank" rel="noopener">📊 価格.comで最安値</a>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // ── 統計カード（製品のみ）──
+  if (isProduct && d.currentPrice > 0) {
+    html += '<div class="grid-3">';
+    html += '<div class="stat-card"><div class="stat-label">3ヶ月最安値</div><div class="stat-value" style="color:#16a34a;">¥' + (d.minPrice3m||0).toLocaleString() + '</div><div class="stat-sub">AI推定値</div></div>';
+    html += '<div class="stat-card"><div class="stat-label">3ヶ月平均</div><div class="stat-value">¥' + (d.avgPrice3m||0).toLocaleString() + '</div><div class="stat-sub">AI推定値</div></div>';
+    html += '<div class="stat-card"><div class="stat-label">3ヶ月最高値</div><div class="stat-value" style="color:#dc2626;">¥' + (d.maxPrice3m||0).toLocaleString() + '</div><div class="stat-sub">AI推定値</div></div>';
+    html += '</div>';
+  }
+
+  // ── グリッド（価格グラフ＋スペック）──
+  if (isProduct) {
+    html += '<div class="grid-2">';
+
+    // 価格グラフ
+    html += '<div class="info-card">';
+    html += '<div class="card-title">📈 価格推移（過去3ヶ月・AI推定）</div>';
+    html += '<div class="chart-container"><canvas id="price-chart"></canvas></div>';
+    html += '<div class="chart-note">⚠️ AI推定値。実際の価格は価格.comでご確認ください。</div>';
+    html += '</div>';
+
+    // スペック
+    html += '<div class="info-card">';
+    html += '<div class="card-title">🔧 スペック</div>';
+    html += '<table class="spec-table">';
+    Object.entries(d.specs || {}).forEach(function(entry) {
+      html += '<tr><td>' + entry[0] + '</td><td>' + entry[1] + '</td></tr>';
+    });
+    html += '</table>';
+    html += '</div>';
+    html += '</div>';
+  }
+
+  // ── メーカー情報 ──
+  html += '<div class="maker-card">';
+  html += '<div class="card-title">🏢 メーカー情報</div>';
+  html += '<div class="maker-header">';
+  html += '<div class="maker-logo">' + (d.maker || '?').slice(0, 2) + '</div>';
+  html += '<div><div class="maker-name">' + d.maker + '</div></div>';
+  html += '</div>';
+  html += '<div class="maker-desc">' + (d.makerDesc || '') + '</div>';
+  html += '<div class="maker-stats">';
+  html += '<div class="maker-stat"><div class="maker-stat-val">' + (d.makerFounded || '-') + '</div><div class="maker-stat-label">設立年</div></div>';
+  html += '<div class="maker-stat"><div class="maker-stat-val">' + (d.makerCountry || '-') + '</div><div class="maker-stat-label">本社</div></div>';
+  html += '<div class="maker-stat"><div class="maker-stat-val">' + (d.makerProducts || '-') + '</div><div class="maker-stat-label">主力製品</div></div>';
+  html += '</div>';
+  html += '</div>';
+
+  // ── 購入判定（製品のみ・無料）──
+  if (isProduct) {
+    html += '<div class="info-card" style="margin-bottom:12px;">';
+    html += '<div class="card-title">💡 AIの購入判定</div>';
+    html += '<div class="verdict-bar ' + vc.cls + '"><div class="verdict-icon">' + vc.icon + '</div><div><div class="verdict-text">' + vc.text + '</div><div class="verdict-sub">' + (d.verdictReason || '') + '</div></div></div>';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">';
+    html += '<div style="padding:12px;background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;"><div style="font-size:10px;font-weight:700;color:#166534;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Good</div><div style="font-size:13px;color:#166534;">' + (d.pointGood || '') + '</div></div>';
+    html += '<div style="padding:12px;background:#fff1f2;border-radius:8px;border:1px solid #fecdd3;"><div style="font-size:10px;font-weight:700;color:#9f1239;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;">Bad</div><div style="font-size:13px;color:#9f1239;">' + (d.pointBad || '') + '</div></div>';
+    html += '</div>';
+    html += '</div>';
+  }
+
+  // ── 比較（有料ロック）──
+  if (isProduct && d.compareProducts && d.compareProducts.length > 0) {
+    html += '<div class="compare-card premium-section">';
+    html += '<div class="card-title">⚖️ 競合製品との比較</div>';
+    html += '<table class="compare-table">';
+    // ヘッダー行
+    const specKeys = Object.keys((d.compareProducts[0] && d.compareProducts[0].specs) || {});
+    html += '<tr><th>製品名</th><th>価格</th>' + specKeys.map(function(k) { return '<th>' + k + '</th>'; }).join('') + '</tr>';
+    // 自製品行
+    html += '<tr><td style="font-weight:700;">' + d.name + ' ⭐</td><td>¥' + (d.currentPrice||0).toLocaleString() + '</td>' + specKeys.map(function(k) { return '<td>' + (d.specs[k]||'-') + '</td>'; }).join('') + '</tr>';
+    // 比較製品行
+    d.compareProducts.forEach(function(p) {
+      html += '<tr><td>' + p.name + '</td><td>¥' + (p.price||0).toLocaleString() + '</td>' + specKeys.map(function(k) { return '<td>' + ((p.specs && p.specs[k])||'-') + '</td>'; }).join('') + '</tr>';
+    });
+    html += '</table>';
+    // 有料ロックオーバーレイ
+    html += '<div class="premium-overlay-box"><p>🔒 詳細比較は月額プランで</p><a href="' + STRIPE_URL + '" target="_blank" rel="noopener">月額500円で解除</a></div>';
+    html += '</div>';
+  }
+
+  wrap.innerHTML = html;
+
+  // ── 関連レビュー（localStorageから取得）──
+  const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+  const relatedReviews = reviews.filter(function(r) {
+    return r.product && d.name && r.product.toLowerCase().includes(d.name.split(' ')[0].toLowerCase());
+  }).slice(0, 3);
+
+  if (relatedReviews.length > 0) {
+    let revHtml = '<div class="info-card" style="margin-bottom:12px;"><div class="card-title">⭐ 関連ユーザーレビュー</div>';
+    relatedReviews.forEach(function(r) {
+      const stars = Array.from({length:5},function(_,i){return i<r.rating?'★':'☆';}).join('');
+      revHtml += '<div style="padding:12px 0;border-bottom:1px solid var(--gray-100);">';
+      revHtml += '<div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:13px;font-weight:600;">' + r.product + '</span><span style="font-size:13px;">' + stars + '</span></div>';
+      revHtml += '<div style="font-size:12px;font-weight:600;color:var(--black);margin-bottom:4px;">' + r.title + '</div>';
+      revHtml += '<div style="font-size:12px;color:var(--gray-500);">' + r.body.slice(0,100) + (r.body.length>100?'...':'') + '</div>';
+      revHtml += '</div>';
+    });
+    revHtml += '<div style="margin-top:12px;"><a href="reviews.html" style="font-size:12px;font-weight:600;color:var(--black);">すべてのレビューを見る →</a></div>';
+    revHtml += '</div>';
+    wrap.innerHTML += revHtml;
+  } else {
+    wrap.innerHTML += '<div class="info-card" style="margin-bottom:12px;"><div class="card-title">⭐ 関連ユーザーレビュー</div><div style="text-align:center;padding:1.5rem;color:var(--gray-400);font-size:13px;">まだレビューがありません。<br><a href="reviews.html" style="color:var(--black);font-weight:600;">レビューを書く →</a></div></div>';
+  }
+
+  // ── 関連掲示板投稿（localStorageから取得）──
+  const threads = JSON.parse(localStorage.getItem('threads') || '[]');
+  const relatedThreads = threads.filter(function(t) {
+    return t.title && d.name && t.title.toLowerCase().includes(d.name.split(' ')[0].toLowerCase());
+  }).slice(0, 3);
+
+  let boardHtml = '<div class="info-card" style="margin-bottom:12px;"><div class="card-title">💬 関連掲示板スレッド</div>';
+  if (relatedThreads.length > 0) {
+    relatedThreads.forEach(function(t) {
+      boardHtml += '<div style="padding:12px 0;border-bottom:1px solid var(--gray-100);">';
+      boardHtml += '<div style="font-size:13px;font-weight:600;color:var(--black);margin-bottom:4px;">' + t.title + '</div>';
+      boardHtml += '<div style="font-size:12px;color:var(--gray-500);">' + t.body.slice(0,80) + (t.body.length>80?'...':'') + '</div>';
+      boardHtml += '<div style="font-size:11px;color:var(--gray-400);margin-top:4px;">💬 ' + t.comments.length + '件 · ' + t.date + '</div>';
+      boardHtml += '</div>';
+    });
+  } else {
+    boardHtml += '<div style="text-align:center;padding:1.5rem;color:var(--gray-400);font-size:13px;">関連スレッドがありません。<br><a href="board.html" style="color:var(--black);font-weight:600;">掲示板で話題にする →</a></div>';
+  }
+  boardHtml += '<div style="margin-top:12px;"><a href="board.html" style="font-size:12px;font-weight:600;color:var(--black);">掲示板を見る →</a></div>';
+  boardHtml += '</div>';
+  wrap.innerHTML += boardHtml;
+
+  // グラフ描画
+  if (isProduct && d.priceHistory && d.priceHistory.length > 0) {
+    const ctx = document.getElementById('price-chart');
+    if (ctx) {
+      if (priceChart) priceChart.destroy();
+      priceChart = new Chart(ctx.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: d.priceLabels || [],
+          datasets: [{
+            label: '価格（円）',
+            data: d.priceHistory,
+            borderColor: '#0a0a0a',
+            backgroundColor: 'rgba(10,10,10,0.05)',
+            borderWidth: 2,
+            pointRadius: 4,
+            pointBackgroundColor: '#0a0a0a',
+            tension: 0.3,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: function(ctx) { return '¥' + ctx.raw.toLocaleString(); } } }
+          },
+          scales: {
+            y: { ticks: { callback: function(v) { return '¥' + (v/1000).toFixed(0) + 'k'; }, font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.06)' } },
+            x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+          }
+        }
+      });
+    }
+  }
+}
+
+// チャット
+(function() {
+  const fab = document.getElementById('chat-fab');
+  const win = document.getElementById('chat-window');
+  const msgs = document.getElementById('chat-messages');
+  const input = document.getElementById('chat-input');
+  let h = [];
+  fab.addEventListener('click', function() {
+    const open = win.style.display !== 'none';
+    win.style.display = open ? 'none' : 'flex';
+    win.style.flexDirection = 'column';
+    if (!open) input.focus();
+  });
+  document.getElementById('chat-close').addEventListener('click', function() { win.style.display = 'none'; });
+  function addMsg(t, r) { const d = document.createElement('div'); d.className = 'msg ' + r; d.textContent = t; msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight; return d; }
+  async function send() {
+    const t = input.value.trim(); if (!t) return;
+    input.value = ''; addMsg(t, 'user'); h.push({role:'user',content:t});
+    const th = addMsg('考え中...', 'thinking-msg');
+    const sys = currentProduct ? ('あなたはPCパーツの専門家です。今' + currentProduct.name + 'について調べています。日本語で簡潔に答えてください。') : 'あなたはPCパーツの専門家です。日本語で簡潔に答えてください。';
+    try {
+      const res = await fetch('/api/chat', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:600,system:sys,messages:h})});
+      const data = await res.json();
+      const reply = (data.content && data.content[0] && data.content[0].text) || 'エラーが発生しました。';
+      h.push({role:'assistant',content:reply}); th.remove(); addMsg(reply,'bot');
+    } catch(e) { th.remove(); addMsg('エラーが発生しました。','bot'); }
+  }
+  document.getElementById('chat-send').addEventListener('click', send);
+  input.addEventListener('keydown', function(e) { if (e.key==='Enter') send(); });
+})();
+</script>
+</body>
+</html>

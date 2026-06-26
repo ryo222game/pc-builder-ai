@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>カテゴリ別ランキング — PC Builder AI</title>
+  <meta name="description" content="GPU・CPU・メモリ・SSDなどPCパーツのカテゴリ別人気・コスパランキング。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GL3F4HVTTF"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-GL3F4HVTTF');</script>
+  <style>
+    .hero { max-width: 960px; margin: 0 auto; padding: 3rem 2rem 2rem; text-align: center; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 1rem; }
+    .hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 24px; height: 1px; background: var(--gray-300); }
+    .hero h1 { font-size: 32px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 0.75rem; }
+    .hero h1 em { font-style: normal; color: var(--gray-400); }
+    .hero p { font-size: 15px; color: var(--gray-500); line-height: 1.7; }
+
+    .tab-wrap { max-width: 960px; margin: 0 auto; padding: 0 2rem 1.5rem; }
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); padding: 8px; }
+    .tab { padding: 8px 16px; border-radius: var(--r-md); font-size: 13px; font-weight: 500; cursor: pointer; background: none; border: none; color: var(--gray-400); font-family: inherit; transition: all 0.15s; white-space: nowrap; }
+    .tab.active { background: var(--black); color: var(--white); font-weight: 600; }
+
+    .rank-wrap { max-width: 960px; margin: 0 auto; padding: 0 2rem 5rem; }
+    .rank-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .rank-section { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--r-xl); overflow: hidden; }
+    .rank-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; }
+    .rank-title { font-size: 14px; font-weight: 600; color: var(--black); display: flex; align-items: center; gap: 8px; }
+    .rank-sub { font-size: 11px; color: var(--gray-400); }
+    .rank-list { }
+    .rank-item { display: flex; align-items: center; gap: 14px; padding: 14px 1.5rem; border-bottom: 1px solid var(--gray-100); cursor: pointer; transition: background 0.15s; }
+    .rank-item:last-child { border-bottom: none; }
+    .rank-item:hover { background: var(--gray-50); }
+    .rank-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .rank-num.gold { background: #fef3c7; color: #d97706; }
+    .rank-num.silver { background: var(--gray-100); color: var(--gray-600); }
+    .rank-num.bronze { background: #fed7aa; color: #c2410c; }
+    .rank-num.normal { background: var(--gray-50); color: var(--gray-400); border: 1px solid var(--gray-200); }
+    .rank-info { flex: 1; min-width: 0; }
+    .rank-name { font-size: 13px; font-weight: 600; color: var(--black); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .rank-meta { font-size: 11px; color: var(--gray-400); }
+    .rank-price { text-align: right; flex-shrink: 0; }
+    .rank-price-val { font-size: 14px; font-weight: 700; color: var(--black); }
+    .rank-price-label { font-size: 10px; color: var(--gray-400); margin-top: 2px; }
+    .rank-badge { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
+    .badge-popular { background: #dbeafe; color: #1e40af; }
+    .badge-cospa { background: #dcfce7; color: #166534; }
+    .badge-new { background: #fee2e2; color: #991b1b; }
+
+    .premium-rank { position: relative; }
+    .premium-rank .rank-item { filter: blur(3px); pointer-events: none; user-select: none; }
+    .premium-overlay { position: absolute; inset: 0; background: rgba(250,250,250,0.85); backdrop-filter: blur(2px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border-radius: 0 0 var(--r-xl) var(--r-xl); }
+    .premium-overlay p { font-size: 13px; font-weight: 600; color: var(--black); }
+    .premium-overlay a { padding: 8px 18px; background: var(--black); color: var(--white); border-radius: var(--r-md); font-size: 12px; font-weight: 600; text-decoration: none; }
+
+    .loading-wrap { text-align: center; padding: 4rem 2rem; }
+    .ad-wrap { max-width: 960px; margin: 0 auto 1.5rem; padding: 0 2rem; }
+    .ad-placeholder { background: var(--white); border: 1px dashed var(--gray-300); border-radius: var(--r-md); padding: 12px; text-align: center; font-size: 11px; color: var(--gray-400); min-height: 90px; display: flex; align-items: center; justify-content: center; }
+
+    @media (max-width: 640px) {
+      header { padding: 0 1.25rem; }
+      nav { padding: 0 1rem; }
+      .hero, .tab-wrap, .rank-wrap, .ad-wrap { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .hero h1 { font-size: 24px; }
+      .rank-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2996318130032504" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="home.html">
+    <div class="logo-mark"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 20h8M12 18v2"/></svg></div>
+    <span class="logo-text">PC Builder <span>AI</span></span>
+  </a>
+  <div class="header-right">
+    <span class="badge-free">FREE PLAN</span>
+    <a class="btn-upgrade" href="https://buy.stripe.com/7sY4gyaxT7gEacWfFicQU00" target="_blank" rel="noopener">月額500円で無制限</a>
+  </div>
+</header>
+
+<nav>
+  <a class="nav-item" href="index.html">構成提案</a>
+  <a class="nav-item" href="guide.html">購入ガイド</a>
+  <a class="nav-item" href="bto.html">BTO</a>
+  <a class="nav-item" href="build.html">自作PC</a>
+  <a class="nav-item" href="peripherals.html">周辺機器</a>
+  <a class="nav-item" href="product.html">製品情報</a>
+  <a class="nav-item active" href="ranking.html">ランキング</a>
+  <a class="nav-item" href="price.html">価格チェック</a>
+  <a class="nav-item" href="reviews.html">レビュー</a>
+  <a class="nav-item" href="board.html">掲示板</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">Category Ranking</div>
+  <h1>カテゴリ別<br><em>PCパーツランキング。</em></h1>
+  <p>人気・コスパ・最新モデルをカテゴリ別にランキング。<br>上位3位は無料、詳細ランキングは月額プランで。</p>
+</div>
+
+<div class="tab-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchCat('all', this)">🏆 総合</button>
+    <button class="tab" onclick="switchCat('gpu', this)">🖥️ GPU</button>
+    <button class="tab" onclick="switchCat('cpu', this)">🔲 CPU</button>
+    <button class="tab" onclick="switchCat('memory', this)">💾 メモリ</button>
+    <button class="tab" onclick="switchCat('ssd', this)">📀 SSD</button>
+    <button class="tab" onclick="switchCat('monitor', this)">🖥 モニター</button>
+    <button class="tab" onclick="switchCat('peripheral', this)">🖱️ 周辺機器</button>
+  </div>
+</div>
+
+<div class="ad-wrap">
+  <div class="ad-placeholder">広告枠（Google AdSense設定後に表示）</div>
+</div>
+
+<div class="rank-wrap" id="rank-wrap">
+  <div class="loading-wrap"><div class="thinking" style="justify-content:center;"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span>ランキングを生成中...</span></div></div>
+</div>
+
+<footer>
+  <p>ランキングはAIによる推定です。実際の人気・価格は各ショップでご確認ください。<br>
+  本サービスはAmazonアソシエイトプログラムに参加しています。<br>
+  <a href="legal.html">利用規約</a> &nbsp;·&nbsp; <a href="legal.html">プライバシーポリシー</a></p>
+</footer>
+
+<button class="chat-fab" id="chat-fab">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+</button>
+<div class="chat-window" id="chat-window" style="display:none;">
+  <div class="chat-header"><span>PC相談 — AI Assistant</span><button class="chat-close" id="chat-close">✕</button></div>
+  <div class="chat-messages" id="chat-messages"><div class="msg bot">こんにちは！PCパーツのランキングや選び方についてなんでも聞いてください。</div></div>
+  <div class="chat-input-row"><input type="text" class="chat-input" id="chat-input" placeholder="質問を入力..."><button class="chat-send" id="chat-send">送信</button></div>
+</div>
+
+<script>
+const AMAZON_TAG = 'pcbuilderai-22';
+const STRIPE_URL = 'https://buy.stripe.com/7sY4gyaxT7gEacWfFicQU00';
+const FREE_RANK_LIMIT = 3;
+let currentCat = 'all';
+let rankCache = {};
+
+function numClass(i) {
+  if (i === 0) return 'gold';
+  if (i === 1) return 'silver';
+  if (i === 2) return 'bronze';
+  return 'normal';
+}
+
+function switchCat(cat, el) {
+  currentCat = cat;
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+  loadRanking(cat);
+}
+
+function goProduct(name) {
+  window.location.href = 'product.html?q=' + encodeURIComponent(name);
+}
+
+async function loadRanking(cat) {
+  if (rankCache[cat]) { renderRanking(rankCache[cat]); return; }
+
+  const wrap = document.getElementById('rank-wrap');
+  wrap.innerHTML = '<div class="loading-wrap"><div class="thinking" style="justify-content:center;"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span>ランキングを生成中...</span></div></div>';
+
+  const catLabel = {all:'総合',gpu:'GPU',cpu:'CPU',memory:'メモリ',ssd:'SSD',monitor:'モニター',peripheral:'周辺機器'}[cat];
+
+  const prompt = '2026年6月現在の日本市場における' + catLabel + 'カテゴリのPCパーツランキングを生成してください。\n\n以下のランキングをJSON形式で返してください（```や説明文は不要）:\n{\n  "rankings": [\n    {\n      "type": "人気ランキング" または "コスパランキング" または "最新モデルランキング",\n      "category": "' + catLabel + '",\n      "items": [\n        {\n          "rank": 1,\n          "name": "製品名（型番まで正確に）",\n          "maker": "メーカー名",\n          "price": 価格（円・整数）,\n          "badge": "popular" または "cospa" または "new",\n          "badgeLabel": "人気No.1" または "コスパ最強" または "最新",\n          "point": "選ばれる理由（30文字以内）"\n        }\n      ]\n    }\n  ]\n}\n\n条件:\n- 各ランキングに5製品\n- 人気・コスパ・最新の3種類のランキングを作成\n- ただし' + (cat==='all'?'総合の場合はGPU・CPU・メモリ・SSDの人気1位を並べた「カテゴリ別No.1」ランキングも追加':'') + '\n- 2026年6月の実勢価格を使用\n- RTX 50シリーズ・Ryzen 9000シリーズなど最新世代を優先';
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ max_tokens: 2000, messages: [{role:'user',content:prompt}] })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const raw = (data.content && data.content[0] && data.content[0].text) || '';
+    if (!raw) throw new Error('empty');
+    const clean = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+    const parsed = JSON.parse(clean);
+    rankCache[cat] = parsed;
+    renderRanking(parsed);
+  } catch(e) {
+    console.error(e);
+    wrap.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--gray-400);font-size:14px;">⚠️ ランキングの取得に失敗しました。もう一度お試しください。</div>';
+  }
+}
+
+function renderRanking(data) {
+  const wrap = document.getElementById('rank-wrap');
+  const rankings = data.rankings || [];
+
+  if (rankings.length === 0) {
+    wrap.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--gray-400);">データがありません</div>';
+    return;
+  }
+
+  const icons = {'人気ランキング':'🔥','コスパランキング':'💰','最新モデルランキング':'✨','カテゴリ別No.1':'🏆'};
+  const badgeClass = {popular:'badge-popular',cospa:'badge-cospa',new:'badge-new'};
+
+  let html = '<div class="rank-grid">';
+
+  rankings.forEach(function(ranking) {
+    const items = ranking.items || [];
+    const freeItems = items.slice(0, FREE_RANK_LIMIT);
+    const premiumItems = items.slice(FREE_RANK_LIMIT);
+    const icon = icons[ranking.type] || '📊';
+
+    html += '<div class="rank-section">';
+    html += '<div class="rank-header">';
+    html += '<div class="rank-title">' + icon + ' ' + ranking.type + '</div>';
+    html += '<div class="rank-sub">' + ranking.category + '</div>';
+    html += '</div>';
+    html += '<div class="rank-list">';
+
+    freeItems.forEach(function(item, i) {
+      html += '<div class="rank-item" onclick="goProduct(\'' + item.name.replace(/'/g, "\\'") + '\')">';
+      html += '<div class="rank-num ' + numClass(i) + '">' + item.rank + '</div>';
+      html += '<div class="rank-info">';
+      html += '<div class="rank-name">' + item.name + '</div>';
+      html += '<div class="rank-meta">' + item.maker + ' · ' + item.point + '</div>';
+      html += '</div>';
+      html += '<div class="rank-price">';
+      html += '<div class="rank-price-val">¥' + (item.price||0).toLocaleString() + '</div>';
+      if (item.badge) {
+        html += '<div class="rank-badge ' + (badgeClass[item.badge]||'') + '">' + (item.badgeLabel||'') + '</div>';
+      }
+      html += '</div>';
+      html += '</div>';
+    });
+
+    html += '</div>';
+
+    if (premiumItems.length > 0) {
+      html += '<div class="premium-rank">';
+      html += '<div class="rank-list">';
+      premiumItems.forEach(function(item, i) {
+        html += '<div class="rank-item">';
+        html += '<div class="rank-num ' + numClass(i + FREE_RANK_LIMIT) + '">' + item.rank + '</div>';
+        html += '<div class="rank-info"><div class="rank-name">' + item.name + '</div><div class="rank-meta">' + item.maker + '</div></div>';
+        html += '<div class="rank-price"><div class="rank-price-val">¥' + (item.price||0).toLocaleString() + '</div></div>';
+        html += '</div>';
+      });
+      html += '</div>';
+      html += '<div class="premium-overlay"><p>🔒 4位以下は月額プランで</p><a href="' + STRIPE_URL + '" target="_blank" rel="noopener">月額500円で解除</a></div>';
+      html += '</div>';
+    }
+
+    html += '</div>';
+  });
+
+  html += '</div>';
+  wrap.innerHTML = html;
+}
+
+// チャット
+(function() {
+  const fab = document.getElementById('chat-fab');
+  const win = document.getElementById('chat-window');
+  const msgs = document.getElementById('chat-messages');
+  const input = document.getElementById('chat-input');
+  let h = [];
+  fab.addEventListener('click', function() {
+    const open = win.style.display !== 'none';
+    win.style.display = open ? 'none' : 'flex';
+    win.style.flexDirection = 'column';
+    if (!open) input.focus();
+  });
+  document.getElementById('chat-close').addEventListener('click', function() { win.style.display = 'none'; });
+  function addMsg(t, r) { const d = document.createElement('div'); d.className = 'msg ' + r; d.textContent = t; msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight; return d; }
+  async function send() {
+    const t = input.value.trim(); if (!t) return;
+    input.value = ''; addMsg(t, 'user'); h.push({role:'user',content:t});
+    const th = addMsg('考え中...', 'thinking-msg');
+    try {
+      const res = await fetch('/api/chat', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({max_tokens:600,system:'あなたはPCパーツの専門家です。ランキングや製品選びについて日本語で簡潔に答えてください。',messages:h})});
+      const data = await res.json();
+      const reply = (data.content && data.content[0] && data.content[0].text) || 'エラーが発生しました。';
+      h.push({role:'assistant',content:reply}); th.remove(); addMsg(reply,'bot');
+    } catch(e) { th.remove(); addMsg('エラーが発生しました。','bot'); }
+  }
+  document.getElementById('chat-send').addEventListener('click', send);
+  input.addEventListener('keydown', function(e) { if (e.key==='Enter') send(); });
+})();
+
+// 初期ロード
+loadRanking('all');
+</script>
+</body>
+</html>
