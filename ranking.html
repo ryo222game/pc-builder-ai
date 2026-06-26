@@ -182,12 +182,16 @@ async function loadRanking(cat) {
     const data = await res.json();
     const raw = (data.content && data.content[0] && data.content[0].text) || '';
     if (!raw) throw new Error('empty');
-    const clean = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+    // JSONブロックを抽出
+    let clean = raw;
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (jsonMatch) { clean = jsonMatch[0]; }
+    else { clean = raw.replace(/```json/g,'').replace(/```/g,'').trim(); }
     const parsed = JSON.parse(clean);
     rankCache[cat] = parsed;
     renderRanking(parsed);
   } catch(e) {
-    console.error(e);
+    console.error('ranking error:', e);
     wrap.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--gray-400);font-size:14px;">⚠️ ランキングの取得に失敗しました。もう一度お試しください。</div>';
   }
 }

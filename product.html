@@ -311,7 +311,9 @@ async function loadProduct(query) {
     const data = await res.json();
     const raw = (data.content && data.content[0] && data.content[0].text) || '';
     if (!raw) throw new Error('empty');
-    const clean = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+    let clean = raw.replace(/```json/g,'').replace(/```/g,'').trim();
+    const s = clean.indexOf('{'), e = clean.lastIndexOf('}');
+    if (s !== -1 && e !== -1) clean = clean.slice(s, e+1);
     const d = JSON.parse(clean);
     currentProduct = d;
     renderProduct(d);

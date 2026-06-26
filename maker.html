@@ -221,12 +221,16 @@ async function loadMaker(name) {
     const data = await res.json();
     const raw = (data.content && data.content[0] && data.content[0].text) || '';
     if (!raw) throw new Error('empty');
-    const clean = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+    let clean = raw.replace(/```json/g,'').replace(/```/g,'').trim();
+    // 最初の{から最後の}までを抽出
+    const start = clean.indexOf('{');
+    const end = clean.lastIndexOf('}');
+    if (start !== -1 && end !== -1) { clean = clean.slice(start, end + 1); }
     const parsed = JSON.parse(clean);
     makerCache[name] = parsed;
     renderMaker(parsed);
   } catch(e) {
-    console.error(e);
+    console.error('maker error:', e);
     wrap.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--gray-400);font-size:14px;">⚠️ 情報の取得に失敗しました。もう一度お試しください。</div>';
   }
 }
